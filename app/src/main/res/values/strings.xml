@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">eventmatch</string>
+    <string name="signup">SignUp</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>
