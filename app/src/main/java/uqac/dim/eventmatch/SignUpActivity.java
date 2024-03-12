@@ -16,8 +16,8 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private EditText email;
     private EditText password;
+    private EditText confirmPassword;
     private Button signUp;
-
     private TextView login;
 
     @Override
@@ -29,8 +29,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         email = findViewById(R.id.signup_email);
         password = findViewById(R.id.signup_password);
+        confirmPassword = findViewById(R.id.signup_confirm_password);
         signUp = findViewById(R.id.signup_button);
         login = findViewById(R.id.switch_login);
+
 
         signUp.setOnClickListener(v -> {
             String emailText = email.getText().toString().trim();
@@ -41,6 +43,9 @@ public class SignUpActivity extends AppCompatActivity {
             }
             if(passwordText.isEmpty()) {
                 password.setError("Password is required");
+            }
+            if(!passwordText.equals(confirmPassword.getText().toString().trim())) {
+                confirmPassword.setError("Passwords do not match");
             }
             else{
                 auth.createUserWithEmailAndPassword(emailText, passwordText)

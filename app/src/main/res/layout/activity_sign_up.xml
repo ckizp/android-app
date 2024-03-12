@@ -50,6 +50,16 @@
                 android:inputType="textPassword"
                 android:background="@drawable/custom_edittext"
                 />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/confirm_password"
+                android:id="@+id/signup_confirm_password"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:inputType="textPassword"
+                android:background="@drawable/custom_edittext"
+                />
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
