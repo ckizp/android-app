@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +18,8 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText password;
     private Button signUp;
 
+    private TextView login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
         email = findViewById(R.id.signup_email);
         password = findViewById(R.id.signup_password);
         signUp = findViewById(R.id.signup_button);
+        login = findViewById(R.id.switch_login);
 
         signUp.setOnClickListener(v -> {
             String emailText = email.getText().toString().trim();
@@ -43,7 +47,9 @@ public class SignUpActivity extends AppCompatActivity {
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                                Intent startActivity = new Intent(SignUpActivity.this, MainActivity.class);
+                                startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(startActivity);
                             } else {
                                 Toast.makeText(SignUpActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -51,6 +57,12 @@ public class SignUpActivity extends AppCompatActivity {
             }
 
 
+        });
+
+        login.setOnClickListener(v -> {
+            Intent login = new Intent(SignUpActivity.this, LoginActivity.class);
+            login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(login);
         });
     }
 }

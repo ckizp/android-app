@@ -4,4 +4,8 @@
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="ask_sign">Vous n\'avez pas de compte ?</string>
+    <string name="ask_login">Vous avez déjà un compte ? </string>
+    <string name="switch_login">Se connecter</string>
+    <string name="switch_signup">S\'inscrire</string>
 </resources>
