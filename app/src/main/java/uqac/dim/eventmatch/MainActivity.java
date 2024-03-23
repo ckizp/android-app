@@ -146,29 +146,15 @@ public class MainActivity extends AppCompatActivity {
         Log.w("DIM", "nb : " + event_nb_participants.getText().toString());
         Log.w("DIM", "type : " + event_type.getText().toString());
 
-        if ((event_name.getText().toString()) == "" || (event_nb_participants.getText().toString()) == "" || (event_type.getText().toString()) == "")
-        {
+        if (event_name.getText().toString().equals("") || event_nb_participants.getText().toString().equals("") || event_type.getText().toString().equals("")) {
             Log.w("DIM", "tous les champs ne sont pas remplis");
             Toast.makeText(MainActivity.this, "Erreur, merci de remplir tous les champs", Toast.LENGTH_SHORT).show();
         }
-        else{
+        else {
+
             event.setName(event_name.getText().toString());
-            String num = event_nb_participants.getText().toString();
-            if (num != "")
-            {
-                event.setNb_participants(Integer.parseInt(num));
-            }else {
-                event.setNb_participants(0);
-            }
+            event.setNb_participants(Integer.parseInt(event_nb_participants.getText().toString()));
             event.setType(event_type.getText().toString());
-
-            /*event = new Event(
-                event_name.getText().toString(),
-                event_end.getText().toString(),
-                event_start.getText().toString(),
-                Integer.parseInt(event_nb_participants.getText().toString()),
-                event_type.getText().toString());*/
-
 
             database.collection("events").add(event)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
