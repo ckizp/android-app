@@ -9,4 +9,14 @@
     <string name="ask_login">Vous avez déjà un compte ? </string>
     <string name="switch_login">Se connecter</string>
     <string name="switch_signup">S\'inscrire</string>
+
+    <!-- Strings pour la page de création d'évents -->
+    <string name="creation_event">Création d\'événements</string>
+    <string name="event_name">Nom de l\'événement :</string>
+    <string name="event_start">Début de l\'événement :</string>
+    <string name="event_end">Fin de l\'événement :</string>
+    <string name="event_nb_participants">Nombre de participants :</string>
+    <string name="event_type">Type de l\'événement :</string>
+    <string name="event_button_save">Enregistrer l\'événement</string>
+    <string name="event_button_clear">Vider les champs</string>
 </resources>
