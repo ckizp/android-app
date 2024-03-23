@@ -1,18 +1,17 @@
 package uqac.dim.eventmatch;
 
 import com.google.firebase.Timestamp;
-import com.google.type.DateTime;
 
 public class Event {
 
     private String name;
-    private String date_end;
-    private String date_start;
+    private Timestamp date_end;
+    private Timestamp date_start;
     private int nb_participants;
     private String type;
 
     public Event(){}
-    public Event(String n,String end,String start, int nb, String t)
+    public Event(String n, Timestamp end, Timestamp start, int nb, String t)
     {
         name = n;
         date_end = end;
@@ -21,23 +20,44 @@ public class Event {
         type = t;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public String getDate_start(){
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Timestamp getDate_end() {
+        return date_end;
+    }
+
+    public void setDate_end(Timestamp date_end) {
+        this.date_end = date_end;
+    }
+
+    public Timestamp getDate_start() {
         return date_start;
     }
 
-    public String getDate_end() {
-        return date_end;
+    public void setDate_start(Timestamp date_start) {
+        this.date_start = date_start;
     }
 
     public int getNb_participants() {
         return nb_participants;
     }
 
+    public void setNb_participants(int nb_participants) {
+        this.nb_participants = nb_participants;
+    }
+
     public String getType() {
         return type;
     }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

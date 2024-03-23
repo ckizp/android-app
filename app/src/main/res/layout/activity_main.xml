@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -39,22 +38,57 @@
                 android:layout_height="wrap_content"
                 android:text="@string/event_start"
                 android:textSize="20sp"/>
-            <EditText
-                android:id="@+id/event_start"
+
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/event_choix_date_debut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_choix_date"/>
+                <Button
+                    android:onClick="test"
+                    android:id="@+id/event_choix_heure_debut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_choix_heure"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/affichage_debut"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="date|time"/>
+                android:text="----"
+                android:textSize="20sp"/>
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/event_end"
                 android:textSize="20sp"/>
-            <EditText
-                android:id="@+id/event_end"
+
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/event_choix_date_fin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_choix_date"/>
+                <Button
+                    android:id="@+id/event_choix_heure_fin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_choix_heure"/>
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/affichage_fin"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="datetime"/>
+                android:text="----"
+                android:textSize="20sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -92,12 +126,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/event_button_clear"/>
 
-
         </LinearLayout>
-
-
-
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
