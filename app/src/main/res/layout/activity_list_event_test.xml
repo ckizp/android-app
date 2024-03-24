@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ListEventtestActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/creation_event"
-                android:text="@string/creation_event"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <Button
-                android:id="@+id/liste_event"
-                android:text="@string/page_liste"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <ListView
+                android:id="@+id/eventlist_liste"
+                android:layout_width="match_parent"
+                android:layout_height="650dp" />
 
+            <Button
+                android:id="@+id/eventlist_button_main"
+                android:text="@string/retour_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+

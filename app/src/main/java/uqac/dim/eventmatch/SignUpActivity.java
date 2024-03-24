@@ -52,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                                Intent startActivity = new Intent(SignUpActivity.this, MainActivity.class);
+                                Intent startActivity = new Intent(SignUpActivity.this, CreateEventActivity.class);
                                 startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(startActivity);
                             } else {

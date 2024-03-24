@@ -10,6 +10,12 @@
     <string name="switch_login">Se connecter</string>
     <string name="switch_signup">S\'inscrire</string>
 
+
+    <!-- Strings pour le Main -->
+    <string name="retour_menu">Retour au Menu</string>
+    <string name="page_creation">Page de Création d\'événements</string>
+    <string name="page_liste">Liste d\'événements</string>
+
     <!-- Strings pour la page de création d'évents -->
     <string name="creation_event">Création d\'événements</string>
     <string name="event_name">Nom de l\'événement :</string>
@@ -21,4 +27,16 @@
     <string name="event_type">Type de l\'événement :</string>
     <string name="event_button_save">Enregistrer l\'événement</string>
     <string name="event_button_clear">Vider les champs</string>
+    <string name="title_activity_custom_list_view">CustomListView</string>
+
+    <!-- Strings liste event -->
+    <string name="list_titre">Titre</string>
+    <string name="list_debut">Début : </string>
+    <string name="list_fin">Fin : </string>
+    <string name="list_date">le XX/XX/XXXX à XX:XX</string>
+    <string name="list_nb">NB PART </string>
+    <string name="list_participant">participants</string>
+    <string name="list_type">TYPE</string>
+    <string name="list_typeevent">Type d\'événement : </string>
+
 </resources>
