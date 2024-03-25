@@ -37,7 +37,7 @@ public class Event {
         return date_end;
     }
 
-    public String  getDate_endString(){
+    public String Date_endString(){
         return convertTimestampToString(date_end);
     }
 
@@ -45,11 +45,15 @@ public class Event {
         this.date_end = date_end;
     }
 
+    public void setDate_end(int[] tab){
+        this.date_end = convertDateTimeToTimestamp(tab);
+    }
+
     public Timestamp getDate_start() {
         return date_start;
     }
 
-    public String getDate_startString()
+    public String Date_startString()
     {
         return convertTimestampToString(date_start);
     }
@@ -57,12 +61,15 @@ public class Event {
     public void setDate_start(Timestamp date_start) {
         this.date_start = date_start;
     }
+    public void setDate_start(int[] tab){
+        this.date_start = convertDateTimeToTimestamp(tab);
+    }
 
     public int getNb_participants() {
         return nb_participants;
     }
 
-    public String getNb_paricipantsString()
+    public String Nb_paricipantsString()
     {
         return String.valueOf(nb_participants);
     }
@@ -80,13 +87,13 @@ public class Event {
     }
 
     public static String convertTimestampToString(Timestamp timestamp) {
-        long seconds = timestamp.getSeconds();
-        Date date = new Date(seconds);
-        SimpleDateFormat sdf = new SimpleDateFormat("'le' dd/MM/yyyy 'à' HH:mm", Locale.CANADA);
-        return sdf.format(date);
+
+        Date date = timestamp.toDate();
+        SimpleDateFormat sfd = new SimpleDateFormat("'le' dd/MM/yyyy 'à' HH:mm", Locale.CANADA);
+        return sfd.format(date);
     }
 
-    public static long convertDateTimeToTimestamp(int[] dateTime) {
+    public static Timestamp convertDateTimeToTimestamp(int[] dateTime) {
         // Créer un objet Calendar et initialiser ses champs avec les valeurs du tableau
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, dateTime[0]);
@@ -99,8 +106,8 @@ public class Event {
 
         // Convertir le Calendar en timestamp
         long timestamp = calendar.getTimeInMillis();
+        Timestamp res = new Timestamp(timestamp/1000,0);
 
-        return timestamp;
+        return res;
     }
-
 }

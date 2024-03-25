@@ -48,9 +48,9 @@ public class CustomBaseAdapter extends BaseAdapter {
         TextView TxtViewType= (TextView) convertView.findViewById(R.id.liste_type);
 
         TxtViewNom.setText(eventlist.get(position).getName());
-        TxtViewDebut.setText(" "+eventlist.get(position).getDate_startString());
-        TxtViewFin.setText(" "+eventlist.get(position).getDate_endString());
-        TxtViewNB.setText(eventlist.get(position).getNb_paricipantsString()+" ");
+        TxtViewDebut.setText(" "+eventlist.get(position).Date_startString());
+        TxtViewFin.setText(" "+eventlist.get(position).Date_endString());
+        TxtViewNB.setText(eventlist.get(position).Nb_paricipantsString()+" ");
         TxtViewType.setText(" "+ eventlist.get(position).getType());
 
         return convertView;

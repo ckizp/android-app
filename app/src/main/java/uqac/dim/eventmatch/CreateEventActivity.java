@@ -41,7 +41,6 @@ public class CreateEventActivity extends AppCompatActivity {
     int[] fin;
     TextView affichage_debut;
     TextView affichage_fin;
-    Button RetourMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +64,12 @@ public class CreateEventActivity extends AppCompatActivity {
         debut = new int[] {2024, 4, 1, 0, 0, 0};
         fin = new int[] {2024, 4, 1, 0, 0, 0};
 
-
         boutton_date_debut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 opendialog("date","debut");
             }
         });
-
         boutton_date_fin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +89,6 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
         updateaffichagedate();
-
     }
 
     private void opendialog(String type,String quand){
@@ -134,13 +130,9 @@ public class CreateEventActivity extends AppCompatActivity {
             }, 0,0,true);
             dialog.show();
         }
-
     }
 
-
-
     public void eventsave(View view) {
-
         Log.i("DIM", "sauvegardeEvent");
 
         Log.w("DIM", "nom : " + event_name.getText().toString());
@@ -152,7 +144,6 @@ public class CreateEventActivity extends AppCompatActivity {
             Toast.makeText(CreateEventActivity.this, "Erreur, merci de remplir tous les champs", Toast.LENGTH_SHORT).show();
         }
         else {
-
             event.setName(event_name.getText().toString());
             event.setNb_participants(Integer.parseInt(event_nb_participants.getText().toString()));
             event.setType(event_type.getText().toString());
@@ -176,7 +167,6 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     public void eventclear(View view) {
-
         Log.i("DIM", "Clear des entrées utilisateurs");
 
         event_name.setText("");
@@ -190,19 +180,12 @@ public class CreateEventActivity extends AppCompatActivity {
         Toast.makeText(CreateEventActivity.this, "Champs vidés", Toast.LENGTH_SHORT).show();
     }
 
-
-    public String date_to_string(int[] tab){
-        return "le "+tab[2]+"/" + tab[1] +"/"+ tab[0] +" à "+ tab[3] +":"+ tab[4] +":"+ tab[5];
-    }
     public void updateaffichagedate() {
-        affichage_debut.setText("Début "+date_to_string(debut));
-        affichage_fin.setText("Fin "+date_to_string(fin));
-        Date datedebut = new Date(debut[0]-1900,debut[1]-1,debut[2],debut[3], debut[4],debut[5]);
-        Timestamp debut = new Timestamp(datedebut);
-        Date datefin = new Date(fin[0]-1900,fin[1]-1,fin[2],fin[3],fin[4],fin[5]);
-        Timestamp fin = new Timestamp(datefin);
         event.setDate_end(fin);
         event.setDate_start(debut);
+
+        affichage_debut.setText("Début "+event.Date_startString());
+        affichage_fin.setText("Fin "+event.Date_endString());
     }
 
     public void backmenu(View view) {

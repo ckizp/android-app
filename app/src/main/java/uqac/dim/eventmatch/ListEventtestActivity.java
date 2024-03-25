@@ -34,9 +34,6 @@ public class ListEventtestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_event_test);
 
-
-
-
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
                 .build();
@@ -45,7 +42,6 @@ public class ListEventtestActivity extends AppCompatActivity {
 
         Liste = findViewById(R.id.eventlist_liste);
         RetourMenu = findViewById(R.id.eventlist_button_main);
-
 
         RetourMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,10 +54,6 @@ public class ListEventtestActivity extends AppCompatActivity {
         });
 
         EventList = new ArrayList<Event>();
-        EventList.add(new Event("Test",new Timestamp(1711163400,0),new Timestamp(1711336200,0),10,"sport"));
-        EventList.add(new Event("Match",new Timestamp(1711163400,0),new Timestamp(1711336200,0),1,"rassemblement"));
-        EventList.add(new Event("Test3",new Timestamp(1711163400,0),new Timestamp(1711336200,0),1000,"soirée"));
-        EventList.add(new Event("Test4",new Timestamp(1711163400,0),new Timestamp(1711336200,0),5,"musique"));
 
         database.collection("events")
                 .get()
@@ -88,8 +80,6 @@ public class ListEventtestActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
-
 }
 
