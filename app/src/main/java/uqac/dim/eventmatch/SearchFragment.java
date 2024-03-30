@@ -44,10 +44,7 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(false)
-                .build();
-        FirebaseFirestore.getInstance().setFirestoreSettings(settings);
+
         database = FirebaseFirestore.getInstance();
 
         eventListView = rootView.findViewById(R.id.list_events);

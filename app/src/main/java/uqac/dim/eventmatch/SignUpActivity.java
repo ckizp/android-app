@@ -1,19 +1,25 @@
 package uqac.dim.eventmatch;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import uqac.dim.eventmatch.models.User;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
     private EditText email;
     private EditText password;
     private EditText confirmPassword;
@@ -26,6 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         email = findViewById(R.id.signup_email);
         password = findViewById(R.id.signup_password);
@@ -51,10 +58,24 @@ public class SignUpActivity extends AppCompatActivity {
                 auth.createUserWithEmailAndPassword(emailText, passwordText)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                                Intent startActivity = new Intent(SignUpActivity.this, CreateFragment.class);
-                                startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(startActivity);
+                                // Create a new user in the database
+                                CollectionReference dbUsers = db.collection("users");
+                                User user = new User(emailText, passwordText);
+
+                                dbUsers.add(user).addOnCompleteListener(task2 -> {
+                                    if (task2.isSuccessful()) {
+                                        Log.i("SignUpActivity", "User created in database");
+                                        Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+
+                                    } else {
+                                        Log.i("SignUpActivity", "Error creating user in database: " + task2.getException().getMessage());
+                                        Toast.makeText(SignUpActivity.this, "Error creating user", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
                             } else {
                                 Toast.makeText(SignUpActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -64,10 +85,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         });
 
+        /// Switch to login activity
         login.setOnClickListener(v -> {
             Intent login = new Intent(SignUpActivity.this, LoginActivity.class);
             login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(login);
         });
     }
+
 }
