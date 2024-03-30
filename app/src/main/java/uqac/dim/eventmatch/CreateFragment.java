@@ -2,15 +2,14 @@ package uqac.dim.eventmatch;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -18,7 +17,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.util.Date;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,8 +27,12 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class CreateEventActivity extends AppCompatActivity {
-
+/**
+ *
+ * @version 1.0 30 Mar 2024
+ * @author Kyllian Hot, Ibraguim Temirkhaev
+ */
+public class CreateFragment extends Fragment {
     FirebaseFirestore database;
     Event event;
     EditText event_name;
@@ -42,24 +47,31 @@ public class CreateEventActivity extends AppCompatActivity {
     TextView affichage_debut;
     TextView affichage_fin;
 
+    View view;
+
+    public CreateFragment() {
+
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_create, container, false);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event);
 
         database = FirebaseFirestore.getInstance();
         event = new Event();
 
-        event_name = findViewById(R.id.event_name);
-        event_nb_participants = findViewById(R.id.event_nb_participants);
-        event_type = findViewById(R.id.event_type);
+        event_name = view.findViewById(R.id.event_name);
+        event_nb_participants = view.findViewById(R.id.event_nb_participants);
+        event_type = view.findViewById(R.id.event_type);
 
-        boutton_date_debut = findViewById(R.id.event_choix_date_debut);
-        boutton_date_fin = findViewById(R.id.event_choix_date_fin);
-        boutton_heure_debut = findViewById(R.id.event_choix_heure_debut);
-        boutton_heure_fin = findViewById(R.id.event_choix_heure_fin);
-        affichage_debut = findViewById(R.id.affichage_debut);
-        affichage_fin = findViewById(R.id.affichage_fin);
+        boutton_date_debut = view.findViewById(R.id.event_choix_date_debut);
+        boutton_date_fin = view.findViewById(R.id.event_choix_date_fin);
+        boutton_heure_debut = view.findViewById(R.id.event_choix_heure_debut);
+        boutton_heure_fin = view.findViewById(R.id.event_choix_heure_fin);
+        affichage_debut = view.findViewById(R.id.affichage_debut);
+        affichage_fin = view.findViewById(R.id.affichage_fin);
 
         debut = new int[] {2024, 4, 1, 0, 0, 0};
         fin = new int[] {2024, 4, 1, 0, 0, 0};
@@ -88,12 +100,15 @@ public class CreateEventActivity extends AppCompatActivity {
                 opendialog("heure","fin");
             }
         });
+
         updateaffichagedate();
+
+        return view;
     }
 
     private void opendialog(String type,String quand){
         if (type == "date"){
-            DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            DatePickerDialog dialog = new DatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     if (quand == "debut"){
@@ -114,7 +129,7 @@ public class CreateEventActivity extends AppCompatActivity {
         }
         else if (type == "heure")
         {
-            TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            TimePickerDialog dialog = new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     if (quand == "debut"){
@@ -141,11 +156,11 @@ public class CreateEventActivity extends AppCompatActivity {
 
         if (event_name.getText().toString().equals("") || event_nb_participants.getText().toString().equals("") || event_type.getText().toString().equals("")) {
             Log.w("DIM", "tous les champs ne sont pas remplis");
-            Toast.makeText(CreateEventActivity.this, "Erreur, merci de remplir tous les champs", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), "Erreur, merci de remplir tous les champs", Toast.LENGTH_SHORT).show();
         }
         else {
             event.setName(event_name.getText().toString());
-            event.setNb_participants(Integer.parseInt(event_nb_participants.getText().toString()));
+            event.setParticipantsCount(Integer.parseInt(event_nb_participants.getText().toString()));
             event.setType(event_type.getText().toString());
 
             database.collection("events").add(event)
@@ -153,14 +168,14 @@ public class CreateEventActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                            Toast.makeText(CreateEventActivity.this, "événement créé et stocké dans Firestore", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), "événement créé et stocké dans Firestore", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.w(TAG, "Error adding document", e);
-                            Toast.makeText(CreateEventActivity.this, "Erreur lors de l'envoi des données à Firestore", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), "Erreur lors de l'envoi des données à Firestore", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -177,7 +192,7 @@ public class CreateEventActivity extends AppCompatActivity {
         updateaffichagedate();
 
         Log.w("DIM", "Champs vidés");
-        Toast.makeText(CreateEventActivity.this, "Champs vidés", Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), "Champs vidés", Toast.LENGTH_SHORT).show();
     }
 
     public void updateaffichagedate() {
@@ -189,8 +204,8 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     public void backmenu(View view) {
-        Toast.makeText(CreateEventActivity.this, "Retour Main", Toast.LENGTH_SHORT).show();
-        Intent startActivity = new Intent(CreateEventActivity.this, MainActivity.class);
+        Toast.makeText(view.getContext(), "Retour Main", Toast.LENGTH_SHORT).show();
+        Intent startActivity = new Intent(view.getContext(), MainActivity.class);
         startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startActivity);
     }

@@ -29,7 +29,7 @@
     <string name="event_button_clear">Vider les champs</string>
     <string name="title_activity_custom_list_view">CustomListView</string>
 
-    <!-- Strings liste event -->
+    <!-- Event list strings -->
     <string name="list_titre">Titre</string>
     <string name="list_debut">Début : </string>
     <string name="list_fin">Fin : </string>
@@ -39,4 +39,19 @@
     <string name="list_type">TYPE</string>
     <string name="list_typeevent">Type d\'événement : </string>
 
+    <!-- Navigation bar menu strings -->
+    <string name="title_search">Rechercher</string>
+    <string name="title_favorites">Favoris</string>
+    <string name="title_create">Créer</string>
+    <string name="title_messages">Messages</string>
+    <string name="title_profile">Mon profil</string>
+
+    <!-- Profile menu strings -->
+    <string name="title_my_events">Mes événements</string>
+    <string name="title_my_account">Mon compte</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_security_conf">Sécurité et confidentialité</string>
+    <string name="title_rate_app">Noter l\'application</string>
+    <string name="title_feedback">Feedback</string>
+    <string name="title_disconnect">Se déconnecter</string>
 </resources>
