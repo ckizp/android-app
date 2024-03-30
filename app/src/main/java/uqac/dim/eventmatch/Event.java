@@ -8,20 +8,19 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Event {
-
     private String name;
-    private Timestamp date_end;
-    private Timestamp date_start;
-    private int nb_participants;
+    private Timestamp endDate;
+    private Timestamp startDate;
+    private int participantsCount;
     private String type;
 
     public Event(){}
     public Event(String n, Timestamp end, Timestamp start, int nb, String t)
     {
         name = n;
-        date_end = end;
-        date_start = start;
-        nb_participants = nb;
+        endDate = end;
+        startDate = start;
+        participantsCount = nb;
         type = t;
     }
 
@@ -33,49 +32,49 @@ public class Event {
         this.name = name;
     }
 
-    public Timestamp getDate_end() {
-        return date_end;
+    public Timestamp getEndDate() {
+        return endDate;
     }
 
     public String Date_endString(){
-        return convertTimestampToString(date_end);
+        return convertTimestampToString(endDate);
     }
 
-    public void setDate_end(Timestamp date_end) {
-        this.date_end = date_end;
+    public void setEndDate(Timestamp endDate) {
+        this.endDate = endDate;
     }
 
     public void setDate_end(int[] tab){
-        this.date_end = convertDateTimeToTimestamp(tab);
+        this.endDate = convertDateTimeToTimestamp(tab);
     }
 
-    public Timestamp getDate_start() {
-        return date_start;
+    public Timestamp getStartDate() {
+        return startDate;
     }
 
     public String Date_startString()
     {
-        return convertTimestampToString(date_start);
+        return convertTimestampToString(startDate);
     }
 
-    public void setDate_start(Timestamp date_start) {
-        this.date_start = date_start;
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
     }
     public void setDate_start(int[] tab){
-        this.date_start = convertDateTimeToTimestamp(tab);
+        this.startDate = convertDateTimeToTimestamp(tab);
     }
 
-    public int getNb_participants() {
-        return nb_participants;
+    public int getParticipantsCount() {
+        return participantsCount;
     }
 
     public String Nb_paricipantsString()
     {
-        return String.valueOf(nb_participants);
+        return String.valueOf(participantsCount);
     }
 
-    public void setNb_participants(int nb_participants) {
-        this.nb_participants = nb_participants;
+    public void setParticipantsCount(int participantsCount) {
+        this.participantsCount = participantsCount;
     }
 
     public String getType() {

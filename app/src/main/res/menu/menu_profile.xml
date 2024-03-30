@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/menu_events"
+            android:title="@string/title_my_events"/>
+        <item
+            android:id="@+id/menu_account"
+            android:title="@string/title_my_account"/>
+        <item
+            android:id="@+id/menu_notificationst"
+            android:title="@string/title_notifications"/>
+        <item
+            android:id="@+id/menu_security"
+            android:title="@string/title_security_conf"/>
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/menu_rate"
+            android:title="@string/title_rate_app"/>
+        <item
+            android:id="@+id/menu_feedback"
+            android:title="@string/title_feedback"/>
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/menu_disconnect"
+            android:title="@string/title_disconnect"/>
+    </group>
+</menu>

@@ -1,43 +1,70 @@
 package uqac.dim.eventmatch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-    Button CreationEvent;
-    Button ListeEvent;
+/**
+ *
+ * @version 1.0 30 Mar 2024
+ * @author Ibraguim Temirkhaev
+ */
+public class MainActivity extends AppCompatActivity
+        implements BottomNavigationView.OnNavigationItemSelectedListener {
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CreationEvent = findViewById(R.id.creation_event);
-        ListeEvent = findViewById(R.id.liste_event);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        CreationEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Accès page création d'event", Toast.LENGTH_SHORT).show();
-                Intent startActivity = new Intent(MainActivity.this, CreateEventActivity.class);
-                startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startActivity);
-            }
-        });
-        ListeEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Accès page liste d'event", Toast.LENGTH_SHORT).show();
-                Intent startActivity = new Intent(MainActivity.this, ListEventtestActivity.class);
-                startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startActivity);
-            }
-        });
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, new SearchFragment())
+                .commit();
     };
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_search) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, new SearchFragment())
+                    .commit();
+            return true;
+        } else if (itemId == R.id.menu_favorites) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, new FavoritesFragment())
+                    .commit();
+            return true;
+        } else if (itemId == R.id.menu_create) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, new CreateFragment())
+                    .commit();
+            return true;
+        } else if (itemId == R.id.menu_messages) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, new MessagesFragment())
+                    .commit();
+            return true;
+        } else if (itemId == R.id.menu_profile) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, new ProfileFragment())
+                    .commit();
+            return true;
+        }
+        return false;
+    }
 }
