@@ -38,6 +38,7 @@
     <string name="list_participant">participants</string>
     <string name="list_type">TYPE</string>
     <string name="list_typeevent">Type d\'événement : </string>
+    <string name="list_participants">Participants :</string>
 
     <!-- Navigation bar menu strings -->
     <string name="title_search">Rechercher</string>

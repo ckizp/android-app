@@ -16,12 +16,14 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -65,8 +67,9 @@ public class SearchFragment extends Fragment {
                                 Timestamp endDate = document.getTimestamp("date_end");
                                 int participantsCount = document.getDouble("nb_participants").intValue();
                                 String type = document.getString("type");
+                                List<DocumentReference> partlist = (List<DocumentReference>) document.get("participants");
 
-                                Event event = new Event(name, endDate, startDate, participantsCount, type);
+                                Event event = new Event(name, endDate, startDate, participantsCount, type, partlist);
                                 eventList.add(event);
                             }
                             CustomBaseAdapter customBaseAdapter = new CustomBaseAdapter(rootView.getContext(), eventList);

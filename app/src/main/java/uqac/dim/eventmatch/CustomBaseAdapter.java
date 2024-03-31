@@ -1,13 +1,21 @@
 package uqac.dim.eventmatch;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomBaseAdapter extends BaseAdapter {
 
@@ -15,12 +23,14 @@ public class CustomBaseAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflater;
     ArrayList<Event> eventlist;
+    FirebaseFirestore db;
 
 
     public CustomBaseAdapter(Context ctx,ArrayList<Event> l){
         context = ctx;
         eventlist = l;
         inflater = LayoutInflater.from(ctx);
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -46,12 +56,33 @@ public class CustomBaseAdapter extends BaseAdapter {
         TextView TxtViewFin = (TextView) convertView.findViewById(R.id.liste_fin);
         TextView TxtViewNB = (TextView) convertView.findViewById(R.id.liste_nb);
         TextView TxtViewType= (TextView) convertView.findViewById(R.id.liste_type);
+        ListView LstViewListe = (ListView) convertView.findViewById(R.id.liste_partlist);
 
         TxtViewNom.setText(eventlist.get(position).getName());
         TxtViewDebut.setText(" "+eventlist.get(position).Date_startString());
         TxtViewFin.setText(" "+eventlist.get(position).Date_endString());
         TxtViewNB.setText(eventlist.get(position).Nb_paricipantsString()+" ");
         TxtViewType.setText(" "+ eventlist.get(position).getType());
+
+
+        eventlist.get(position).participants_name(db, new Event.ParticipantsNameCallback() {
+            @Override
+            public void onParticipantsNameReady(List<String> participantNames) {
+                // Faites quelque chose avec la liste des noms des participants
+                // Par exemple, mettez à jour l'interface utilisateur
+                if (participantNames.size() == eventlist.get(position).getParticipants().size())
+                {
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, participantNames);
+                    LstViewListe.setAdapter(arrayAdapter);
+                }
+
+            }
+        });
+
+        /*
+        List<String> participants = eventlist.get(position).participants_name(db);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,R.layout.activity_user_list_view,R.id.list_user, participants);
+        LstViewListe.setAdapter(arrayAdapter);*/
 
         return convertView;
     }

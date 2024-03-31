@@ -196,8 +196,8 @@ public class CreateFragment extends Fragment {
     }
 
     public void updateaffichagedate() {
-        event.setDate_end(fin);
-        event.setDate_start(debut);
+        event.TabsetDate_start(debut);
+        event.TabsetDate_end(debut);
 
         affichage_debut.setText("Début "+event.Date_startString());
         affichage_fin.setText("Fin "+event.Date_endString());

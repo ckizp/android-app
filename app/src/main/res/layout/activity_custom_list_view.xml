@@ -77,5 +77,14 @@
             android:textSize="20sp"
             android:text="@string/list_type"/>
     </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/list_participants"/>
+    <ListView
+        android:id="@+id/liste_partlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
