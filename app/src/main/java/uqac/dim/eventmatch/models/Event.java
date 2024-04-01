@@ -1,5 +1,7 @@
 package uqac.dim.eventmatch.models;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,8 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -109,9 +113,9 @@ public class Event {
     }
 
     public void participantsName(FirebaseFirestore db, ParticipantsNameCallback callback) {
-        final List<String> res = new ArrayList<>() ;
+        final List<String> res = new ArrayList<>();
         res.add("José");
-        final int[] counter = { participants.size() };
+        final int[] counter = {participants.size()};
 
         for (DocumentReference document : participants) {
             document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -167,10 +171,41 @@ public class Event {
 
     public List<User> getUserList() {
         List<User> result = new ArrayList<User>();
-        result.add(new User("testharcodé@gmail.com","zbiestcequecamarche"));
+        result.add(new User("testharcodé@gmail.com", "zbiestcequecamarche"));
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         for (DocumentReference RefDocument : participants) {
+            String documentPath = RefDocument.getPath();
+            String[] parts = documentPath.split("/");
+            String collectionName = parts[0]; // Le premier élément est le nom de la collection
+            String documentId = parts[1];
+
+            database.collection("users")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("DIM", document.getId() + " => " + document.getData());
+                                    if (document.getId() == documentId) {
+                                        Log.d("DIM", "DocumentSnapshot data qui marche: " + document.getData());
+                                        String email = document.getString("email");
+                                        String password = document.getString("password");
+
+                                        User currentuser = new User(email, password);
+                                        result.add(currentuser);
+                                    }
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+        }
+        return result;
+
+            /*
             RefDocument.get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -187,10 +222,8 @@ public class Event {
                             }
                         }
                     }
-            });
-        }
+            });*/
 
-        return result;
     }
 
     /* *************************************************************************
