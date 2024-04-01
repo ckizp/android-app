@@ -54,4 +54,6 @@
     <string name="title_rate_app">Noter l\'application</string>
     <string name="title_feedback">Feedback</string>
     <string name="title_disconnect">Se déconnecter</string>
+    <string name="event_image_description">Image de l\'événement</string>
+    <string name="import_image">Importer une image</string>
 </resources>

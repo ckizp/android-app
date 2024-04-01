@@ -1,4 +1,4 @@
-package uqac.dim.eventmatch;
+package uqac.dim.eventmatch.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,23 +9,23 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class CustomBaseAdapter extends BaseAdapter {
+import uqac.dim.eventmatch.R;
+import uqac.dim.eventmatch.models.Event;
 
+public class EventListAdapter extends BaseAdapter {
+    private Context context;
+    private LayoutInflater inflater;
+    private ArrayList<Event> eventList;
 
-    Context context;
-    LayoutInflater inflater;
-    ArrayList<Event> eventlist;
-
-
-    public CustomBaseAdapter(Context ctx,ArrayList<Event> l){
+    public EventListAdapter(Context ctx, ArrayList<Event> l){
         context = ctx;
-        eventlist = l;
+        eventList = l;
         inflater = LayoutInflater.from(ctx);
     }
 
     @Override
     public int getCount() {
-        return eventlist.size();
+        return eventList.size();
     }
 
     @Override
@@ -41,17 +41,18 @@ public class CustomBaseAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.activity_custom_list_view,null);
+
         TextView TxtViewNom = (TextView) convertView.findViewById(R.id.liste_nom);
         TextView TxtViewDebut = (TextView) convertView.findViewById(R.id.liste_debut);
         TextView TxtViewFin = (TextView) convertView.findViewById(R.id.liste_fin);
         TextView TxtViewNB = (TextView) convertView.findViewById(R.id.liste_nb);
         TextView TxtViewType= (TextView) convertView.findViewById(R.id.liste_type);
 
-        TxtViewNom.setText(eventlist.get(position).getName());
-        TxtViewDebut.setText(" "+eventlist.get(position).Date_startString());
-        TxtViewFin.setText(" "+eventlist.get(position).Date_endString());
-        TxtViewNB.setText(eventlist.get(position).Nb_paricipantsString()+" ");
-        TxtViewType.setText(" "+ eventlist.get(position).getType());
+        TxtViewNom.setText(eventList.get(position).getName());
+        TxtViewDebut.setText(" " + eventList.get(position).Date_startString());
+        TxtViewFin.setText(" " + eventList.get(position).Date_endString());
+        TxtViewNB.setText(eventList.get(position).Nb_paricipantsString() + " ");
+        TxtViewType.setText(" " + eventList.get(position).getTags());
 
         return convertView;
     }

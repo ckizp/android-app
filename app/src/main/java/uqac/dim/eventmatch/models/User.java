@@ -1,5 +1,11 @@
 package uqac.dim.eventmatch.models;
 
+/**
+ * La classe {@link User} représente un utilisateur de l'application.
+ *
+ * @version 1.0 30 Mar 2024
+ * @author Elouan Tailliez
+ */
 public class User {
     private String email;
     private String password;

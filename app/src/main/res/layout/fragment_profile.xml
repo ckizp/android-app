@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             </LinearLayout>
 
             <com.google.android.material.navigation.NavigationView
-                android:id="@+id/bottomNavigationView"
+                android:id="@+id/profile_navigation_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:menu="@menu/menu_profile"/>

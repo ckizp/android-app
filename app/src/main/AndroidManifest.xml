@@ -13,17 +13,17 @@
         android:theme="@style/Theme.Eventmatch"
         tools:targetApi="31">
         <activity
-            android:name=".CustomListView"
+            android:name=".ui.activities.CustomListView"
             android:exported="false"
             android:label="@string/title_activity_custom_list_view"
             android:theme="@style/Theme.Eventmatch" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="false">
 
         </activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".ui.activities.SignUpActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
 
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="false">
         </activity>
         <activity android:name=".CreateFragment"

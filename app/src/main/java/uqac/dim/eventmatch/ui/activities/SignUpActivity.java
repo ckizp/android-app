@@ -1,4 +1,4 @@
-package uqac.dim.eventmatch;
+package uqac.dim.eventmatch.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -12,12 +12,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.User;
 
 public class SignUpActivity extends AppCompatActivity {
-
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private EditText email;

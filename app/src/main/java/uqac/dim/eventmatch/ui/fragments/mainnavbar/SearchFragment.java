@@ -1,4 +1,4 @@
-package uqac.dim.eventmatch;
+package uqac.dim.eventmatch.ui.fragments.mainnavbar;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
@@ -17,11 +17,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+
+import uqac.dim.eventmatch.adapters.EventListAdapter;
+import uqac.dim.eventmatch.R;
+import uqac.dim.eventmatch.models.Event;
 
 /**
  *
@@ -29,10 +32,10 @@ import java.util.ArrayList;
  * @author Kyllian Hot, Ibraguim Temirkhaev
  */
 public class SearchFragment extends Fragment {
-    ListView eventListView;
-    FirebaseFirestore database;
-    ArrayList<Event> eventList;
-    View rootView;
+    private ListView eventListView;
+    private FirebaseFirestore database;
+    private ArrayList<Event> eventList;
+    private View rootView;
 
     public SearchFragment() {
 
@@ -66,11 +69,12 @@ public class SearchFragment extends Fragment {
                                 int participantsCount = document.getDouble("nb_participants").intValue();
                                 String type = document.getString("type");
 
-                                Event event = new Event(name, endDate, startDate, participantsCount, type);
+
+                                Event event = new Event(name, endDate, startDate, participantsCount, type, null);
                                 eventList.add(event);
                             }
-                            CustomBaseAdapter customBaseAdapter = new CustomBaseAdapter(rootView.getContext(), eventList);
-                            eventListView.setAdapter(customBaseAdapter);
+                            EventListAdapter eventListAdapter = new EventListAdapter(rootView.getContext(), eventList);
+                            eventListView.setAdapter(eventListAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

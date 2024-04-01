@@ -1,4 +1,4 @@
-package uqac.dim.eventmatch;
+package uqac.dim.eventmatch.models;
 
 import com.google.firebase.Timestamp;
 
@@ -7,21 +7,31 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * La classe {@link Event} représente un événement d'EventMatch.
+ *
+ * @version 1.0 30 Mar 2024
+ * @author Kyllian Hot
+ */
 public class Event {
     private String name;
     private Timestamp endDate;
     private Timestamp startDate;
     private int participantsCount;
-    private String type;
+    private String tags;
+    private byte[] imageData;
 
-    public Event(){}
-    public Event(String n, Timestamp end, Timestamp start, int nb, String t)
-    {
-        name = n;
-        endDate = end;
-        startDate = start;
-        participantsCount = nb;
-        type = t;
+    public Event() {
+
+    }
+
+    public Event(String name, Timestamp endDate, Timestamp startDate, int participantsCount, String tags, byte[] imageData)  {
+        this.name = name;
+        this.endDate = endDate;
+        this.startDate = startDate;
+        this.participantsCount = participantsCount;
+        this.tags = tags;
+        this.imageData = imageData;
     }
 
     public String getName() {
@@ -77,12 +87,20 @@ public class Event {
         this.participantsCount = participantsCount;
     }
 
-    public String getType() {
-        return type;
+    public String getTags() {
+        return tags;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 
     public static String convertTimestampToString(Timestamp timestamp) {

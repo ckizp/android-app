@@ -1,11 +1,16 @@
-package uqac.dim.eventmatch;
+package uqac.dim.eventmatch.ui.fragments.mainnavbar;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -27,27 +33,38 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import uqac.dim.eventmatch.ui.activities.MainActivity;
+import uqac.dim.eventmatch.R;
+import uqac.dim.eventmatch.models.Event;
+
 /**
  *
  * @version 1.0 30 Mar 2024
  * @author Kyllian Hot, Ibraguim Temirkhaev
  */
 public class CreateFragment extends Fragment {
-    FirebaseFirestore database;
-    Event event;
-    EditText event_name;
-    EditText event_nb_participants;
-    EditText event_type;
-    Button boutton_date_debut;
-    Button boutton_date_fin;
-    Button boutton_heure_debut;
-    Button boutton_heure_fin;
-    int[] debut;
-    int[] fin;
-    TextView affichage_debut;
-    TextView affichage_fin;
+    private FirebaseFirestore database;
+    private Event event;
+    private EditText eventName;
+    private EditText participantsCount;
+    private EditText eventType;
+    private Button startDateButton;
+    private Button endDateButton;
+    private Button startTimeButton;
+    private Button endTimeButton;
+    private ImageView eventImageView;
+    private Button imageButton;
+    private int[] debut;
+    private int[] fin;
+    private TextView startTextView;
+    private TextView endTextView;
+    private View view;
 
-    View view;
+    private Uri filePath;
+    private final int PICK_IMAGE_REQUEST = 22;
 
     public CreateFragment() {
 
@@ -62,51 +79,67 @@ public class CreateFragment extends Fragment {
         database = FirebaseFirestore.getInstance();
         event = new Event();
 
-        event_name = view.findViewById(R.id.event_name);
-        event_nb_participants = view.findViewById(R.id.event_nb_participants);
-        event_type = view.findViewById(R.id.event_type);
+        eventName = view.findViewById(R.id.event_name);
+        participantsCount = view.findViewById(R.id.event_nb_participants);
+        eventType = view.findViewById(R.id.event_type);
 
-        boutton_date_debut = view.findViewById(R.id.event_choix_date_debut);
-        boutton_date_fin = view.findViewById(R.id.event_choix_date_fin);
-        boutton_heure_debut = view.findViewById(R.id.event_choix_heure_debut);
-        boutton_heure_fin = view.findViewById(R.id.event_choix_heure_fin);
-        affichage_debut = view.findViewById(R.id.affichage_debut);
-        affichage_fin = view.findViewById(R.id.affichage_fin);
+        startDateButton = view.findViewById(R.id.event_choix_date_debut);
+        endDateButton = view.findViewById(R.id.event_choix_date_fin);
+        startTimeButton = view.findViewById(R.id.event_choix_heure_debut);
+        endTimeButton = view.findViewById(R.id.event_choix_heure_fin);
+        startTextView = view.findViewById(R.id.affichage_debut);
+        endTextView = view.findViewById(R.id.affichage_fin);
+        imageButton = view.findViewById(R.id.btn_import_image);
+        eventImageView = view.findViewById(R.id.image_view);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(
+                        Intent.createChooser(
+                                intent,
+                                "Sélectionner une image"),
+                        PICK_IMAGE_REQUEST);
+            }
+        });
 
         debut = new int[] {2024, 4, 1, 0, 0, 0};
         fin = new int[] {2024, 4, 1, 0, 0, 0};
 
-        boutton_date_debut.setOnClickListener(new View.OnClickListener() {
+        startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                opendialog("date","debut");
+                openDialog("date","debut");
             }
         });
-        boutton_date_fin.setOnClickListener(new View.OnClickListener() {
+        endDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                opendialog("date","fin");
+                openDialog("date","fin");
             }
         });
-        boutton_heure_debut.setOnClickListener(new View.OnClickListener() {
+        startTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                opendialog("heure","debut");
+                openDialog("heure","debut");
             }
         });
-        boutton_heure_fin.setOnClickListener(new View.OnClickListener() {
+        endTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                opendialog("heure","fin");
+                openDialog("heure","fin");
             }
         });
 
-        updateaffichagedate();
+        updateDate();
 
         return view;
     }
 
-    private void opendialog(String type,String quand){
+    private void openDialog(String type, String quand){
         if (type == "date"){
             DatePickerDialog dialog = new DatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -121,14 +154,12 @@ public class CreateFragment extends Fragment {
                         fin[1] = month+1;
                         fin[2] = dayOfMonth;
                     }
-                    updateaffichagedate();
+                    updateDate();
                     Timestamp test;
                 }
             }, 2024, 3, 1);
             dialog.show();
-        }
-        else if (type == "heure")
-        {
+        } else if (type == "heure") {
             TimePickerDialog dialog = new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -140,28 +171,36 @@ public class CreateFragment extends Fragment {
                         fin[3] = hourOfDay;
                         fin[4] = minute;
                     }
-                    updateaffichagedate();
+                    updateDate();
                 }
             }, 0,0,true);
             dialog.show();
         }
     }
 
-    public void eventsave(View view) {
-        Log.i("DIM", "sauvegardeEvent");
+    public void saveEvent(View view) {
+        Log.i("DIM", "saving event");
 
-        Log.w("DIM", "nom : " + event_name.getText().toString());
-        Log.w("DIM", "nb : " + event_nb_participants.getText().toString());
-        Log.w("DIM", "type : " + event_type.getText().toString());
+        Log.w("DIM", "nom : " + eventName.getText().toString());
+        Log.w("DIM", "nb : " + participantsCount.getText().toString());
+        Log.w("DIM", "type : " + eventType.getText().toString());
 
-        if (event_name.getText().toString().equals("") || event_nb_participants.getText().toString().equals("") || event_type.getText().toString().equals("")) {
+        if (eventName.getText().toString().equals("") || participantsCount.getText().toString().equals("") || eventType.getText().toString().equals("")) {
             Log.w("DIM", "tous les champs ne sont pas remplis");
             Toast.makeText(view.getContext(), "Erreur, merci de remplir tous les champs", Toast.LENGTH_SHORT).show();
         }
         else {
-            event.setName(event_name.getText().toString());
-            event.setParticipantsCount(Integer.parseInt(event_nb_participants.getText().toString()));
-            event.setType(event_type.getText().toString());
+            event.setName(eventName.getText().toString());
+            event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
+            event.setTags(eventType.getText().toString());
+
+            BitmapDrawable drawable = (BitmapDrawable) eventImageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageData = baos.toByteArray();
+            event.setImageData(imageData);
 
             database.collection("events").add(event)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -181,32 +220,55 @@ public class CreateFragment extends Fragment {
         }
     }
 
-    public void eventclear(View view) {
+    public void clearEvent(View view) {
         Log.i("DIM", "Clear des entrées utilisateurs");
 
-        event_name.setText("");
-        event_nb_participants.setText("");
-        event_type.setText("");
+        eventName.setText("");
+        participantsCount.setText("");
+        eventType.setText("");
         debut = new int[] {2024, 4, 1, 0, 0, 0};
         fin = new int[] {2024, 4, 1, 0, 0, 0};
-        updateaffichagedate();
+        updateDate();
 
         Log.w("DIM", "Champs vidés");
         Toast.makeText(view.getContext(), "Champs vidés", Toast.LENGTH_SHORT).show();
     }
 
-    public void updateaffichagedate() {
+    public void updateDate() {
         event.setDate_end(fin);
         event.setDate_start(debut);
 
-        affichage_debut.setText("Début "+event.Date_startString());
-        affichage_fin.setText("Fin "+event.Date_endString());
+        startTextView.setText("Début " + event.Date_startString());
+        endTextView.setText("Fin " + event.Date_endString());
     }
 
-    public void backmenu(View view) {
+    public void backMenu(View view) {
         Toast.makeText(view.getContext(), "Retour Main", Toast.LENGTH_SHORT).show();
         Intent startActivity = new Intent(view.getContext(), MainActivity.class);
         startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startActivity);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST
+                && resultCode == Activity.RESULT_OK
+                && data != null
+                && data.getData() != null) {
+
+            filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore
+                        .Images
+                        .Media
+                        .getBitmap(
+                        getContext().getContentResolver(),
+                                filePath);
+                eventImageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

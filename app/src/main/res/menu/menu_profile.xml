@@ -8,7 +8,7 @@
             android:id="@+id/menu_account"
             android:title="@string/title_my_account"/>
         <item
-            android:id="@+id/menu_notificationst"
+            android:id="@+id/menu_notifications"
             android:title="@string/title_notifications"/>
         <item
             android:id="@+id/menu_security"

@@ -1,4 +1,4 @@
-package uqac.dim.eventmatch;
+package uqac.dim.eventmatch.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +11,9 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity {
+import uqac.dim.eventmatch.R;
 
+public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private EditText email;
     private EditText password;

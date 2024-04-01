@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    tools:context=".ui.fragments.mainnavbar.CreateFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,6 +31,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"/>
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/event_image_description"/>
+            <Button
+                android:id="@+id/btn_import_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/import_image"
+                android:layout_marginTop="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -111,27 +125,18 @@
                 android:inputType="text"/>
 
             <Button
-                android:onClick="eventsave"
+                android:onClick="saveEvent"
                 android:id="@+id/event_button_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/event_button_save"/>
 
             <Button
-                android:onClick="eventclear"
+                android:onClick="clearEvent"
                 android:id="@+id/event_button_clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/event_button_clear"/>
-
-
-            <Button
-                android:onClick="backmenu"
-                android:id="@+id/event_buttonmain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/retour_menu"/>
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
