@@ -12,7 +12,7 @@ public class User {
      * Fields                                                                  *
      *                                                                         *
      **************************************************************************/
-
+    //TODO : Finir les attributs de chaque user
     private String email;
     private String password;
 

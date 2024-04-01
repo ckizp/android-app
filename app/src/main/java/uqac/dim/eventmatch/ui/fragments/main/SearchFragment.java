@@ -83,14 +83,15 @@ public class SearchFragment extends Fragment {
 
                                 // On récupère les informations concernant l'événement courant.
                                 String name = document.getString("name");
-                                Timestamp startDate = document.getTimestamp("date_start");
-                                Timestamp endDate = document.getTimestamp("date_end");
-                                int participantsCount = document.getDouble("nb_participants").intValue();
-                                String type = document.getString("type");
+                                Timestamp startDate = document.getTimestamp("startDate");
+                                Timestamp endDate = document.getTimestamp("endDate");
+                                int participantsCount = document.getDouble("participantsCount").intValue();
+                                String tags = document.getString("tags");
                                 List<DocumentReference> partlist = (List<DocumentReference>) document.get("participants");
+                                String imageUrl = document.getString("imageDataUrl");
 
 
-                                Event event = new Event(name, endDate, startDate, participantsCount, type, partlist, null);
+                                Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl);
                                 eventList.add(event);
                             }
                             EventListAdapter customBaseAdapter = new EventListAdapter(rootView.getContext(), eventList);

@@ -32,6 +32,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,6 +43,7 @@ import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -54,6 +58,7 @@ public class CreateFragment extends Fragment {
      **************************************************************************/
 
     private FirebaseFirestore database;
+    private FirebaseStorage storage;
     private Event event;
     private EditText eventName;
     private EditText participantsCount;
@@ -97,6 +102,7 @@ public class CreateFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_create, container, false);
 
         database = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
         event = new Event();
 
         eventName = view.findViewById(R.id.event_name);
@@ -232,13 +238,30 @@ public class CreateFragment extends Fragment {
             event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
             event.setTags(eventType.getText().toString());
 
+
+
             BitmapDrawable drawable = (BitmapDrawable) eventImageView.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageData = baos.toByteArray();
-            event.setImageData(imageData);
+
+            StorageReference storageRef = storage.getReference();
+            String path = "events_images/"+ UUID.randomUUID().toString()+".jpg";
+            StorageReference imagesRef = storageRef.child(path);
+            UploadTask uploadTask = imagesRef.putFile(filePath);
+
+            // Gestion du succès ou de l'échec du téléversement
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                Log.d("DIM","envois de l'image réussi");
+                // Vous pouvez récupérer l'URL de téléchargement ici et l'enregistrer dans Firestore si nécessaire
+            }).addOnFailureListener(exception -> {
+                // Erreur lors du téléversement du fichier
+                Log.d("DIM","envois de l'image raté");
+            });
+
+
+            event.setImageDataUrl(path);
+
+
             event.setName(eventName.getText().toString());
             event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
             event.setTags(eventType.getText().toString());
@@ -282,8 +305,8 @@ public class CreateFragment extends Fragment {
     }
 
     public void updateDate() {
-        event.setStartDate(debut);
-        event.setEndDate(debut);
+        event.StartDateTabSet(debut);
+        event.EndDateTabSet(fin);
 
         startTextView.setText("Début " + event.startDateToString());
         endTextView.setText("Fin " + event.endDateToString());

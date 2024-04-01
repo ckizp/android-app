@@ -17,10 +17,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * La classe {@link Event} représente un événement d'EventMatch.
@@ -40,8 +42,8 @@ public class Event {
     private Timestamp startDate;
     private int participantsCount;
     private String tags;
-    private byte[] imageData;
     private List<DocumentReference> participants;
+    public String imageDataUrl;
 
     /* *************************************************************************
      *                                                                         *
@@ -53,14 +55,14 @@ public class Event {
 
     }
 
-    public Event(String name, Timestamp endDate, Timestamp startDate, int participantsCount, String tags, List<DocumentReference> participants, byte[] imageData) {
+    public Event(String name, Timestamp endDate, Timestamp startDate, int participantsCount, String tags, List<DocumentReference> participants, String imageDataUrl) {
         this.name = name;
         this.endDate = endDate;
         this.startDate = startDate;
         this.participantsCount = participantsCount;
         this.tags = tags;
         this.participants = participants;
-        this.imageData = imageData;
+        this.imageDataUrl = imageDataUrl;
     }
 
     /* *************************************************************************
@@ -73,7 +75,7 @@ public class Event {
         return convertTimestampToString(endDate);
     }
 
-    public void setEndDate(int[] dateTime) {
+    public void EndDateTabSet(int[] dateTime) {
         this.endDate = convertDateTimeToTimestamp(dateTime);
     }
 
@@ -81,7 +83,7 @@ public class Event {
         return convertTimestampToString(startDate);
     }
 
-    public void setStartDate(int[] dateTime) {
+    public void StartDateTabSet(int[] dateTime) {
         this.startDate = convertDateTimeToTimestamp(dateTime);
     }
 
@@ -108,123 +110,58 @@ public class Event {
         return new Timestamp(timestamp / 1000,0);
     }
 
-    public interface ParticipantsNameCallback {
-        void onParticipantsNameReady(List<String> participantNames);
+
+
+    public interface UserListCallback {
+        void onUserListReady(ArrayList<User> userList);
     }
 
-    public void participantsName(FirebaseFirestore db, ParticipantsNameCallback callback) {
-        final List<String> res = new ArrayList<>();
-        res.add("José");
-        final int[] counter = {participants.size()};
-
-        for (DocumentReference document : participants) {
-            document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            res.add(document.getString("email"));
-                        }
-                    }
-                    // Décrémenter le compteur et vérifier si toutes les requêtes sont terminées
-                    if (--counter[0] == 0) {
-                        // Toutes les requêtes sont terminées, appeler le callback avec la liste des noms des participants
-                        callback.onParticipantsNameReady(res);
-                    }
-                }
-            });
-        }
-    }
-
-    /*
-    List<String> participants_name(FirebaseFirestore db){
-        List<String> res = new ArrayList<>();
-        final CountDownLatch latch = new CountDownLatch(participants.size());
-        res.add("José");
-        for (DocumentReference document: participants) {
-            document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            res.add(document.getString("email"));
-                        } else {
-                            Log.d(TAG, "No such document");
-                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                    }
-                    latch.countDown();
-                }
-            });
-            try {
-                latch.await(10, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return res;
-    }*/
-
-    public List<User> getUserList() {
-        List<User> result = new ArrayList<User>();
-        result.add(new User("testharcodé@gmail.com", "zbiestcequecamarche"));
-
+    public void generateUserList(UserListCallback callback) {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
+        ArrayList<User> result = new ArrayList<>();
+        AtomicInteger documentsProcessed = new AtomicInteger(0);
+
         for (DocumentReference RefDocument : participants) {
             String documentPath = RefDocument.getPath();
             String[] parts = documentPath.split("/");
             String collectionName = parts[0]; // Le premier élément est le nom de la collection
             String documentId = parts[1];
 
-            database.collection("users")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("DIM", document.getId() + " => " + document.getData());
-                                    if (document.getId() == documentId) {
-                                        Log.d("DIM", "DocumentSnapshot data qui marche: " + document.getData());
-                                        String email = document.getString("email");
-                                        String password = document.getString("password");
+            database.collection("users").document(documentId).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            Log.d("DIM", "dans la requete"+documentSnapshot.getId() + " => " + documentSnapshot.getData());
+                            String email = documentSnapshot.getString("email");
+                            String password = documentSnapshot.getString("password");
 
-                                        User currentuser = new User(email, password);
-                                        result.add(currentuser);
-                                    }
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
+                            User currentUser = new User(email, password);
+                            result.add(currentUser);
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+
+                        // Incrémentez le compteur de documents traités
+                        int processedDocumentsCount = documentsProcessed.incrementAndGet();
+
+                        // Si tous les documents ont été traités, appelez le rappel avec la liste finale
+                        if (processedDocumentsCount == participants.size()) {
+                            callback.onUserListReady(result);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.d(TAG, "Error getting documents: ", e);
+
+                        // Incrémentez le compteur de documents traités même en cas d'échec
+                        int processedDocumentsCount = documentsProcessed.incrementAndGet();
+
+                        // Si tous les documents ont été traités, appelez le rappel avec la liste finale
+                        if (processedDocumentsCount == participants.size()) {
+                            callback.onUserListReady(result);
                         }
                     });
         }
-        return result;
-
-            /*
-            RefDocument.get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()){
-                                Log.d("DIM", "DocumentSnapshot data: " + document.getData());
-                                String email = document.getString("email");
-                                String password = document.getString("password");
-
-                                User currentuser = new User(email,password);
-                                result.add(currentuser);
-                            }
-                        }
-                    }
-            });*/
-
     }
+
 
     /* *************************************************************************
      *                                                                         *
@@ -272,19 +209,19 @@ public class Event {
         this.tags = tags;
     }
 
-    public byte[] getImageData() {
-        return imageData;
-    }
-
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
-    }
-
     public List<DocumentReference> getParticipants() {
         return participants;
     }
 
     public void setParticipants(List<DocumentReference> participants) {
         this.participants = participants;
+    }
+
+    public String getImageDataUrl() {
+        return imageDataUrl;
+    }
+
+    public void setImageDataUrl(String path) {
+        imageDataUrl = path;
     }
 }
