@@ -1,9 +1,5 @@
 package uqac.dim.eventmatch;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,14 +15,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class Event {
     private String name;
-    private Timestamp endDate;
-    private Timestamp startDate;
-    private int participantsCount;
+    private Timestamp date_end;
+    private Timestamp date_start;
+    private int nb_participants;
     private String type;
     private List<DocumentReference> participants;
 
@@ -34,9 +28,9 @@ public class Event {
     public Event(String n, Timestamp end, Timestamp start, int nb, String t,List<DocumentReference> l)
     {
         name = n;
-        endDate = end;
-        startDate = start;
-        participantsCount = nb;
+        date_end = end;
+        date_start = start;
+        nb_participants = nb;
         type = t;
         participants = l;
     }
@@ -49,46 +43,46 @@ public class Event {
         this.name = name;
     }
 
-    public Timestamp getEndDate() {
-        return endDate;
+    public Timestamp getDate_end() {
+        return date_end;
     }
 
     public String Date_endString(){
-        return convertTimestampToString(endDate);
+        return convertTimestampToString(date_end);
     }
 
-    public void setEndDate(Timestamp endDate) {
-        this.endDate = endDate;
+    public void setDate_end(Timestamp date_end) {
+        this.date_end = date_end;
     }
 
     public void TabsetDate_end(int[] tab){
-        this.endDate = convertDateTimeToTimestamp(tab);
+        this.date_end = convertDateTimeToTimestamp(tab);
     }
 
-    public Timestamp getStartDate() {
-        return startDate;
+    public Timestamp getDate_start() {
+        return date_start;
     }
 
     public String Date_startString()
     {
-        return convertTimestampToString(startDate);
+        return convertTimestampToString(date_start);
     }
 
     public void TabsetDate_start(int[] tab) {
-        this.startDate = convertDateTimeToTimestamp(tab);
+        this.date_start = convertDateTimeToTimestamp(tab);
     }
 
-    public int getParticipantsCount() {
-        return participantsCount;
+    public int getNb_participants() {
+        return nb_participants;
     }
 
     public String Nb_paricipantsString()
     {
-        return String.valueOf(participantsCount);
+        return String.valueOf(nb_participants);
     }
 
-    public void setParticipantsCount(int participantsCount) {
-        this.participantsCount = participantsCount;
+    public void setNb_participants(int nb_participants) {
+        this.nb_participants = nb_participants;
     }
 
     public String getType() {

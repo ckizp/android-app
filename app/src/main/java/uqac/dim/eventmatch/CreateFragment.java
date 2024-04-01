@@ -46,6 +46,8 @@ public class CreateFragment extends Fragment {
     int[] fin;
     TextView affichage_debut;
     TextView affichage_fin;
+    Button button_save;
+    Button button_clear;
 
     View view;
 
@@ -72,6 +74,9 @@ public class CreateFragment extends Fragment {
         boutton_heure_fin = view.findViewById(R.id.event_choix_heure_fin);
         affichage_debut = view.findViewById(R.id.affichage_debut);
         affichage_fin = view.findViewById(R.id.affichage_fin);
+
+        button_save = view.findViewById(R.id.event_button_save);
+        button_clear = view.findViewById(R.id.event_button_clear);
 
         debut = new int[] {2024, 4, 1, 0, 0, 0};
         fin = new int[] {2024, 4, 1, 0, 0, 0};
@@ -102,6 +107,20 @@ public class CreateFragment extends Fragment {
         });
 
         updateaffichagedate();
+
+        button_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventsave(button_save);
+            }
+        });
+
+        button_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventclear(button_clear);
+            }
+        });
 
         return view;
     }
@@ -160,7 +179,7 @@ public class CreateFragment extends Fragment {
         }
         else {
             event.setName(event_name.getText().toString());
-            event.setParticipantsCount(Integer.parseInt(event_nb_participants.getText().toString()));
+            event.setNb_participants(Integer.parseInt(event_nb_participants.getText().toString()));
             event.setType(event_type.getText().toString());
 
             database.collection("events").add(event)
