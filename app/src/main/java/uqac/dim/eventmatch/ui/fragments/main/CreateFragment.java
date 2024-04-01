@@ -1,4 +1,4 @@
-package uqac.dim.eventmatch.ui.fragments.mainnavbar;
+package uqac.dim.eventmatch.ui.fragments.main;
 
 import static android.content.ContentValues.TAG;
 
@@ -36,7 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import uqac.dim.eventmatch.ui.activities.MainActivity;
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
 import java.util.ArrayList;
@@ -48,6 +47,12 @@ import java.util.List;
  * @author Kyllian Hot, Ibraguim Temirkhaev
  */
 public class CreateFragment extends Fragment {
+    /* *************************************************************************
+     *                                                                         *
+     * Fields                                                                  *
+     *                                                                         *
+     **************************************************************************/
+
     private FirebaseFirestore database;
     private Event event;
     private EditText eventName;
@@ -64,21 +69,32 @@ public class CreateFragment extends Fragment {
     private TextView startTextView;
     private TextView endTextView;
     private View view;
-    private Button button_save;
-    private Button button_clear;
-
+    private Button saveButton;
+    private Button clearButton;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 22;
+
+    /* *************************************************************************
+     *                                                                         *
+     * Constructors                                                            *
+     *                                                                         *
+     **************************************************************************/
 
     public CreateFragment() {
 
     }
 
+    /* *************************************************************************
+     *                                                                         *
+     * Methods                                                                 *
+     *                                                                         *
+     **************************************************************************/
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_create, container, false);
         super.onCreate(savedInstanceState);
+        view = inflater.inflate(R.layout.fragment_create, container, false);
 
         database = FirebaseFirestore.getInstance();
         event = new Event();
@@ -110,8 +126,8 @@ public class CreateFragment extends Fragment {
             }
         });
 
-        button_save = view.findViewById(R.id.event_button_save);
-        button_clear = view.findViewById(R.id.event_button_clear);
+        saveButton = view.findViewById(R.id.event_button_save);
+        clearButton = view.findViewById(R.id.event_button_clear);
 
         debut = new int[] {2024, 4, 1, 0, 0, 0};
         fin = new int[] {2024, 4, 1, 0, 0, 0};
@@ -122,18 +138,21 @@ public class CreateFragment extends Fragment {
                 openDialog("date","debut");
             }
         });
+
         endDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialog("date","fin");
             }
         });
+
         startTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialog("heure","debut");
             }
         });
+
         endTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,17 +162,17 @@ public class CreateFragment extends Fragment {
 
         updateDate();
 
-        button_save.setOnClickListener(new View.OnClickListener() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eventsave(button_save);
+                onSaveButtonClick(saveButton);
             }
         });
 
-        button_clear.setOnClickListener(new View.OnClickListener() {
+        clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eventclear(button_clear);
+                onClearButtonClick(clearButton);
             }
         });
 
@@ -169,8 +188,7 @@ public class CreateFragment extends Fragment {
                         debut[0] = year;
                         debut[1] = month+1;
                         debut[2] = dayOfMonth;
-                    }
-                    else if (quand == "fin") {
+                    } else if (quand == "fin") {
                         fin[0] = year;
                         fin[1] = month+1;
                         fin[2] = dayOfMonth;
@@ -199,7 +217,7 @@ public class CreateFragment extends Fragment {
         }
     }
 
-    public void saveEvent(View view) {
+    public void onSaveButtonClick(View view) {
         Log.i("DIM", "saving event");
 
         Log.w("DIM", "nom : " + eventName.getText().toString());
@@ -209,8 +227,7 @@ public class CreateFragment extends Fragment {
         if (eventName.getText().toString().equals("") || participantsCount.getText().toString().equals("") || eventType.getText().toString().equals("")) {
             Log.w("DIM", "tous les champs ne sont pas remplis");
             Toast.makeText(view.getContext(), "Erreur, merci de remplir tous les champs", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             event.setName(eventName.getText().toString());
             event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
             event.setTags(eventType.getText().toString());
@@ -222,9 +239,9 @@ public class CreateFragment extends Fragment {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] imageData = baos.toByteArray();
             event.setImageData(imageData);
-            event.setName(event_name.getText().toString());
-            event.setNb_participants(Integer.parseInt(event_nb_participants.getText().toString()));
-            event.setType(event_type.getText().toString());
+            event.setName(eventName.getText().toString());
+            event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
+            event.setTags(eventType.getText().toString());
 
             List<DocumentReference> partipantsliste = new ArrayList<DocumentReference>();
 
@@ -250,7 +267,7 @@ public class CreateFragment extends Fragment {
         }
     }
 
-    public void clearEvent(View view) {
+    public void onClearButtonClick(View view) {
         Log.i("DIM", "Clear des entrées utilisateurs");
 
         eventName.setText("");
@@ -265,18 +282,11 @@ public class CreateFragment extends Fragment {
     }
 
     public void updateDate() {
-        event.TabsetDate_start(debut);
-        event.TabsetDate_end(debut);
+        event.setStartDate(debut);
+        event.setEndDate(debut);
 
-        startTextView.setText("Début " + event.Date_startString());
-        endTextView.setText("Fin " + event.Date_endString());
-    }
-
-    public void backMenu(View view) {
-        Toast.makeText(view.getContext(), "Retour Main", Toast.LENGTH_SHORT).show();
-        Intent startActivity = new Intent(view.getContext(), MainActivity.class);
-        startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startActivity);
+        startTextView.setText("Début " + event.startDateToString());
+        endTextView.setText("Fin " + event.endDateToString());
     }
 
     @Override

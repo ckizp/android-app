@@ -1,10 +1,15 @@
-package uqac.dim.eventmatch;
+package uqac.dim.eventmatch.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import uqac.dim.eventmatch.R;
+
 public class UserCustomListView extends AppCompatActivity {
+    public UserCustomListView() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

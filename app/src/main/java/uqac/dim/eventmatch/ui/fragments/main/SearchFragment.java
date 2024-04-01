@@ -1,4 +1,4 @@
-package uqac.dim.eventmatch.ui.fragments.mainnavbar;
+package uqac.dim.eventmatch.ui.fragments.main;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
@@ -34,21 +34,38 @@ import uqac.dim.eventmatch.models.Event;
  * @author Kyllian Hot, Ibraguim Temirkhaev
  */
 public class SearchFragment extends Fragment {
+    /* *************************************************************************
+     *                                                                         *
+     * Fields                                                                  *
+     *                                                                         *
+     **************************************************************************/
+
     private ListView eventListView;
     private FirebaseFirestore database;
     private ArrayList<Event> eventList;
     private View rootView;
 
+    /* *************************************************************************
+     *                                                                         *
+     * Constructors                                                            *
+     *                                                                         *
+     **************************************************************************/
+
     public SearchFragment() {
 
     }
+
+    /* *************************************************************************
+     *                                                                         *
+     * Methods                                                                 *
+     *                                                                         *
+     **************************************************************************/
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_search, container, false);
-
 
         database = FirebaseFirestore.getInstance();
 
@@ -76,8 +93,8 @@ public class SearchFragment extends Fragment {
                                 Event event = new Event(name, endDate, startDate, participantsCount, type, partlist, null);
                                 eventList.add(event);
                             }
-                            CustomBaseAdapterEvent customBaseAdapter = new CustomBaseAdapterEvent(rootView.getContext(), eventList);
-                            eventListView.setAdapter(eventListAdapter);
+                            EventListAdapter customBaseAdapter = new EventListAdapter(rootView.getContext(), eventList);
+                            eventListView.setAdapter(customBaseAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

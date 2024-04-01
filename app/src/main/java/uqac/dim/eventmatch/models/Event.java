@@ -1,7 +1,5 @@
 package uqac.dim.eventmatch.models;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -27,6 +25,12 @@ import java.util.Locale;
  * @author Kyllian Hot
  */
 public class Event {
+    /* *************************************************************************
+     *                                                                         *
+     * Fields                                                                  *
+     *                                                                         *
+     **************************************************************************/
+
     private String name;
     private Timestamp endDate;
     private Timestamp startDate;
@@ -34,6 +38,12 @@ public class Event {
     private String tags;
     private byte[] imageData;
     private List<DocumentReference> participants;
+
+    /* *************************************************************************
+     *                                                                         *
+     * Constructors                                                            *
+     *                                                                         *
+     **************************************************************************/
 
     public Event() {
 
@@ -49,82 +59,29 @@ public class Event {
         this.imageData = imageData;
     }
 
-    public String getName() {
-        return name;
+    /* *************************************************************************
+     *                                                                         *
+     * Methods                                                                 *
+     *                                                                         *
+     **************************************************************************/
+
+    public String endDateToString() {
+        return convertTimestampToString(endDate);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEndDate(int[] dateTime) {
+        this.endDate = convertDateTimeToTimestamp(dateTime);
     }
 
-    public Timestamp getDate_end() {
-        return date_end;
+    public String startDateToString() {
+        return convertTimestampToString(startDate);
     }
 
-    public String Date_endString(){
-        return convertTimestampToString(date_end);
-    }
-
-    public void setDate_end(Timestamp date_end) {
-        this.date_end = date_end;
-    }
-
-    public void TabsetDate_end(int[] tab){
-        this.date_end = convertDateTimeToTimestamp(tab);
-    }
-
-    public Timestamp getDate_start() {
-        return date_start;
-    }
-
-    public String Date_startString()
-    {
-        return convertTimestampToString(date_start);
-    }
-
-    public void TabsetDate_start(int[] tab) {
-        this.date_start = convertDateTimeToTimestamp(tab);
-    }
-
-    public int getNb_participants() {
-        return nb_participants;
-    }
-
-    public String Nb_paricipantsString()
-    {
-        return String.valueOf(nb_participants);
-    }
-
-    public void setNb_participants(int nb_participants) {
-        this.nb_participants = nb_participants;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public byte[] getImageData() {
-        return imageData;
-    }
-
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
-    }
-
-    public List<DocumentReference> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<DocumentReference> p){
-        participants = p;
+    public void setStartDate(int[] dateTime) {
+        this.startDate = convertDateTimeToTimestamp(dateTime);
     }
 
     public static String convertTimestampToString(Timestamp timestamp) {
-
         Date date = timestamp.toDate();
         SimpleDateFormat sfd = new SimpleDateFormat("'le' dd/MM/yyyy 'à' HH:mm", Locale.CANADA);
         return sfd.format(date);
@@ -143,20 +100,18 @@ public class Event {
 
         // Convertir le Calendar en timestamp
         long timestamp = calendar.getTimeInMillis();
-        Timestamp res = new Timestamp(timestamp/1000,0);
 
-        return res;
+        return new Timestamp(timestamp / 1000,0);
     }
-
 
     public interface ParticipantsNameCallback {
         void onParticipantsNameReady(List<String> participantNames);
     }
 
-    void participants_name(FirebaseFirestore db, ParticipantsNameCallback callback) {
+    public void participantsName(FirebaseFirestore db, ParticipantsNameCallback callback) {
         final List<String> res = new ArrayList<>() ;
         res.add("José");
-        final int[] counter = {participants.size()};
+        final int[] counter = { participants.size() };
 
         for (DocumentReference document : participants) {
             document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -210,9 +165,9 @@ public class Event {
         return res;
     }*/
 
-    List<User> userlist(){
-        List<User> res = new ArrayList<User>();
-        res.add(new User("testharcodé@gmail.com","zbiestcequecamarche"));
+    public List<User> getUserList() {
+        List<User> result = new ArrayList<User>();
+        result.add(new User("testharcodé@gmail.com","zbiestcequecamarche"));
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         for (DocumentReference RefDocument : participants) {
@@ -228,16 +183,75 @@ public class Event {
                                 String password = document.getString("password");
 
                                 User currentuser = new User(email,password);
-                                res.add(currentuser);
+                                result.add(currentuser);
                             }
                         }
                     }
             });
-
         }
 
-
-        return res;
+        return result;
     }
 
+    /* *************************************************************************
+     *                                                                         *
+     * GETTERS AND SETTERS for the fields                                      *
+     *                                                                         *
+     **************************************************************************/
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+    public Timestamp getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Timestamp endDate) {
+        this.endDate = endDate;
+    }
+
+    public int getParticipantsCount() {
+        return participantsCount;
+    }
+
+    public void setParticipantsCount(int participantsCount) {
+        this.participantsCount = participantsCount;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+
+    public List<DocumentReference> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<DocumentReference> participants) {
+        this.participants = participants;
+    }
 }

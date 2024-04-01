@@ -7,10 +7,10 @@ import android.os.Bundle;
 import uqac.dim.eventmatch.R;
 
 public class CustomListView extends AppCompatActivity {
-
     CustomListView() {
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

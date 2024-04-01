@@ -12,11 +12,11 @@ import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import uqac.dim.eventmatch.R;
-import uqac.dim.eventmatch.ui.fragments.mainnavbar.CreateFragment;
-import uqac.dim.eventmatch.ui.fragments.mainnavbar.FavoritesFragment;
-import uqac.dim.eventmatch.ui.fragments.mainnavbar.MessagesFragment;
-import uqac.dim.eventmatch.ui.fragments.mainnavbar.ProfileFragment;
-import uqac.dim.eventmatch.ui.fragments.mainnavbar.SearchFragment;
+import uqac.dim.eventmatch.ui.fragments.main.CreateFragment;
+import uqac.dim.eventmatch.ui.fragments.main.FavoritesFragment;
+import uqac.dim.eventmatch.ui.fragments.main.MessagesFragment;
+import uqac.dim.eventmatch.ui.fragments.main.ProfileFragment;
+import uqac.dim.eventmatch.ui.fragments.main.SearchFragment;
 
 /**
  *

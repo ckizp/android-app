@@ -38,7 +38,7 @@
                 android:id="@+id/signup_email"
                 android:layout_marginTop="40dp"
                 android:padding="10dp"
-                android:background="@drawable/custom_edittext"
+                android:background="@drawable/custom_edit_text"
                 />
             <EditText
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
                 android:inputType="textPassword"
-                android:background="@drawable/custom_edittext"
+                android:background="@drawable/custom_edit_text"
                 />
             <EditText
                 android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                 android:layout_marginTop="20dp"
                 android:padding="10dp"
                 android:inputType="textPassword"
-                android:background="@drawable/custom_edittext"
+                android:background="@drawable/custom_edit_text"
                 />
             <Button
                 android:layout_width="match_parent"

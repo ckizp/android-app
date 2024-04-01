@@ -1,4 +1,4 @@
-package uqac.dim.eventmatch.ui.fragments.mainnavbar;
+package uqac.dim.eventmatch.ui.fragments.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
