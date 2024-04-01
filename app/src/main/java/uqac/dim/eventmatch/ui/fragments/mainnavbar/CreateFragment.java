@@ -39,6 +39,8 @@ import java.io.IOException;
 import uqac.dim.eventmatch.ui.activities.MainActivity;
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -62,6 +64,8 @@ public class CreateFragment extends Fragment {
     private TextView startTextView;
     private TextView endTextView;
     private View view;
+    private Button button_save;
+    private Button button_clear;
 
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 22;
@@ -106,6 +110,9 @@ public class CreateFragment extends Fragment {
             }
         });
 
+        button_save = view.findViewById(R.id.event_button_save);
+        button_clear = view.findViewById(R.id.event_button_clear);
+
         debut = new int[] {2024, 4, 1, 0, 0, 0};
         fin = new int[] {2024, 4, 1, 0, 0, 0};
 
@@ -135,6 +142,20 @@ public class CreateFragment extends Fragment {
         });
 
         updateDate();
+
+        button_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventsave(button_save);
+            }
+        });
+
+        button_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventclear(button_clear);
+            }
+        });
 
         return view;
     }
@@ -201,6 +222,15 @@ public class CreateFragment extends Fragment {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] imageData = baos.toByteArray();
             event.setImageData(imageData);
+            event.setName(event_name.getText().toString());
+            event.setNb_participants(Integer.parseInt(event_nb_participants.getText().toString()));
+            event.setType(event_type.getText().toString());
+
+            List<DocumentReference> partipantsliste = new ArrayList<DocumentReference>();
+
+            DocumentReference userRef = database.collection("users").document("tTQCwrPyqVIIl8T0U1x4");
+            partipantsliste.add(userRef);
+            event.setParticipants(partipantsliste);
 
             database.collection("events").add(event)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -235,8 +265,8 @@ public class CreateFragment extends Fragment {
     }
 
     public void updateDate() {
-        event.setDate_end(fin);
-        event.setDate_start(debut);
+        event.TabsetDate_start(debut);
+        event.TabsetDate_end(debut);
 
         startTextView.setText("Début " + event.Date_startString());
         endTextView.setText("Fin " + event.Date_endString());

@@ -16,11 +16,13 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import uqac.dim.eventmatch.adapters.EventListAdapter;
 import uqac.dim.eventmatch.R;
@@ -68,12 +70,13 @@ public class SearchFragment extends Fragment {
                                 Timestamp endDate = document.getTimestamp("date_end");
                                 int participantsCount = document.getDouble("nb_participants").intValue();
                                 String type = document.getString("type");
+                                List<DocumentReference> partlist = (List<DocumentReference>) document.get("participants");
 
 
-                                Event event = new Event(name, endDate, startDate, participantsCount, type, null);
+                                Event event = new Event(name, endDate, startDate, participantsCount, type, partlist, null);
                                 eventList.add(event);
                             }
-                            EventListAdapter eventListAdapter = new EventListAdapter(rootView.getContext(), eventList);
+                            CustomBaseAdapterEvent customBaseAdapter = new CustomBaseAdapterEvent(rootView.getContext(), eventList);
                             eventListView.setAdapter(eventListAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

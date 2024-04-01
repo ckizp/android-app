@@ -125,14 +125,12 @@
                 android:inputType="text"/>
 
             <Button
-                android:onClick="saveEvent"
                 android:id="@+id/event_button_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/event_button_save"/>
 
             <Button
-                android:onClick="clearEvent"
                 android:id="@+id/event_button_clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
