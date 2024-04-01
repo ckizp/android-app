@@ -18,7 +18,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -72,7 +71,7 @@ public class SearchFragment extends Fragment {
                                 Event event = new Event(name, endDate, startDate, participantsCount, type, partlist);
                                 eventList.add(event);
                             }
-                            CustomBaseAdapter customBaseAdapter = new CustomBaseAdapter(rootView.getContext(), eventList);
+                            CustomBaseAdapterEvent customBaseAdapter = new CustomBaseAdapterEvent(rootView.getContext(), eventList);
                             eventListView.setAdapter(customBaseAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

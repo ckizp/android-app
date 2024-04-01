@@ -27,6 +27,9 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @version 1.0 30 Mar 2024
@@ -181,6 +184,12 @@ public class CreateFragment extends Fragment {
             event.setName(event_name.getText().toString());
             event.setNb_participants(Integer.parseInt(event_nb_participants.getText().toString()));
             event.setType(event_type.getText().toString());
+
+            List<DocumentReference> partipantsliste = new ArrayList<DocumentReference>();
+
+            DocumentReference userRef = database.collection("users").document("tTQCwrPyqVIIl8T0U1x4");
+            partipantsliste.add(userRef);
+            event.setParticipants(partipantsliste);
 
             database.collection("events").add(event)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

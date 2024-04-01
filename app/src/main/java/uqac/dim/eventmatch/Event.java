@@ -1,5 +1,9 @@
 package uqac.dim.eventmatch;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,6 +19,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import uqac.dim.eventmatch.models.User;
 
 public class Event {
     private String name;
@@ -156,10 +162,6 @@ public class Event {
         }
     }
 
-
-
-
-
     /*
     List<String> participants_name(FirebaseFirestore db){
         List<String> res = new ArrayList<>();
@@ -191,4 +193,35 @@ public class Event {
         }
         return res;
     }*/
+
+    List<User> userlist(){
+        List<User> res = new ArrayList<User>();
+        res.add(new User("testharcodé@gmail.com","zbiestcequecamarche"));
+
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        for (DocumentReference RefDocument : participants) {
+            RefDocument.get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()){
+                                Log.d("DIM", "DocumentSnapshot data: " + document.getData());
+                                String email = document.getString("email");
+                                String password = document.getString("password");
+
+                                User currentuser = new User(email,password);
+                                res.add(currentuser);
+                            }
+                        }
+                    }
+            });
+
+        }
+
+
+        return res;
+    }
+
 }

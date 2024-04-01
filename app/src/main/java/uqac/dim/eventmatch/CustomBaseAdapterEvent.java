@@ -1,9 +1,6 @@
 package uqac.dim.eventmatch;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomBaseAdapter extends BaseAdapter {
+import uqac.dim.eventmatch.models.User;
+
+public class CustomBaseAdapterEvent extends BaseAdapter {
 
 
     Context context;
@@ -26,7 +25,7 @@ public class CustomBaseAdapter extends BaseAdapter {
     FirebaseFirestore db;
 
 
-    public CustomBaseAdapter(Context ctx,ArrayList<Event> l){
+    public CustomBaseAdapterEvent(Context ctx, ArrayList<Event> l){
         context = ctx;
         eventlist = l;
         inflater = LayoutInflater.from(ctx);
@@ -51,6 +50,9 @@ public class CustomBaseAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.activity_custom_list_view,null);
+
+        Event currentevent = eventlist.get(position);
+
         TextView TxtViewNom = (TextView) convertView.findViewById(R.id.liste_nom);
         TextView TxtViewDebut = (TextView) convertView.findViewById(R.id.liste_debut);
         TextView TxtViewFin = (TextView) convertView.findViewById(R.id.liste_fin);
@@ -64,8 +66,12 @@ public class CustomBaseAdapter extends BaseAdapter {
         TxtViewNB.setText(eventlist.get(position).Nb_paricipantsString()+" ");
         TxtViewType.setText(" "+ eventlist.get(position).getType());
 
+        List<User> users = currentevent.userlist();
 
-        eventlist.get(position).participants_name(db, new Event.ParticipantsNameCallback() {
+        CustomBaseAdapterUser customBaseAdapter = new CustomBaseAdapterUser(context, users);
+        LstViewListe.setAdapter(customBaseAdapter);
+
+        /*eventlist.get(position).participants_name(db, new Event.ParticipantsNameCallback() {
             @Override
             public void onParticipantsNameReady(List<String> participantNames) {
                 // Faites quelque chose avec la liste des noms des participants
@@ -77,7 +83,7 @@ public class CustomBaseAdapter extends BaseAdapter {
                 }
 
             }
-        });
+        });*/
 
         /*
         List<String> participants = eventlist.get(position).participants_name(db);
