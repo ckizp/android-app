@@ -59,8 +59,9 @@ public class SignUpActivity extends AppCompatActivity {
                                 // Create a new user in the database
                                 CollectionReference dbUsers = db.collection("users");
                                 User user = new User(emailText, passwordText);
+                                String uid = auth.getCurrentUser().getUid();
 
-                                dbUsers.add(user).addOnCompleteListener(task2 -> {
+                                dbUsers.document(uid).set(user).addOnCompleteListener(task2 -> {
                                     if (task2.isSuccessful()) {
                                         Log.i("SignUpActivity", "User created in database");
                                         Toast.makeText(SignUpActivity.this, "User created", Toast.LENGTH_SHORT).show();
