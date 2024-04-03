@@ -30,6 +30,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -59,6 +61,7 @@ public class CreateFragment extends Fragment {
 
     private FirebaseFirestore database;
     private FirebaseStorage storage;
+    private FirebaseUser user;
     private Event event;
     private EditText eventName;
     private EditText participantsCount;
@@ -103,6 +106,7 @@ public class CreateFragment extends Fragment {
 
         database = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         event = new Event();
 
         eventName = view.findViewById(R.id.event_name);
@@ -257,6 +261,7 @@ public class CreateFragment extends Fragment {
                 // Erreur lors du téléversement du fichier
                 Log.d("DIM","envois de l'image raté");
             });
+            //TODO : Gérer les cas où il n'y a pas d'image ou bien si ell ne s'envois pas.
 
 
             event.setImageDataUrl(path);
@@ -268,7 +273,8 @@ public class CreateFragment extends Fragment {
 
             List<DocumentReference> partipantsliste = new ArrayList<DocumentReference>();
 
-            DocumentReference userRef = database.collection("users").document("tTQCwrPyqVIIl8T0U1x4");
+            String userID = user.getUid();
+            DocumentReference userRef = database.collection("users").document(userID);
             partipantsliste.add(userRef);
             event.setParticipants(partipantsliste);
 

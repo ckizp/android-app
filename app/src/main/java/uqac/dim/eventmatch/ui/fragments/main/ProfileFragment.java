@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.ui.fragments.profile.AccountFragment;
@@ -38,6 +40,10 @@ public class ProfileFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         NavigationView navigationView = view.findViewById(R.id.profile_navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView TxtProfileName = view.findViewById(R.id.nom_profile);
+        TxtProfileName.setText (FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
         return view;
     }
 

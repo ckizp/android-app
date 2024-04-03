@@ -15,6 +15,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- TODO : Retirer ça et faire l'affichage profile -->
+            <TextView
+                android:id="@+id/nom_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profilename"
+                android:textSize="10sp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

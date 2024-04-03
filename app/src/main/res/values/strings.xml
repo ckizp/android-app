@@ -57,4 +57,5 @@
     <string name="title_disconnect">Se déconnecter</string>
     <string name="event_image_description">Image de l\'événement</string>
     <string name="import_image">Importer une image</string>
+    <string name="profilename">NomProfil</string>
 </resources>

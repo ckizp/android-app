@@ -42,6 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUp.setOnClickListener(v -> {
             String emailText = email.getText().toString().trim();
             String passwordText = password.getText().toString().trim();
+            String username = emailText.split("@")[0];
 
             if(emailText.isEmpty()) {
                 email.setError("Email is required");
@@ -58,7 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Create a new user in the database
                                 CollectionReference dbUsers = db.collection("users");
-                                User user = new User(emailText, passwordText);
+                                User user = new User(emailText, passwordText, username); //TODO : Donner à l'utilisateur la possibilité de choisir un pseudo, ou en donner un de base à modif après
                                 String uid = auth.getCurrentUser().getUid();
 
                                 dbUsers.document(uid).set(user).addOnCompleteListener(task2 -> {

@@ -74,7 +74,7 @@ public class UserListAdapter extends BaseAdapter {
 
         TextView txtViewNom = (TextView) convertView.findViewById(R.id.list_user);
 
-        txtViewNom.setText(current_user.getEmail());
+        txtViewNom.setText(current_user.getUsername());
 
         return convertView;
     }

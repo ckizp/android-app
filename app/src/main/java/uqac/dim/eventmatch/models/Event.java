@@ -133,8 +133,9 @@ public class Event {
                             Log.d("DIM", "dans la requete"+documentSnapshot.getId() + " => " + documentSnapshot.getData());
                             String email = documentSnapshot.getString("email");
                             String password = documentSnapshot.getString("password");
+                            String username = documentSnapshot.getString("username");
 
-                            User currentUser = new User(email, password);
+                            User currentUser = new User(email, password, username);
                             result.add(currentUser);
                         } else {
                             Log.d(TAG, "No such document");
