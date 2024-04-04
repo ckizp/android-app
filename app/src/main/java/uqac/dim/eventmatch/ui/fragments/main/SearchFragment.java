@@ -90,7 +90,6 @@ public class SearchFragment extends Fragment {
                                 List<DocumentReference> partlist = (List<DocumentReference>) document.get("participants");
                                 String imageUrl = document.getString("imageDataUrl");
 
-
                                 Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl);
                                 eventList.add(event);
                             }

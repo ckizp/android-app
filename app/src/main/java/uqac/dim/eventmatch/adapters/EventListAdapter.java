@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -80,11 +83,11 @@ public class EventListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = inflater.inflate(R.layout.activity_custom_list_view,null);
-
+        convertView = inflater.inflate(R.layout.fragment_event,null);
         Event currentEvent = eventList.get(position);
 
-        //Recupération des View
+        // Recupération des View
+        /*
         TextView nameTextView = (TextView) convertView.findViewById(R.id.liste_nom);
         TextView startDateTextView = (TextView) convertView.findViewById(R.id.liste_debut);
         TextView endDateTextView = (TextView) convertView.findViewById(R.id.liste_fin);
@@ -92,7 +95,12 @@ public class EventListAdapter extends BaseAdapter {
         TextView tagsTextView = (TextView) convertView.findViewById(R.id.liste_type);
         ListView participantsListView = (ListView) convertView.findViewById(R.id.liste_partlist);
         ImageView eventImageView = (ImageView) convertView.findViewById(R.id.liste_image);
+         */
 
+        TextView eventNameTextView = (TextView) convertView.findViewById(R.id.text_event_name);
+        TextView partsCountTextView = (TextView) convertView.findViewById(R.id.text_participants_count);
+        LinearLayout tagsLinearLayout = (LinearLayout) convertView.findViewById(R.id.layout_tags);
+        ImageView eventImageView = (ImageView) convertView.findViewById(R.id.image_event);
 
         // GESTION IMAGE
         // Obtention d'une référence à l'image dans Firebase Storage
@@ -117,15 +125,23 @@ public class EventListAdapter extends BaseAdapter {
                 });
 
         //Affichage des autres Informations
-        nameTextView.setText(currentEvent.getName());
+        /*nameTextView.setText(currentEvent.getName());
         startDateTextView.setText(" " +currentEvent.startDateToString());
         endDateTextView.setText(" " +currentEvent.endDateToString());
         partsCountTextView.setText(String.valueOf(currentEvent.getParticipantsCount())+" ");
         tagsTextView.setText(" " +currentEvent.getTags());
+        */
+        eventNameTextView.setText(currentEvent.getName());
+        partsCountTextView.setText(String.valueOf(currentEvent.getParticipantsCount()));
 
+        TextView tagTextView = new TextView(convertView.getContext());
+        tagTextView.setText(currentEvent.getTags());
+        tagTextView.setTextColor(ContextCompat.getColor(convertView.getContext(), R.color.white));
+        tagTextView.setShadowLayer(20, 0, 0, ContextCompat.getColor(convertView.getContext(), R.color.black));
+        tagTextView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.default_background));
+        tagsLinearLayout.addView(tagTextView);
 
-
-        currentEvent.generateUserList(new Event.UserListCallback() {
+        /*currentEvent.generateUserList(new Event.UserListCallback() {
             @Override
             public void onUserListReady(ArrayList<User> userList) {
 
@@ -147,7 +163,7 @@ public class EventListAdapter extends BaseAdapter {
 
 
             }
-        });
+        });*/
 
 
 
