@@ -21,7 +21,7 @@
             android:textSize="20sp"/>
         <Spinner
             android:id="@+id/spinner1"
-            android:layout_width="100sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"/>
