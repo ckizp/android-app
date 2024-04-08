@@ -46,6 +46,7 @@
     <string name="title_create">Créer</string>
     <string name="title_messages">Messages</string>
     <string name="title_profile">Mon profil</string>
+    <string name="Filtre">Filtres : </string>
 
     <!-- Profile menu strings -->
     <string name="title_my_events">Mes événements</string>

@@ -7,7 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +47,7 @@ public class SearchFragment extends Fragment {
     private FirebaseFirestore database;
     private ArrayList<Event> eventList;
     private View rootView;
+    private String selected;
 
     /* *************************************************************************
      *                                                                         *
@@ -72,9 +76,31 @@ public class SearchFragment extends Fragment {
         eventListView = rootView.findViewById(R.id.list_events);
         eventList = new ArrayList<Event>();
 
-        database.collection("events")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Spinner filter = rootView.findViewById(R.id.spinner1);
+        String[] items = new String[]{"aucun","sport", "culture", "musique", "cinéma", "théâtre", "jeux vidéo", "autre", "nourriture"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(rootView.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
+
+        filter.setAdapter(adapter);
+
+
+        filter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selected = filter.getSelectedItem().toString();
+                filterEvents(selected);
+                Log.d("DIM", "Selected: " + selected);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+
+
+        database.collection("events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -93,14 +119,29 @@ public class SearchFragment extends Fragment {
                                 Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl);
                                 eventList.add(event);
                             }
+
+
                             EventListAdapter customBaseAdapter = new EventListAdapter(rootView.getContext(), eventList);
                             eventListView.setAdapter(customBaseAdapter);
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
 
                     }
                 });
+        filterEvents(selected);
         return rootView;
+    }
+
+    private void filterEvents(String filter) {
+        ArrayList<Event> filteredList = new ArrayList<>();
+        for (Event event : eventList) {
+            if (filter.equals("aucun") || event.getTags().contains(filter)) {
+                filteredList.add(event);
+            }
+        }
+        EventListAdapter customBaseAdapter = new EventListAdapter(rootView.getContext(), filteredList);
+        eventListView.setAdapter(customBaseAdapter);
     }
 }
