@@ -277,6 +277,7 @@ public class CreateFragment extends Fragment {
             DocumentReference userRef = database.collection("users").document(userID);
             partipantsliste.add(userRef);
             event.setParticipants(partipantsliste);
+            event.setOwner(userRef);
 
             database.collection("events").add(event)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

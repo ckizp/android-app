@@ -105,7 +105,7 @@ public class EventListAdapter extends BaseAdapter {
         // GESTION IMAGE
         // Obtention d'une référence à l'image dans Firebase Storage
         StorageReference storageRef = storage.getReference();
-        StorageReference imageRef = storageRef.child(currentEvent.imageDataUrl); // Chemin vers votre image
+        StorageReference imageRef = storageRef.child(currentEvent.getImageDataUrl()); // Chemin vers votre image
         // Téléchargement de l'image dans un fichier temporaire local
         File localFile = null;
         try {

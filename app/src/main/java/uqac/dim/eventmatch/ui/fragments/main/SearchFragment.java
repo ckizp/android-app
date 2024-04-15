@@ -89,8 +89,9 @@ public class SearchFragment extends Fragment {
                                 String tags = document.getString("tags");
                                 List<DocumentReference> partlist = (List<DocumentReference>) document.get("participants");
                                 String imageUrl = document.getString("imageDataUrl");
+                                DocumentReference owner = document.getDocumentReference("owner");
 
-                                Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl);
+                                Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl,owner);
                                 eventList.add(event);
                             }
                             EventListAdapter customBaseAdapter = new EventListAdapter(rootView.getContext(), eventList);

@@ -43,7 +43,10 @@ public class Event {
     private int participantsCount;
     private String tags;
     private List<DocumentReference> participants;
-    public String imageDataUrl;
+    private String imageDataUrl;
+    private DocumentReference owner;
+    public DocumentReference reference;
+
 
     /* *************************************************************************
      *                                                                         *
@@ -55,7 +58,7 @@ public class Event {
 
     }
 
-    public Event(String name, Timestamp endDate, Timestamp startDate, int participantsCount, String tags, List<DocumentReference> participants, String imageDataUrl) {
+    public Event(String name, Timestamp endDate, Timestamp startDate, int participantsCount, String tags, List<DocumentReference> participants, String imageDataUrl, DocumentReference owner) {
         this.name = name;
         this.endDate = endDate;
         this.startDate = startDate;
@@ -63,6 +66,7 @@ public class Event {
         this.tags = tags;
         this.participants = participants;
         this.imageDataUrl = imageDataUrl;
+        this.owner = owner;
     }
 
     /* *************************************************************************
@@ -224,5 +228,13 @@ public class Event {
 
     public void setImageDataUrl(String path) {
         imageDataUrl = path;
+    }
+
+    public DocumentReference getOwner() {
+        return owner;
+    }
+
+    public void setOwner(DocumentReference owner) {
+        this.owner = owner;
     }
 }
