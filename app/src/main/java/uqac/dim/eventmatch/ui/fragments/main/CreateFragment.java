@@ -15,10 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -65,7 +67,7 @@ public class CreateFragment extends Fragment {
     private Event event;
     private EditText eventName;
     private EditText participantsCount;
-    private EditText eventType;
+    private Spinner eventType;
     private Button startDateButton;
     private Button endDateButton;
     private Button startTimeButton;
@@ -136,6 +138,15 @@ public class CreateFragment extends Fragment {
             }
         });
 
+        eventImageView.setVisibility(View.INVISIBLE);
+
+        eventImageView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                eventImageView.setVisibility(View.VISIBLE);
+            }
+        });
+
         saveButton = view.findViewById(R.id.event_button_save);
         clearButton = view.findViewById(R.id.event_button_clear);
 
@@ -186,6 +197,15 @@ public class CreateFragment extends Fragment {
             }
         });
 
+        //Choix du type d'événement
+        eventType = view.findViewById(R.id.event_type);
+        String[] items = new String[]{"autre", "sport", "musique", "cinéma", "jeux vidéo", "culture", "art", "cuisine", "réunion et rencontre"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
+        //événement par défaut
+        eventType.setSelection(0);
+        eventType.setAdapter(adapter);
+
+
         return view;
     }
 
@@ -232,15 +252,15 @@ public class CreateFragment extends Fragment {
 
         Log.w("DIM", "nom : " + eventName.getText().toString());
         Log.w("DIM", "nb : " + participantsCount.getText().toString());
-        Log.w("DIM", "type : " + eventType.getText().toString());
+        Log.w("DIM", "type : " + eventType.getSelectedItem().toString());
 
-        if (eventName.getText().toString().equals("") || participantsCount.getText().toString().equals("") || eventType.getText().toString().equals("")) {
+        if (eventName.getText().toString().equals("") || participantsCount.getText().toString().equals("") || eventType.getSelectedItem().toString().equals("")) {
             Log.w("DIM", "tous les champs ne sont pas remplis");
             Toast.makeText(view.getContext(), "Erreur, merci de remplir tous les champs", Toast.LENGTH_SHORT).show();
         } else {
             event.setName(eventName.getText().toString());
             event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
-            event.setTags(eventType.getText().toString());
+            event.setTags(eventType.getSelectedItem().toString());
 
 
 
@@ -269,7 +289,7 @@ public class CreateFragment extends Fragment {
 
             event.setName(eventName.getText().toString());
             event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
-            event.setTags(eventType.getText().toString());
+            event.setTags(eventType.getSelectedItem().toString());
 
             List<DocumentReference> partipantsliste = new ArrayList<DocumentReference>();
 
@@ -302,7 +322,7 @@ public class CreateFragment extends Fragment {
 
         eventName.setText("");
         participantsCount.setText("");
-        eventType.setText("");
+        eventType.setSelection(0);
         debut = new int[] {2024, 4, 1, 0, 0, 0};
         fin = new int[] {2024, 4, 1, 0, 0, 0};
         updateDate();

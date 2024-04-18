@@ -77,7 +77,7 @@ public class SearchFragment extends Fragment {
         eventList = new ArrayList<Event>();
 
         Spinner filter = rootView.findViewById(R.id.spinner1);
-        String[] items = new String[]{"aucun","sport", "culture", "musique", "cinéma", "théâtre", "jeux vidéo", "autre", "nourriture"};
+        String[] items = new String[]{"aucun","sport", "musique", "cinéma", "jeux vidéo", "culture", "art", "cuisine", "réunion et rencontre", "autre"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(rootView.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
 
         filter.setAdapter(adapter);
