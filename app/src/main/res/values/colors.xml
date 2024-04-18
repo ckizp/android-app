@@ -3,4 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lavande">#8692f7</color>
+    <color name="lavande_light">#b0b9ff</color>
+    <color name="lavande_dark">#6978F4</color>
 </resources>

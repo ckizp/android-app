@@ -51,67 +51,87 @@
                 android:contentDescription="@string/event_image_description"
                 android:scaleType="centerCrop" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/event_start"
-                android:textSize="20sp" />
-
+            <!-- Begin Event Start Box -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background_box"
+                android:padding="16dp">
 
-                <Button
-                    android:id="@+id/event_choix_date_debut"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/event_choix_date" />
+                    android:text="@string/event_start"
+                    android:textSize="20sp" />
 
-                <Button
-                    android:id="@+id/event_choix_heure_debut"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/event_choix_date_debut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/event_choix_date" />
+
+                    <Button
+                        android:id="@+id/event_choix_heure_debut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="test"
+                        android:text="@string/event_choix_heure" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/affichage_debut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="test"
-                    android:text="@string/event_choix_heure" />
+                    android:text="----"
+                    android:textSize="20sp" />
+
             </LinearLayout>
+            <!-- End Event Start Box -->
 
-            <TextView
-                android:id="@+id/affichage_debut"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="----"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/event_end"
-                android:textSize="20sp" />
-
+            <!-- Begin Event End Box -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/event_choix_date_fin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/event_choix_date" />
-
-                <Button
-                    android:id="@+id/event_choix_heure_fin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/event_choix_heure" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/affichage_fin"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="----"
-                android:textSize="20sp" />
+                android:orientation="vertical"
+                android:background="@drawable/background_box"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_end"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/event_choix_date_fin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/event_choix_date" />
+
+                    <Button
+                        android:id="@+id/event_choix_heure_fin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/event_choix_heure" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/affichage_fin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="----"
+                    android:textSize="20sp" />
+            </LinearLayout>
+            <!-- End Event End Box -->
 
             <TextView
                 android:layout_width="wrap_content"
