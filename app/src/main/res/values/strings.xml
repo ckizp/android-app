@@ -62,4 +62,5 @@
 
     <!-- Edit Event strings -->
     <string name="editevent_title">Modification d\'événements</string>
+    <string name="editevent_reinit">Annuler les modifications</string>
 </resources>

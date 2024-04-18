@@ -117,10 +117,10 @@
                 android:text="@string/event_button_save"/>
 
             <Button
-                android:id="@+id/editevent_button_clear"
+                android:id="@+id/editevent_button_reinit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/event_button_clear"/>
+                android:text="@string/editevent_reinit"/>
         </LinearLayout>
     </ScrollView>
 
