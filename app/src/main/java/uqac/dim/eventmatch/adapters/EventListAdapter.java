@@ -11,22 +11,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.core.content.ContextCompat;
-
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
-import uqac.dim.eventmatch.models.User;
 
 /**
  *
