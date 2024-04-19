@@ -20,16 +20,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
-            android:padding="24dp"
-            >
+            android:padding="24dp">
             
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/login"
                 android:textSize="36sp"
-                android:textAlignment="center"
-                />
+                android:textAlignment="center"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -38,8 +36,7 @@
                 android:id="@+id/login_email"
                 android:layout_marginTop="40dp"
                 android:padding="8dp"
-                android:background="@drawable/custom_edit_text"
-                />
+                android:background="@drawable/custom_edit_text"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

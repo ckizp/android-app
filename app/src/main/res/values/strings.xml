@@ -63,4 +63,21 @@
     <!-- Edit Event strings -->
     <string name="editevent_title">Modification d\'événements</string>
     <string name="editevent_reinit">Annuler les modifications</string>
+
+    <!-- Account strings -->
+    <string name="text_personnal_information">Informations personnelles</string>
+    <string name="text_location">Localisation</string>
+    <string name="text_username">Pseudonyme</string>
+    <string name="text_address">Adresse</string>
+    <string name="text_connection_information">Informations de connexion</string>
+    <string name="text_email">Email</string>
+    <string name="text_password">Mot de passe</string>
+    <string name="text_lastname">Nom</string>
+    <string name="text_firstname">Prénom</string>
+    <string name="text_birthdate">Date de naissance</string>
+    <string name="text_delete_account">Supprimer mon compte</string>
+    <string name="text_feedback">Donnez-vous votre feedback !</string>
+    <string name="title_send_feedback">Envoyer mon feedback</string>
+    <string name="text_feedback_use">Vous avez des idées pour nous aider à améliorer EventMatch ? Faites un retour et nous prendrons en compte votre avis !</string>
+    <string name="text_edit_feedback">Envoyez-nous vos retours !</string>
 </resources>
