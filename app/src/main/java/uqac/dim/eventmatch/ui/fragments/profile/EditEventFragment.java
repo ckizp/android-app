@@ -2,6 +2,7 @@ package uqac.dim.eventmatch.ui.fragments.profile;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,9 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -32,7 +35,9 @@ import java.util.Date;
 import java.util.List;
 
 import uqac.dim.eventmatch.R;
+import uqac.dim.eventmatch.adapters.UserListAdapter;
 import uqac.dim.eventmatch.models.Event;
+import uqac.dim.eventmatch.models.User;
 
 /*/**
  * A simple {@link Fragment} subclass.
@@ -44,6 +49,7 @@ public class EditEventFragment extends Fragment {
     private View rootView;
     private Event event_db;
     private Event event_modif;
+    private Context context;
     private FirebaseFirestore database;
     private FirebaseStorage storage;
     private FirebaseUser user;
@@ -60,6 +66,7 @@ public class EditEventFragment extends Fragment {
     private TextView endTextView;
     private Button saveButton;
     private Button reinitButton;
+    private ListView participantLstView;
 
     public EditEventFragment() {
         // Required empty public constructor
@@ -76,7 +83,7 @@ public class EditEventFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_edit_event, container, false);
 
-
+        context = rootView.getContext();
         database = FirebaseFirestore.getInstance();
         /*storage = FirebaseStorage.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();*/
@@ -92,6 +99,8 @@ public class EditEventFragment extends Fragment {
         startTextView = rootView.findViewById(R.id.editevent_affichage_debut);
         endTextView = rootView.findViewById(R.id.editevent_affichage_fin);
 
+        participantLstView = rootView.findViewById(R.id.editevent_userlist);
+
         update_all_editview(event_db);
 
         saveButton = rootView.findViewById(R.id.editevent_button_save);
@@ -99,6 +108,31 @@ public class EditEventFragment extends Fragment {
 
         debut = timestamp_to_tab(event_db.getStartDate());
         fin = timestamp_to_tab(event_db.getEndDate());
+
+
+        event_db.generateUserList(new Event.UserListCallback() {
+            @Override
+            public void onUserListReady(ArrayList<User> userList) {
+
+                for (User user : userList) {
+                    Log.d("DIM", "dans l'adapter, User: " + user.getEmail());
+                }
+                UserListAdapter customBaseAdapter = new UserListAdapter(context, userList);
+                participantLstView.setAdapter(customBaseAdapter);
+
+                int itemHeightInSp = 25; // Taille d'un élément en SP
+                int itemCount = customBaseAdapter.getCount(); // Nombre d'éléments dans la liste
+                float density = context.getResources().getDisplayMetrics().density; // Obtenez la densité de l'écran en DPI
+                int itemHeightInPx = (int) (itemHeightInSp * density); // Convertissez la taille de l'élément en SP en pixels
+                int totalHeightInPx = itemCount * itemHeightInPx; // Calculez la hauteur totale en pixels
+
+                ViewGroup.LayoutParams params = participantLstView.getLayoutParams();
+                params.height = totalHeightInPx;
+                participantLstView.setLayoutParams(params);
+
+
+            }
+        });
 
 
 
@@ -224,23 +258,6 @@ public class EditEventFragment extends Fragment {
                             Log.e("DIM", "Erreur lors de la mise à jour de l'événement", e);
                         }
                     });
-
-            //TODO : modifier la bd plutot
-            /*database.collection("events").add(event_modif)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                            Toast.makeText(view.getContext(), "événement créé et stocké dans Firestore", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding document", e);
-                            Toast.makeText(view.getContext(), "Erreur lors de l'envoi des données à Firestore", Toast.LENGTH_SHORT).show();
-                        }
-                    });*/
         }
     }
 
