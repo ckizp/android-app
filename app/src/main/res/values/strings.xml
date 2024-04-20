@@ -18,7 +18,7 @@
 
     <!-- Strings pour la page de création d'évents -->
     <string name="creation_event">Création d\'événements</string>
-    <string name="event_name">Nom de l\'événement :</string>
+    <string name="event_name">Nom de l\'événement</string>
     <string name="event_start">Début de l\'événement :</string>
     <string name="event_choix_date">Choix de la date</string>
     <string name="event_choix_heure">Choix de l\'heure</string>

@@ -18,56 +18,143 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/creation_event"
+                android:background="@drawable/background_box"
                 android:textAlignment="center"
                 style="@style/HeadingText"
-                android:textSize="30sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/event_name"
-                style="@style/HeadingText"
-                android:textSize="20sp" />
+                android:textSize="30sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
 
             <EditText
                 android:id="@+id/event_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/EditTextStyle"
-                android:inputType="text" />
+                android:background="@drawable/background_box"
+                android:hint="@string/event_name"
+                android:textAlignment="center"
+                android:inputType="text"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
+
+        <!-- Begin Event info Box -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <!-- event type info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/background_box"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/event_type"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/event_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <!-- Participant number info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/background_box"
+                android:layout_marginStart="5dp"
+                android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_nb_participants"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/event_nb_participants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            </LinearLayout>
+        </LinearLayout>
+        <!-- End Event info Box -->
+
+        <!-- Begin Event image Box -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/background_box"
+            android:gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
 
             <Button
                 android:id="@+id/btn_import_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/import_image" />
+                android:layout_width="159dp"
+                android:layout_height="84dp"
+                android:text="@string/import_image"
+                android:layout_marginEnd="16dp" />
 
             <ImageView
                 android:id="@+id/image_view"
-                android:layout_width="178dp"
-                android:layout_height="193dp"
-                android:layout_marginTop="16dp"
-                android:contentDescription="@string/event_image_description"
-                android:scaleType="centerCrop" />
+                android:layout_width="193dp"
+                android:layout_height="133dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="10dp" />
+
+        </LinearLayout>
+        <!-- End Event image Box -->
+
+
+            <!-- Begin Event Hours Box -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <!-- Begin Event Start Box -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_weight="1"
                 android:background="@drawable/background_box"
+                android:orientation="vertical"
+                android:layout_marginEnd="5dp"
                 android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="@string/event_start"
+                    android:textAlignment="center"
                     android:textSize="20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
                     <Button
                         android:id="@+id/event_choix_date_debut"
                         android:layout_width="wrap_content"
@@ -78,7 +165,6 @@
                         android:id="@+id/event_choix_heure_debut"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="test"
                         android:text="@string/event_choix_heure" />
                 </LinearLayout>
 
@@ -86,6 +172,7 @@
                     android:id="@+id/affichage_debut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="----"
                     android:textSize="20sp" />
 
@@ -94,21 +181,27 @@
 
             <!-- Begin Event End Box -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_weight="1"
                 android:background="@drawable/background_box"
+                android:orientation="vertical"
+                android:layout_marginStart="5dp"
                 android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="@string/event_end"
+                    android:textAlignment="center"
                     android:textSize="20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/event_choix_date_fin"
@@ -128,46 +221,30 @@
                     android:id="@+id/affichage_fin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="----"
                     android:textSize="20sp" />
             </LinearLayout>
             <!-- End Event End Box -->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/event_nb_participants"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/event_nb_participants"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/event_type"
-                android:textSize="20sp" />
-
-            <Spinner
-                android:id="@+id/event_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+        </LinearLayout>
+        <!-- End Event Hours Box -->
 
             <Button
                 android:id="@+id/event_button_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/event_button_save" />
+                android:text="@string/event_button_save"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
 
             <Button
                 android:id="@+id/event_button_clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/event_button_clear" />
+                android:text="@string/event_button_clear"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
