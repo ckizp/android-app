@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,13 +28,14 @@ public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView;
     private int currentPosition;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.i("User", user.getEmail());
+        mAuth = FirebaseAuth.getInstance();
+
 
         bottomNavigationView = findViewById(R.id.main_navigation_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -47,6 +46,13 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.frame_layout, new SearchFragment())
                 .commit();
     };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -85,6 +91,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void test(View view) {
-    }
 }
