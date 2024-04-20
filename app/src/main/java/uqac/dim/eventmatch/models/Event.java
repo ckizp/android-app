@@ -139,7 +139,7 @@ public class Event {
                             String password = documentSnapshot.getString("password");
                             String username = documentSnapshot.getString("username");
 
-                            User currentUser = new User(email, password, username);
+                            User currentUser = new User(email, password, username, null, null, null, null, null);
                             result.add(currentUser);
                         } else {
                             Log.d(TAG, "No such document");

@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/signup"
-                android:textSize="36sp"
+                android:textSize="30sp"
                 android:textAlignment="center"
                 />
 
@@ -40,6 +40,73 @@
                 android:padding="10dp"
                 android:background="@drawable/custom_edit_text"
                 />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/nom"
+                android:id="@+id/signup_lastname"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:background="@drawable/custom_edit_text"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/prénom"
+                android:id="@+id/signup_firstname"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:background="@drawable/custom_edit_text"
+                />
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/pseudonyme"
+                android:id="@+id/signup_username"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:background="@drawable/custom_edit_text"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/birth_date"
+                android:id="@+id/signup_birthdate"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:editable="false"
+                android:focusable="false"
+                android:background="@drawable/custom_edit_text"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/address"
+                android:id="@+id/signup_address"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:background="@drawable/custom_edit_text"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/city"
+                android:id="@+id/signup_city"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:background="@drawable/custom_edit_text"
+                />
+
+
+
+
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

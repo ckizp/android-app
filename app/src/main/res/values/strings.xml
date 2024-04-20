@@ -9,6 +9,12 @@
     <string name="ask_login">Vous avez déjà un compte ? </string>
     <string name="switch_login">Se connecter</string>
     <string name="switch_signup">S\'inscrire</string>
+    <string name="pseudonyme">Pseudonyme</string>
+    <string name="nom">Nom</string>
+    <string name="prénom">Prénom</string>
+    <string name="birth_date">Date de naissance</string>
+    <string name="address">Numéro et nom de la voie</string>
+    <string name="city">Ville</string>
 
 
     <!-- Strings pour le Main -->
