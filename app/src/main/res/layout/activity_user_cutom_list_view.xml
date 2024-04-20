@@ -7,11 +7,33 @@
     tools:context=".ui.activities.UserCustomListView"
     android:orientation="vertical">
     <!-- TODO: Rendre cette interface jolie    -->
-    <TextView
-        android:id="@+id/list_user"
-        android:textSize="15sp"
-        android:text="@string/list_participant"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/listuser_name"
+            android:textSize="15sp"
+            android:text="@string/list_participant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/listuser_vous"
+            android:textSize="15sp"
+            android:text="@string/editevent_vous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/listuser_deletebutton"
+            android:text="@string/editevent_button_deleteuser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

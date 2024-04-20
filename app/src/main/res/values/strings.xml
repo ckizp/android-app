@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">eventmatch</string>
-    <string name="signup">Inscription</string>
-    <string name="login">Connexion</string>
+    <string name="signup">SignUp</string>
+    <string name="login">Login</string>
     <string name="email">Email</string>
-    <string name="password">Mot de passe</string>
-    <string name="confirm_password">Confirmer le mot de passe</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="ask_sign">Vous n\'avez pas de compte ?</string>
     <string name="ask_login">Vous avez déjà un compte ? </string>
     <string name="switch_login">Se connecter</string>
@@ -69,6 +69,9 @@
     <!-- Edit Event strings -->
     <string name="editevent_title">Modification d\'événements</string>
     <string name="editevent_reinit">Annuler les modifications</string>
+    <string name="editevent_button_deleteuser">Supprimer ce participant</string>
+    <string name="editevent_button_fermer">Fermer la page de modification</string>
+    <string name="editevent_vous"> (Vous) </string>
 
     <!-- Account strings -->
     <string name="text_personnal_information">Informations personnelles</string>

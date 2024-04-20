@@ -109,31 +109,7 @@ public class EditEventFragment extends Fragment {
         debut = timestamp_to_tab(event_db.getStartDate());
         fin = timestamp_to_tab(event_db.getEndDate());
 
-
-        event_db.generateUserList(new Event.UserListCallback() {
-            @Override
-            public void onUserListReady(ArrayList<User> userList) {
-
-                for (User user : userList) {
-                    Log.d("DIM", "dans l'adapter, User: " + user.getEmail());
-                }
-                UserListAdapter customBaseAdapter = new UserListAdapter(context, userList);
-                participantLstView.setAdapter(customBaseAdapter);
-
-                int itemHeightInSp = 25; // Taille d'un élément en SP
-                int itemCount = customBaseAdapter.getCount(); // Nombre d'éléments dans la liste
-                float density = context.getResources().getDisplayMetrics().density; // Obtenez la densité de l'écran en DPI
-                int itemHeightInPx = (int) (itemHeightInSp * density); // Convertissez la taille de l'élément en SP en pixels
-                int totalHeightInPx = itemCount * itemHeightInPx; // Calculez la hauteur totale en pixels
-
-                ViewGroup.LayoutParams params = participantLstView.getLayoutParams();
-                params.height = totalHeightInPx;
-                participantLstView.setLayoutParams(params);
-
-
-            }
-        });
-
+        affiche_listuser(event_db);
 
 
 
@@ -258,6 +234,7 @@ public class EditEventFragment extends Fragment {
                             Log.e("DIM", "Erreur lors de la mise à jour de l'événement", e);
                         }
                     });
+            event_db = event_modif;
         }
     }
 
@@ -280,9 +257,10 @@ public class EditEventFragment extends Fragment {
 
     private void reinitEvent()
     {
-        update_all_editview(event_db);
-        updateDate();
         event_modif = event_db;
+        update_all_editview(event_modif);
+        updateDate();
+        affiche_listuser(event_modif);
 
     }
 
@@ -303,5 +281,42 @@ public class EditEventFragment extends Fragment {
 
         return res;
 
+    }
+
+    private void affiche_listuser(Event event)
+    {
+        Fragment frag = this;
+        event.generateUserList(new Event.UserListCallback() {
+            @Override
+            public void onUserListReady(ArrayList<User> userList) {
+
+                for (User user : userList) {
+                    Log.d("DIM", "dans l'adapter, User: " + user.getEmail());
+                }
+                UserListAdapter customBaseAdapter = new UserListAdapter(context, userList, frag);
+                participantLstView.setAdapter(customBaseAdapter);
+
+                int itemHeightInSp = 50; // Taille d'un élément en SP
+                int itemCount = customBaseAdapter.getCount(); // Nombre d'éléments dans la liste
+                float density = context.getResources().getDisplayMetrics().density; // Obtenez la densité de l'écran en DPI
+                int itemHeightInPx = (int) (itemHeightInSp * density); // Convertissez la taille de l'élément en SP en pixels
+                int totalHeightInPx = itemCount * itemHeightInPx; // Calculez la hauteur totale en pixels
+
+                ViewGroup.LayoutParams params = participantLstView.getLayoutParams();
+                params.height = totalHeightInPx;
+                participantLstView.setLayoutParams(params);
+
+
+            }
+        });
+    }
+
+    public void deleteuser(int pos, String username)
+    {
+        List<DocumentReference> participantslist = new ArrayList<DocumentReference>(event_modif.getParticipants()) ;
+        participantslist.remove(pos);
+        event_modif.setParticipants(participantslist);
+        Toast.makeText(context, "User deleted " + username, Toast.LENGTH_SHORT).show();
+        affiche_listuser(event_modif);
     }
 }

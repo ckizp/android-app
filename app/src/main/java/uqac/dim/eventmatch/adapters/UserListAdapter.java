@@ -5,7 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -14,6 +18,8 @@ import java.util.List;
 
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.User;
+import uqac.dim.eventmatch.ui.activities.SignUpActivity;
+import uqac.dim.eventmatch.ui.fragments.profile.EditEventFragment;
 
 /**
  *
@@ -31,6 +37,7 @@ public class UserListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private ArrayList<User> userList;
     private FirebaseFirestore database;
+    private EditEventFragment fragment;
 
     /* *************************************************************************
      *                                                                         *
@@ -38,11 +45,12 @@ public class UserListAdapter extends BaseAdapter {
      *                                                                         *
      **************************************************************************/
 
-    public UserListAdapter(Context ctx, ArrayList<User> userList){
+    public UserListAdapter(Context ctx, ArrayList<User> userList, Fragment frag){
         context = ctx;
         this.userList = userList;
         inflater = LayoutInflater.from(ctx);
         database = FirebaseFirestore.getInstance();
+        fragment = (EditEventFragment) frag;
     }
 
     /* *************************************************************************
@@ -72,7 +80,28 @@ public class UserListAdapter extends BaseAdapter {
 
         User current_user = userList.get(position);
 
-        TextView txtViewNom = (TextView) convertView.findViewById(R.id.list_user);
+        TextView txtViewNom = (TextView) convertView.findViewById(R.id.listuser_name);
+        TextView txtViewVous = (TextView) convertView.findViewById(R.id.listuser_vous);
+        Button buttonDeleteUser = (Button) convertView.findViewById(R.id.listuser_deletebutton);
+
+        if (position == 0)
+        {
+            buttonDeleteUser.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            txtViewVous.setVisibility(View.INVISIBLE);
+            buttonDeleteUser.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fragment.deleteuser(position,current_user.getUsername());
+                }
+            });
+        }
+
+
+
+
 
         txtViewNom.setText(current_user.getUsername());
 
