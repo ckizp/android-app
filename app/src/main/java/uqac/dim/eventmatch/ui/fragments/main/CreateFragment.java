@@ -46,6 +46,7 @@ import java.io.IOException;
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -150,8 +151,8 @@ public class CreateFragment extends Fragment {
         saveButton = view.findViewById(R.id.event_button_save);
         clearButton = view.findViewById(R.id.event_button_clear);
 
-        debut = new int[] {2024, 4, 1, 0, 0, 0};
-        fin = new int[] {2024, 4, 1, 0, 0, 0};
+        debut = dateTransform(new Date());
+        fin = dateTransform(new Date());
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,6 +209,19 @@ public class CreateFragment extends Fragment {
 
         return view;
     }
+
+    //Méthode de transormation de la date en liste de int sous la forme [année, mois, jour, heure, minute, seconde]
+    public int[] dateTransform(Date date){
+        int[] dateTab = new int[6];
+        dateTab[0] = date.getYear() + 1900;
+        dateTab[1] = date.getMonth() + 1;
+        dateTab[2] = date.getDate();
+        dateTab[3] = date.getHours();
+        dateTab[4] = date.getMinutes();
+        dateTab[5] = date.getSeconds();
+        return dateTab;
+    }
+
 
     private void openDialog(String type, String quand){
         if (type == "date"){
@@ -322,9 +336,10 @@ public class CreateFragment extends Fragment {
 
         eventName.setText("");
         participantsCount.setText("");
+        eventImageView.setImageResource(0);
         eventType.setSelection(0);
-        debut = new int[] {2024, 4, 1, 0, 0, 0};
-        fin = new int[] {2024, 4, 1, 0, 0, 0};
+        debut = dateTransform(new Date());
+        fin = dateTransform(new Date());
         updateDate();
 
         Log.w("DIM", "Champs vidés");
