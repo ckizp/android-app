@@ -109,7 +109,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/list_participants"
+                android:textSize="20sp"/>
 
+            <ListView
+                android:id="@+id/editevent_userlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <Button
                 android:id="@+id/editevent_button_save"
                 android:layout_width="match_parent"

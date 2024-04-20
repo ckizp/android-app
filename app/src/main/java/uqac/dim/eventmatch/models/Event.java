@@ -167,6 +167,35 @@ public class Event {
         }
     }
 
+    public interface ParticipantsNameCallback {
+        void onParticipantsNameReady(List<String> participantNames);
+    }
+
+    public void participantsName(FirebaseFirestore db, ParticipantsNameCallback callback) {
+        final List<String> res = new ArrayList<>() ;
+        res.add("José");
+        final int[] counter = { participants.size() };
+
+        for (DocumentReference document : participants) {
+            document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            res.add(document.getString("email"));
+                        }
+                    }
+                    // Décrémenter le compteur et vérifier si toutes les requêtes sont terminées
+                    if (--counter[0] == 0) {
+                        // Toutes les requêtes sont terminées, appeler le callback avec la liste des noms des participants
+                        callback.onParticipantsNameReady(res);
+                    }
+                }
+            });
+        }
+    }
+
 
     /* *************************************************************************
      *                                                                         *
