@@ -47,6 +47,8 @@ import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -210,7 +212,7 @@ public class CreateFragment extends Fragment {
         return view;
     }
 
-    //Méthode de transormation de la date en liste de int sous la forme [année, mois, jour, heure, minute, seconde]
+    // Méthode pour transformer la date en liste d'entiers
     public int[] dateTransform(Date date){
         int[] dateTab = new int[6];
         dateTab[0] = date.getYear() + 1900;
@@ -222,44 +224,55 @@ public class CreateFragment extends Fragment {
         return dateTab;
     }
 
-
     private void openDialog(String type, String quand){
-        if (type == "date"){
+        Calendar cal = Calendar.getInstance();
+        if (type.equals("date")){
             DatePickerDialog dialog = new DatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    if (quand == "debut"){
+                    if (quand.equals("debut")){
                         debut[0] = year;
-                        debut[1] = month+1;
+                        debut[1] = month + 1;
                         debut[2] = dayOfMonth;
-                    } else if (quand == "fin") {
+                    } else if (quand.equals("fin")) {
+                        if (new GregorianCalendar(year, month, dayOfMonth).before(new GregorianCalendar(debut[0], debut[1] - 1, debut[2]))) {
+                            Toast.makeText(view.getContext(), "La date de fin ne peut pas être antérieure à la date de début.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         fin[0] = year;
-                        fin[1] = month+1;
+                        fin[1] = month + 1;
                         fin[2] = dayOfMonth;
                     }
                     updateDate();
-                    Timestamp test;
                 }
-            }, 2024, 3, 1);
+            }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+
+            // Set minimum date to current date
+            dialog.getDatePicker().setMinDate(cal.getTimeInMillis());
+
             dialog.show();
-        } else if (type == "heure") {
+        } else if (type.equals("heure")) {
             TimePickerDialog dialog = new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    if (quand == "debut"){
+                    if (quand.equals("debut")){
                         debut[3] = hourOfDay;
                         debut[4] = minute;
-                    }
-                    else if (quand == "fin") {
+                    } else if (quand.equals("fin")) {
+                        if (new GregorianCalendar(fin[0], fin[1] - 1, fin[2], hourOfDay, minute).before(new GregorianCalendar(debut[0], debut[1] - 1, debut[2], debut[3], debut[4]))) {
+                            Toast.makeText(view.getContext(), "L'heure de fin ne peut pas être antérieure à l'heure de début.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         fin[3] = hourOfDay;
                         fin[4] = minute;
                     }
                     updateDate();
                 }
-            }, 0,0,true);
+            }, 0, 0, true);
             dialog.show();
         }
     }
+
 
     public void onSaveButtonClick(View view) {
         Log.i("DIM", "saving event");
