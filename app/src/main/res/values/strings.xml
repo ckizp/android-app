@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">eventmatch</string>
-    <string name="signup">SignUp</string>
-    <string name="login">Login</string>
+    <string name="signup">Inscription</string>
+    <string name="login">Connexion</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Mot de passe</string>
+    <string name="confirm_password">Confirmer le mot de passe</string>
     <string name="ask_sign">Vous n\'avez pas de compte ?</string>
     <string name="ask_login">Vous avez déjà un compte ? </string>
     <string name="switch_login">Se connecter</string>
