@@ -73,8 +73,8 @@ public class EditEventFragment extends Fragment {
     }
 
     public EditEventFragment(Event e){
-        event_db = e;
-        event_modif = e;
+        event_db = e.Copy();
+        event_modif = e.Copy();
     }
 
 
@@ -234,7 +234,7 @@ public class EditEventFragment extends Fragment {
                             Log.e("DIM", "Erreur lors de la mise à jour de l'événement", e);
                         }
                     });
-            event_db = event_modif;
+            event_db = event_modif.Copy();
         }
     }
 
@@ -257,7 +257,8 @@ public class EditEventFragment extends Fragment {
 
     private void reinitEvent()
     {
-        event_modif = event_db;
+        //TODO : Probleme dans l'ordre qui bouge à check
+        event_modif = event_db.Copy();
         update_all_editview(event_modif);
         updateDate();
         affiche_listuser(event_modif);
@@ -293,7 +294,7 @@ public class EditEventFragment extends Fragment {
                 for (User user : userList) {
                     Log.d("DIM", "dans l'adapter, User: " + user.getEmail());
                 }
-                UserListAdapter customBaseAdapter = new UserListAdapter(context, userList, frag);
+                UserListAdapter customBaseAdapter = new UserListAdapter(context, userList, frag,"EditEventFragment");
                 participantLstView.setAdapter(customBaseAdapter);
 
                 int itemHeightInSp = 50; // Taille d'un élément en SP
@@ -313,7 +314,10 @@ public class EditEventFragment extends Fragment {
 
     public void deleteuser(int pos, String username)
     {
-        List<DocumentReference> participantslist = new ArrayList<DocumentReference>(event_modif.getParticipants()) ;
+        List<DocumentReference> participantslist = new ArrayList<DocumentReference>() {};
+        for (DocumentReference docref: (event_modif.getParticipants())) {
+            participantslist.add(docref);
+        }
         participantslist.remove(pos);
         event_modif.setParticipants(participantslist);
         Toast.makeText(context, "User deleted " + username, Toast.LENGTH_SHORT).show();

@@ -19,6 +19,7 @@ import java.util.List;
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.User;
 import uqac.dim.eventmatch.ui.activities.SignUpActivity;
+import uqac.dim.eventmatch.ui.fragments.main.EventDetailsFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.EditEventFragment;
 
 /**
@@ -37,7 +38,8 @@ public class UserListAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private ArrayList<User> userList;
     private FirebaseFirestore database;
-    private EditEventFragment fragment;
+    private Fragment fragment;
+    private String fragtype;
 
     /* *************************************************************************
      *                                                                         *
@@ -45,12 +47,21 @@ public class UserListAdapter extends BaseAdapter {
      *                                                                         *
      **************************************************************************/
 
-    public UserListAdapter(Context ctx, ArrayList<User> userList, Fragment frag){
+    public UserListAdapter(Context ctx, ArrayList<User> userList, Fragment frag, String fragmentype){
         context = ctx;
         this.userList = userList;
         inflater = LayoutInflater.from(ctx);
         database = FirebaseFirestore.getInstance();
-        fragment = (EditEventFragment) frag;
+        if (fragmentype.equals("EditEventFragment"))
+        {
+            fragment = (EditEventFragment) frag;
+        }
+        else
+        {
+            fragment = (EventDetailsFragment) frag;
+        }
+        fragtype = fragmentype;
+
     }
 
     /* *************************************************************************
@@ -84,23 +95,31 @@ public class UserListAdapter extends BaseAdapter {
         TextView txtViewVous = (TextView) convertView.findViewById(R.id.listuser_vous);
         Button buttonDeleteUser = (Button) convertView.findViewById(R.id.listuser_deletebutton);
 
-        if (position == 0)
+
+        txtViewVous.setVisibility(View.INVISIBLE);
+        buttonDeleteUser.setVisibility(View.INVISIBLE);
+        if (fragtype.equals("EditEventFragment"))
         {
-            buttonDeleteUser.setVisibility(View.INVISIBLE);
+            if (position == 0)
+            {
+                txtViewVous.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                buttonDeleteUser.setVisibility(View.VISIBLE);
+                EditEventFragment editeventfrag = (EditEventFragment)fragment;
+                buttonDeleteUser.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editeventfrag.deleteuser(position,current_user.getUsername());
+                    }
+                });
+            }
         }
         else
         {
-            txtViewVous.setVisibility(View.INVISIBLE);
-            buttonDeleteUser.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fragment.deleteuser(position,current_user.getUsername());
-                }
-            });
+            //TODO : Check qui on est pour mettre le vous sur le nom adequat
         }
-
-
-
 
 
         txtViewNom.setText(current_user.getUsername());

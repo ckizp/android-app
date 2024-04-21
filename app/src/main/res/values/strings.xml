@@ -66,6 +66,11 @@
     <string name="import_image">Importer une image</string>
     <string name="profilename">NomProfil</string>
 
+
+    <!-- Event Details strings -->
+    <string name="eventdetails_button_join">Rejoindre l\'évenement</string>
+    <string name="eventdetails_alreadyin">Vous êtes déjà dans l\'événement</string>
+
     <!-- Edit Event strings -->
     <string name="editevent_title">Modification d\'événements</string>
     <string name="editevent_reinit">Annuler les modifications</string>

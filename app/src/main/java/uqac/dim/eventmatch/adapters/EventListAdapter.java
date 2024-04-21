@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -97,26 +99,7 @@ public class EventListAdapter extends BaseAdapter {
         ImageView eventImageView = (ImageView) convertView.findViewById(R.id.image_event);
 
         // GESTION IMAGE
-        // Obtention d'une référence à l'image dans Firebase Storage
-        StorageReference storageRef = storage.getReference();
-        StorageReference imageRef = storageRef.child(currentEvent.getImageDataUrl()); // Chemin vers votre image
-        // Téléchargement de l'image dans un fichier temporaire local
-        File localFile = null;
-        try {
-            localFile = File.createTempFile("images", "jpg");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        File finalLocalFile = localFile;
-        imageRef.getFile(localFile)
-                .addOnSuccessListener(taskSnapshot -> {
-                    Bitmap bitmap = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
-                    eventImageView.setImageBitmap(bitmap);
-                })
-                .addOnFailureListener(exception -> {
-                    // Échec du téléchargement de l'image
-                    Log.e("TAG", "Erreur lors du téléchargement de l'image : " + exception.getMessage());
-                });
+        currentEvent.load_image(eventImageView,storage); // L'ancien code pour charger les image a été mis dans cette fonction.
 
         //Affichage des autres Informations
         /*nameTextView.setText(currentEvent.getName());
@@ -158,9 +141,6 @@ public class EventListAdapter extends BaseAdapter {
 
             }
         });*/
-
-
-
 
         /*eventlist.get(position).participants_name(db, new Event.ParticipantsNameCallback() {
             @Override

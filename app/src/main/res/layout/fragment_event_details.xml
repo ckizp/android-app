@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragments.main.EventDetailsFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/eventdetails_image"
+                android:layout_width="match_parent"
+                android:layout_height="200sp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/eventdetails_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NOMEVENT"
+                    android:textSize="30sp"/>
+                <TextView
+                    android:id="@+id/eventdetails_nbparticipants"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="N participants"
+                    android:textAlignment="viewEnd"
+                    android:textSize="15sp" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_start"
+                android:textSize="25sp"/>
+            <TextView
+                android:id="@+id/eventdetails_date_debut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="----"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_end"
+                android:textSize="25sp"/>
+            <TextView
+                android:id="@+id/eventdetails_date_fin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="----"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_type"
+                android:textSize="25sp"/>
+            <TextView
+                android:id="@+id/eventdetails_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TAG"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/list_participants"
+                android:textSize="25sp"/>
+            <ListView
+                android:id="@+id/eventdetails_participantslist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <Button
+                android:id="@+id/eventdetails_button_participate"
+                android:text="@string/eventdetails_button_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/eventdetails_alreadyin"
+                android:text="@string/eventdetails_alreadyin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</FrameLayout>

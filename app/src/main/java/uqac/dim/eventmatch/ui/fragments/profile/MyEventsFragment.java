@@ -108,7 +108,7 @@ public class MyEventsFragment extends Fragment {
                 // Récupérer l'événement sélectionné à partir de la position dans la liste
                 Event selectedEvent = eventList.get(position);
 
-                Log.d("DIM", "Selecterd event: " + selectedEvent.getName());
+                Log.d("DIM", "Selected event: " + selectedEvent.getName());
 
                 Fragment fragment = new EditEventFragment(selectedEvent);
                 FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();

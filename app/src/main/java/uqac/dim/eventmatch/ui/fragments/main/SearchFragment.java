@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +31,7 @@ import java.util.List;
 import uqac.dim.eventmatch.adapters.EventListAdapter;
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
+import uqac.dim.eventmatch.ui.fragments.profile.EditEventFragment;
 
 /**
  *
@@ -132,6 +134,7 @@ public class SearchFragment extends Fragment {
                     }
                 });
         filterEvents(selected);
+
         return rootView;
     }
 
@@ -144,5 +147,23 @@ public class SearchFragment extends Fragment {
         }
         EventListAdapter customBaseAdapter = new EventListAdapter(rootView.getContext(), filteredList);
         eventListView.setAdapter(customBaseAdapter);
+        eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Récupérer l'événement sélectionné à partir de la position dans la liste
+                Event selectedEvent;
+                if (filteredList.size() == 0){
+                    selectedEvent = eventList.get(position);
+                }else{
+                    selectedEvent = filteredList.get(position);
+                }
+
+                Log.d("DIM", "Selected event: " + selectedEvent.getName());
+
+                Fragment fragment = new EventDetailsFragment(selectedEvent);
+                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment).commit();
+            }
+        });
     }
 }

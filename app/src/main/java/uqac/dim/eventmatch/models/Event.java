@@ -2,10 +2,14 @@ package uqac.dim.eventmatch.models;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -14,7 +18,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -194,6 +202,39 @@ public class Event {
                 }
             });
         }
+    }
+
+    public Event Copy()
+    {
+        Event res = new Event(this.name, this.endDate, this.startDate, this.participantsCount, this.tags, this.participants, this.imageDataUrl, this.owner);
+        res.reference = this.reference;
+        return res;
+    }
+
+
+    public void load_image(ImageView eventImageView, FirebaseStorage storage)
+    {
+        // GESTION IMAGE
+        // Obtention d'une référence à l'image dans Firebase Storage
+        StorageReference storageRef = storage.getReference();
+        StorageReference imageRef = storageRef.child(imageDataUrl); // Chemin vers votre image
+        // Téléchargement de l'image dans un fichier temporaire local
+        File localFile = null;
+        try {
+            localFile = File.createTempFile("images", "jpg");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        File finalLocalFile = localFile;
+        imageRef.getFile(localFile)
+                .addOnSuccessListener(taskSnapshot -> {
+                    Bitmap bitmap = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
+                    eventImageView.setImageBitmap(bitmap);
+                })
+                .addOnFailureListener(exception -> {
+                    // Échec du téléchargement de l'image
+                    Log.e("TAG", "Erreur lors du téléchargement de l'image : " + exception.getMessage());
+                });
     }
 
 
