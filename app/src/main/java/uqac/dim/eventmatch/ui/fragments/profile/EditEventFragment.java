@@ -67,6 +67,7 @@ public class EditEventFragment extends Fragment {
     private Button saveButton;
     private Button reinitButton;
     private ListView participantLstView;
+    private Button debugbutton;
 
     public EditEventFragment() {
         // Required empty public constructor
@@ -154,6 +155,14 @@ public class EditEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 reinitEvent();
+            }
+        });
+
+        debugbutton = rootView.findViewById(R.id.debug);
+        debugbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                debug();
             }
         });
 
@@ -262,7 +271,6 @@ public class EditEventFragment extends Fragment {
         update_all_editview(event_modif);
         updateDate();
         affiche_listuser(event_modif);
-
     }
 
     private int[] timestamp_to_tab(Timestamp timestamp)
@@ -322,5 +330,17 @@ public class EditEventFragment extends Fragment {
         event_modif.setParticipants(participantslist);
         Toast.makeText(context, "User deleted " + username, Toast.LENGTH_SHORT).show();
         affiche_listuser(event_modif);
+    }
+
+    private void debug()
+    {
+        Log.d("DIM", "dans modif : ");
+        for (DocumentReference docref: (event_modif.getParticipants())) {
+            Log.d("DIM", docref.getPath());
+        }
+        Log.d("DIM", "dans db : ");
+        for (DocumentReference docref: (event_db.getParticipants())) {
+            Log.d("DIM", docref.getPath());
+        }
     }
 }
