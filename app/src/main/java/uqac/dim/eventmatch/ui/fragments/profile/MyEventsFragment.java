@@ -89,7 +89,7 @@ public class MyEventsFragment extends Fragment {
                                     List<DocumentReference> partlist = (List<DocumentReference>) document.get("participants");
                                     String imageUrl = document.getString("imageDataUrl");
                                     Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl,owner);
-                                    event.reference = document.getReference();
+                                    event.referenceset(document.getReference());
                                     eventList.add(event);
                                 }
                             }

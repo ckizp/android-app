@@ -131,10 +131,16 @@
                 android:layout_height="wrap_content"
                 android:text="@string/editevent_reinit"/>
             <Button
+                android:id="@+id/edit_event_button_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editevent_button_supp"/>
+            <Button
                 android:id="@+id/debug"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="debug"/>
+
         </LinearLayout>
     </ScrollView>
 
