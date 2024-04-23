@@ -94,4 +94,5 @@
     <string name="title_send_feedback">Envoyer mon feedback</string>
     <string name="text_feedback_use">Vous avez des idées pour nous aider à améliorer EventMatch ? Faites un retour et nous prendrons en compte votre avis !</string>
     <string name="text_edit_feedback">Envoyez-nous vos retours !</string>
+    <string name="description_hint">Description</string>
 </resources>

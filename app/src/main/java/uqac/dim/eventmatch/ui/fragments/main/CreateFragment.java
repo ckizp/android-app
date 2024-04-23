@@ -29,6 +29,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -82,6 +88,9 @@ public class CreateFragment extends Fragment {
     private Button imageButton;
     private int[] debut;
     private int[] fin;
+    private SupportMapFragment mapFragment;
+    private LatLng lastClickedLocation;
+    private TextView description;
     private TextView startTextView;
     private TextView endTextView;
     private View view;
@@ -129,6 +138,8 @@ public class CreateFragment extends Fragment {
         endTextView = view.findViewById(R.id.affichage_fin);
         imageButton = view.findViewById(R.id.btn_import_image);
         eventImageView = view.findViewById(R.id.image_view);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        description = view.findViewById(R.id.event_description);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,6 +229,30 @@ public class CreateFragment extends Fragment {
 
         SpinnerAdapter adapter = new SpinnerAdapter(getContext(), spinnerItems);
         eventType.setAdapter(adapter);
+
+        // Initialisation de la carte
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                            // Suppression de l'ancien marqueur
+                            googleMap.clear();
+                            // Ajout d'un marqueur à la position cliquée
+                            googleMap.addMarker(new MarkerOptions().position(latLng));
+                            // Caméra sur la position cliquée
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                            // Enregistrement de la position cliquée
+                            lastClickedLocation = latLng;
+                        }
+                    });
+                }
+            });
+        } else {
+            Log.e(TAG, "Error: Map Fragment is null");
+        }
 
         return view;
     }
@@ -336,6 +371,9 @@ public class CreateFragment extends Fragment {
             event.setParticipants(partipantsliste);
             event.setOwner(userRef);
 
+            event.setDescription(description.getText().toString());
+            event.setLocation(lastClickedLocation);
+
             database.collection("events").add(event)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
@@ -364,6 +402,9 @@ public class CreateFragment extends Fragment {
         debut = dateTransform(new Date());
         fin = dateTransform(new Date());
         updateDate();
+        lastClickedLocation = null;
+        description.setText("");
+
 
         Log.w("DIM", "Champs vidés");
         Toast.makeText(view.getContext(), "Champs vidés", Toast.LENGTH_SHORT).show();
@@ -400,3 +441,4 @@ public class CreateFragment extends Fragment {
         }
     }
 }
+

@@ -9,23 +9,20 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +33,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * La classe {@link Event} représente un événement d'EventMatch.
  *
  * @version 1.0 30 Mar 2024
- * @author Kyllian Hot
  */
 public class Event {
     /* *************************************************************************
@@ -54,6 +50,8 @@ public class Event {
     private String imageDataUrl;
     private DocumentReference owner;
     public DocumentReference reference;
+    private LatLng location;
+    private String description;
 
 
     /* *************************************************************************
@@ -66,7 +64,7 @@ public class Event {
 
     }
 
-    public Event(String name, Timestamp endDate, Timestamp startDate, int participantsCount, String tags, List<DocumentReference> participants, String imageDataUrl, DocumentReference owner) {
+    public Event(String name, Timestamp endDate, Timestamp startDate, int participantsCount, String tags, List<DocumentReference> participants, String imageDataUrl, DocumentReference owner, LatLng location, String description) {
         this.name = name;
         this.endDate = endDate;
         this.startDate = startDate;
@@ -75,6 +73,8 @@ public class Event {
         this.participants = participants;
         this.imageDataUrl = imageDataUrl;
         this.owner = owner;
+        this.location = location;
+        this.description = description;
     }
 
     /* *************************************************************************
@@ -206,7 +206,7 @@ public class Event {
 
     public Event Copy()
     {
-        Event res = new Event(this.name, this.endDate, this.startDate, this.participantsCount, this.tags, this.participants, this.imageDataUrl, this.owner);
+        Event res = new Event(this.name, this.endDate, this.startDate, this.participantsCount, this.tags, this.participants, this.imageDataUrl, this.owner, this.location, this.description);
         res.reference = this.reference;
         return res;
     }
@@ -236,6 +236,9 @@ public class Event {
                     Log.e("TAG", "Erreur lors du téléchargement de l'image : " + exception.getMessage());
                 });
     }
+
+    // gestion de la map
+
 
 
     /* *************************************************************************
@@ -306,5 +309,21 @@ public class Event {
 
     public void setOwner(DocumentReference owner) {
         this.owner = owner;
+    }
+
+    public LatLng getLocation() {
+        return location;
+    }
+
+    public void setLocation(LatLng location) {
+        this.location = location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

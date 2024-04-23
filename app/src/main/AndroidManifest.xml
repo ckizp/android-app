@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Eventmatch"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCtsv4qTFBnPxizOqGPDnMfrUw7Oq-0hko"/>
+
         <activity
             android:name=".adapters.MyEventListAdapter"
             android:exported="false" />
@@ -46,4 +51,8 @@
             android:exported="false" />
     </application>
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 </manifest>
+

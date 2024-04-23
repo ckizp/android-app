@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -88,7 +89,9 @@ public class MyEventsFragment extends Fragment {
                                     String tags = document.getString("tags");
                                     List<DocumentReference> partlist = (List<DocumentReference>) document.get("participants");
                                     String imageUrl = document.getString("imageDataUrl");
-                                    Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl,owner);
+                                    LatLng location = new LatLng(document.getGeoPoint("location").getLatitude(), document.getGeoPoint("location").getLongitude());
+                                    String description = document.getString("description");
+                                    Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl,owner, location, description);
                                     event.reference = document.getReference();
                                     eventList.add(event);
                                 }

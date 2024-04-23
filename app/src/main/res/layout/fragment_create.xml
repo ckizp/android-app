@@ -230,6 +230,30 @@
         </LinearLayout>
         <!-- End Event Hours Box -->
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <EditText
+                    android:id="@+id/event_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:background="@drawable/background_box"
+                    android:hint="@string/description_hint"
+                    android:inputType="textMultiLine"
+                    android:minHeight="50dp" />
+
+            </LinearLayout>
+
             <Button
                 android:id="@+id/event_button_save"
                 android:layout_width="match_parent"
