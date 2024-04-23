@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <stroke
+        android:width="8dp"
+        android:color="#203C00" /> <!-- Couleur de la bordure pour le tag "sport" -->
+
+    <solid android:color="#8BC34A" /> <!-- Couleur de fond pour le tag "sport" -->
+
+    <corners android:radius="16dp" /> <!-- Optionnel : arrondir les coins de la card -->
+
+</shape>

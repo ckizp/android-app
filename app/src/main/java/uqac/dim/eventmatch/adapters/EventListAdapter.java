@@ -1,66 +1,27 @@
+// EventListAdapter.java
 package uqac.dim.eventmatch.adapters;
 
-
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.auth.api.signin.internal.Storage;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
 
-/**
- *
- * @version 1.0 1 Apr 2024
- * @author Kyllian Hot
- */
 public class EventListAdapter extends BaseAdapter {
-    /* *************************************************************************
-     *                                                                         *
-     * Fields                                                                  *
-     *                                                                         *
-     **************************************************************************/
-
     private Context context;
-    private LayoutInflater inflater;
     private ArrayList<Event> eventList;
-    private FirebaseFirestore database;
-    private FirebaseStorage storage;
 
-    /* *************************************************************************
-     *                                                                         *
-     * Constructors                                                            *
-     *                                                                         *
-     **************************************************************************/
-
-    public EventListAdapter(Context ctx, ArrayList<Event> eventList){
-        context = ctx;
+    public EventListAdapter(Context context, ArrayList<Event> eventList) {
+        this.context = context;
         this.eventList = eventList;
-        inflater = LayoutInflater.from(ctx);
-        database = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
     }
-
-    /* *************************************************************************
-     *                                                                         *
-     * Methods                                                                 *
-     *                                                                         *
-     **************************************************************************/
 
     @Override
     public int getCount() {
@@ -69,97 +30,36 @@ public class EventListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return eventList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = inflater.inflate(R.layout.fragment_event,null);
-        Event currentEvent = eventList.get(position);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.event_item, parent, false);
+        }
 
-        // Recupération des View
-        /*
-        TextView nameTextView = (TextView) convertView.findViewById(R.id.liste_nom);
-        TextView startDateTextView = (TextView) convertView.findViewById(R.id.liste_debut);
-        TextView endDateTextView = (TextView) convertView.findViewById(R.id.liste_fin);
-        TextView partsCountTextView = (TextView) convertView.findViewById(R.id.liste_nb);
-        TextView tagsTextView = (TextView) convertView.findViewById(R.id.liste_type);
-        ListView participantsListView = (ListView) convertView.findViewById(R.id.liste_partlist);
-        ImageView eventImageView = (ImageView) convertView.findViewById(R.id.liste_image);
-         */
+        // Récupération de l'événement à cette position
+        Event event = eventList.get(position);
 
-        TextView eventNameTextView = (TextView) convertView.findViewById(R.id.text_event_name);
-        TextView partsCountTextView = (TextView) convertView.findViewById(R.id.text_participants_count);
-        LinearLayout tagsLinearLayout = (LinearLayout) convertView.findViewById(R.id.layout_tags);
-        ImageView eventImageView = (ImageView) convertView.findViewById(R.id.image_event);
+        // Récupération des vues
+        ImageView imageView = convertView.findViewById(R.id.image_view);
+        TextView eventNameTextView = convertView.findViewById(R.id.text_event_name);
+        TextView participantsCountTextView = convertView.findViewById(R.id.text_participants_count);
+        TextView tagsTextView = convertView.findViewById(R.id.layout_tags);
 
-        // GESTION IMAGE
-        currentEvent.load_image(eventImageView,storage); // L'ancien code pour charger les image a été mis dans cette fonction.
+        // Remplissage des vues avec les données de l'événement
+        // Ici, tu devras remplacer les textes par les données de l'événement
+        eventNameTextView.setText(event.getName());
+        participantsCountTextView.setText(String.valueOf(event.getParticipantsCount()));
+        tagsTextView.setText(event.getTags());
 
-        //Affichage des autres Informations
-        /*nameTextView.setText(currentEvent.getName());
-        startDateTextView.setText(" " +currentEvent.startDateToString());
-        endDateTextView.setText(" " +currentEvent.endDateToString());
-        partsCountTextView.setText(String.valueOf(currentEvent.getParticipantsCount())+" ");
-        tagsTextView.setText(" " +currentEvent.getTags());
-        */
-        eventNameTextView.setText(currentEvent.getName());
-        partsCountTextView.setText(String.valueOf(currentEvent.getParticipantsCount()));
-
-        TextView tagTextView = new TextView(convertView.getContext());
-        tagTextView.setText(currentEvent.getTags());
-        tagTextView.setTextColor(ContextCompat.getColor(convertView.getContext(), R.color.white));
-        tagTextView.setShadowLayer(20, 0, 0, ContextCompat.getColor(convertView.getContext(), R.color.black));
-        tagTextView.setBackground(ContextCompat.getDrawable(convertView.getContext(), R.drawable.default_background));
-        tagsLinearLayout.addView(tagTextView);
-
-        /*currentEvent.generateUserList(new Event.UserListCallback() {
-            @Override
-            public void onUserListReady(ArrayList<User> userList) {
-
-                for (User user : userList) {
-                    Log.d("DIM", "dans l'adapter, User: " + user.getEmail());
-                }
-                UserListAdapter customBaseAdapter = new UserListAdapter(context, userList);
-                participantsListView.setAdapter(customBaseAdapter);
-
-                int itemHeightInSp = 25; // Taille d'un élément en SP
-                int itemCount = customBaseAdapter.getCount(); // Nombre d'éléments dans la liste
-                float density = context.getResources().getDisplayMetrics().density; // Obtenez la densité de l'écran en DPI
-                int itemHeightInPx = (int) (itemHeightInSp * density); // Convertissez la taille de l'élément en SP en pixels
-                int totalHeightInPx = itemCount * itemHeightInPx; // Calculez la hauteur totale en pixels
-
-                ViewGroup.LayoutParams params = participantsListView.getLayoutParams();
-                params.height = totalHeightInPx;
-                participantsListView.setLayoutParams(params);
-
-
-            }
-        });*/
-
-        /*eventlist.get(position).participants_name(db, new Event.ParticipantsNameCallback() {
-            @Override
-            public void onParticipantsNameReady(List<String> participantNames) {
-                // Faites quelque chose avec la liste des noms des participants
-                // Par exemple, mettez à jour l'interface utilisateur
-                if (participantNames.size() == eventlist.get(position).getParticipants().size())
-                {
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, participantNames);
-                    LstViewListe.setAdapter(arrayAdapter);
-                }
-
-            }
-        });*/
-
-        /*
-        List<String> participants = eventlist.get(position).participants_name(db);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context,R.layout.activity_user_list_view,R.id.list_user, participants);
-        LstViewListe.setAdapter(arrayAdapter);*/
+        // Tu devras également charger l'image ici, en utilisant la méthode load_image de la classe Event
 
         return convertView;
     }
