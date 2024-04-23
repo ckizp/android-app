@@ -15,6 +15,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.android.gms.maps.model.LatLng;
@@ -50,7 +51,7 @@ public class Event {
     private String imageDataUrl;
     private DocumentReference owner;
     public DocumentReference reference;
-    private LatLng location;
+    private GeoPoint location;
     private String description;
 
 
@@ -64,7 +65,8 @@ public class Event {
 
     }
 
-    public Event(String name, Timestamp endDate, Timestamp startDate, int participantsCount, String tags, List<DocumentReference> participants, String imageDataUrl, DocumentReference owner, LatLng location, String description) {
+    public Event(String name, Timestamp endDate, Timestamp startDate, int participantsCount, String tags, List<DocumentReference> participants, String imageDataUrl, DocumentReference owner,
+                 GeoPoint location, String description) {
         this.name = name;
         this.endDate = endDate;
         this.startDate = startDate;
@@ -311,11 +313,11 @@ public class Event {
         this.owner = owner;
     }
 
-    public LatLng getLocation() {
+    public GeoPoint getLocation() {
         return location;
     }
 
-    public void setLocation(LatLng location) {
+    public void setLocation(GeoPoint location) {
         this.location = location;
     }
 

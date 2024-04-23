@@ -20,15 +20,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ public class SearchFragment extends Fragment {
                         List<DocumentReference> partlist = (List<DocumentReference>) document.get("participants");
                         String imageUrl = document.getString("imageDataUrl");
                         DocumentReference owner = document.getDocumentReference("owner");
-                        LatLng location = new LatLng(document.getGeoPoint("location").getLatitude(), document.getGeoPoint("location").getLongitude());
+                        GeoPoint location = new GeoPoint(document.getGeoPoint("location").getLatitude(), document.getGeoPoint("location").getLongitude());
                         String description = document.getString("description");
 
                         Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl, owner, location, description);

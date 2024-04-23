@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -89,7 +90,7 @@ public class MyEventsFragment extends Fragment {
                                     String tags = document.getString("tags");
                                     List<DocumentReference> partlist = (List<DocumentReference>) document.get("participants");
                                     String imageUrl = document.getString("imageDataUrl");
-                                    LatLng location = new LatLng(document.getGeoPoint("location").getLatitude(), document.getGeoPoint("location").getLongitude());
+                                    GeoPoint location = new GeoPoint(document.getGeoPoint("location").getLatitude(), document.getGeoPoint("location").getLongitude());
                                     String description = document.getString("description");
                                     Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl,owner, location, description);
                                     event.reference = document.getReference();
