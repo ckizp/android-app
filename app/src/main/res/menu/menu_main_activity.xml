@@ -13,10 +13,6 @@
         android:title="@string/title_create"
         android:icon="@drawable/ic_menu_create_foreground"/>
     <item
-        android:id="@+id/menu_messages"
-        android:title="@string/title_messages"
-        android:icon="@drawable/ic_menu_messages_foreground"/>
-    <item
         android:id="@+id/menu_profile"
         android:title="@string/title_profile"
         android:icon="@drawable/ic_menu_profile_foreground"/>

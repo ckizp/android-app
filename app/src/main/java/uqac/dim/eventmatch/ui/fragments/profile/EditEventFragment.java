@@ -67,6 +67,7 @@ public class EditEventFragment extends Fragment {
     private Button saveButton;
     private Button reinitButton;
     private ListView participantLstView;
+    private Button deleteeventButton;
     private Button debugbutton;
 
     public EditEventFragment() {
@@ -106,6 +107,7 @@ public class EditEventFragment extends Fragment {
 
         saveButton = rootView.findViewById(R.id.editevent_button_save);
         reinitButton = rootView.findViewById(R.id.editevent_button_reinit);
+        deleteeventButton = rootView.findViewById(R.id.edit_event_button_delete);
 
         debut = timestamp_to_tab(event_db.getStartDate());
         fin = timestamp_to_tab(event_db.getEndDate());
@@ -158,6 +160,13 @@ public class EditEventFragment extends Fragment {
             }
         });
 
+        deleteeventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete_event();
+            }
+        });
+
         debugbutton = rootView.findViewById(R.id.debug);
         debugbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +177,7 @@ public class EditEventFragment extends Fragment {
 
         return rootView;
     }
+
 
 
     private void openDialog(String type, String quand){
@@ -224,7 +234,7 @@ public class EditEventFragment extends Fragment {
             event_modif.setTags(eventType.getText().toString());
 
 
-            DocumentReference eventRef = database.document(event_modif.reference.getPath());
+            DocumentReference eventRef = database.document(event_modif.referenceOfthisEvent().getPath());
 
             // Mettez à jour le document avec les nouvelles données
             eventRef.set(event_modif)
@@ -330,6 +340,31 @@ public class EditEventFragment extends Fragment {
         event_modif.setParticipants(participantslist);
         Toast.makeText(context, "User deleted " + username, Toast.LENGTH_SHORT).show();
         affiche_listuser(event_modif);
+    }
+
+
+    private void delete_event() {
+        // Obtenir la référence du document de l'événement à supprimer
+        DocumentReference eventRef = database.document(event_db.referenceOfthisEvent().getPath());
+
+        // Supprimer le document de la base de données Firestore
+        eventRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Document supprimé avec succès
+                        Toast.makeText(context, "Événement supprimé avec succès", Toast.LENGTH_SHORT).show();
+                        //TODO : Optionnellement, vous pouvez rediriger l'utilisateur vers un autre écran ou effectuer toute autre action après la suppression.
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Une erreur s'est produite lors de la suppression du document
+                        Toast.makeText(context, "Erreur lors de la suppression de l'événement", Toast.LENGTH_SHORT).show();
+                        Log.e("DIM", "Erreur lors de la suppression de l'événement", e);
+                    }
+                });
     }
 
     private void debug()

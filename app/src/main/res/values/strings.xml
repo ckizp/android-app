@@ -77,6 +77,7 @@
     <string name="editevent_button_deleteuser">Supprimer ce participant</string>
     <string name="editevent_button_fermer">Fermer la page de modification</string>
     <string name="editevent_vous"> (Vous) </string>
+    <string name="editevent_button_supp">Supprimer l\'événement</string>
 
     <!-- Account strings -->
     <string name="text_personnal_information">Informations personnelles</string>

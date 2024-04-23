@@ -41,8 +41,9 @@ public class ProfileFragment extends Fragment
         NavigationView navigationView = view.findViewById(R.id.profile_navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         TextView TxtProfileName = view.findViewById(R.id.nom_profile);
-        TxtProfileName.setText (FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        TxtProfileName.setText (FirebaseAuth.getInstance().getCurrentUser().getDisplayName()); //TODO : à fix pour avoir vrmt l'user
 
         return view;
     }
