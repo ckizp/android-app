@@ -93,7 +93,8 @@ public class MyEventsFragment extends Fragment {
                                     GeoPoint location = new GeoPoint(document.getGeoPoint("location").getLatitude(), document.getGeoPoint("location").getLongitude());
                                     String description = document.getString("description");
                                     Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl,owner, location, description);
-                                    event.reference = document.getReference();
+
+                                    event.referenceset(document.getReference());
                                     eventList.add(event);
                                 }
                             }

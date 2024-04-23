@@ -52,6 +52,7 @@ public class Event {
     private DocumentReference owner;
     public DocumentReference reference;
     private GeoPoint location;
+
     private String description;
 
 
@@ -211,6 +212,13 @@ public class Event {
         Event res = new Event(this.name, this.endDate, this.startDate, this.participantsCount, this.tags, this.participants, this.imageDataUrl, this.owner, this.location, this.description);
         res.reference = this.reference;
         return res;
+    }
+
+    public DocumentReference referenceOfthisEvent() {//Normal que ce ne soit pas un getReference
+        return reference;
+    }
+    public void referenceset(DocumentReference ref) {//Normal que ce ne soit pas un setReference
+        reference = ref;
     }
 
 
