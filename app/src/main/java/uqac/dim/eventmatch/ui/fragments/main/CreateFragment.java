@@ -44,7 +44,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import uqac.dim.eventmatch.R;
+import uqac.dim.eventmatch.adapters.SpinnerAdapter;
 import uqac.dim.eventmatch.models.Event;
+import uqac.dim.eventmatch.models.SpinnerItem;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
@@ -201,13 +204,20 @@ public class CreateFragment extends Fragment {
         });
 
         //Choix du type d'événement
-        eventType = view.findViewById(R.id.event_type);
-        String[] items = new String[]{"autre", "sport", "musique", "cinéma", "jeux vidéo", "culture", "art", "cuisine", "réunion et rencontre"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
-        //événement par défaut
-        eventType.setSelection(0);
-        eventType.setAdapter(adapter);
+        List<SpinnerItem> spinnerItems = new ArrayList<>();
+        // Ajoutez les autres éléments ici
+        spinnerItems.add(new SpinnerItem(R.drawable.other, "autre"));
+        spinnerItems.add(new SpinnerItem(R.drawable.sport, "sport"));
+        spinnerItems.add(new SpinnerItem(R.drawable.music, "musique"));
+        spinnerItems.add(new SpinnerItem(R.drawable.movie, "cinéma"));
+        spinnerItems.add(new SpinnerItem(R.drawable.game, "jeux vidéo"));
+        spinnerItems.add(new SpinnerItem(R.drawable.culture, "culture"));
+        spinnerItems.add(new SpinnerItem(R.drawable.art, "art"));
+        spinnerItems.add(new SpinnerItem(R.drawable.cooking, "cuisine"));
+        spinnerItems.add(new SpinnerItem(R.drawable.meetup, "réunion et rencontre"));
 
+        SpinnerAdapter adapter = new SpinnerAdapter(getContext(), spinnerItems);
+        eventType.setAdapter(adapter);
 
         return view;
     }
