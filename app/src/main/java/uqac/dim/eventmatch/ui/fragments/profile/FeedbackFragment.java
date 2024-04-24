@@ -62,7 +62,7 @@ public class FeedbackFragment extends Fragment {
         String feedbackText = feedbackEditText.getText().toString();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userId = user.getUid();
-        DocumentReference userReference = database.collection("feedbacks").document(userId);
+        DocumentReference userReference = database.collection("users").document(userId);
 
         Feedback feedback = new Feedback(userReference, feedbackText);
 

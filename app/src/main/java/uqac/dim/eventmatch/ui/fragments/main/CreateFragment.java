@@ -335,7 +335,8 @@ public class CreateFragment extends Fragment {
         } else {
             event.setName(eventName.getText().toString());
             event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
-            event.setTags(eventType.getSelectedItem().toString());
+            SpinnerItem item = (SpinnerItem) eventType.getSelectedItem();
+            event.setTags(item.getText());
 
             BitmapDrawable drawable = (BitmapDrawable) eventImageView.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
