@@ -82,7 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUp.setOnClickListener(v -> {
             String emailText = email.getText().toString().trim();
             String passwordText = password.getText().toString().trim();
-            String username = emailText.split("@")[0];
+            String usernameText = username.getText().toString().trim();
             String confirmPasswordText = confirmPassword.getText().toString().trim();
             String firstnameText = firstname.getText().toString().trim();
             String lastnameText = lastname.getText().toString().trim();
@@ -113,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                 Timestamp birthdate = new Timestamp(date.getTime());
 
-                                User user = new User(emailText, passwordText, username, firstnameText, lastnameText, birthdate, adressText, cityText);
+                                User user = new User(emailText, passwordText, usernameText, firstnameText, lastnameText, birthdate, adressText, cityText);
                                 String uid = auth.getCurrentUser().getUid();
 
                                 dbUsers.document(uid).set(user).addOnCompleteListener(task2 -> {

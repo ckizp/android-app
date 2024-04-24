@@ -1,5 +1,6 @@
 package uqac.dim.eventmatch.ui.fragments.main;
 
+
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.os.Bundle;
@@ -43,7 +44,9 @@ import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
 import uqac.dim.eventmatch.models.User;
 
-public class SearchFragment extends Fragment {
+
+public class EventJoinedFragment extends Fragment {
+
     private LinearLayout container;
     private FirebaseFirestore database;
     private FirebaseStorage storage;
@@ -59,14 +62,14 @@ public class SearchFragment extends Fragment {
 
     private TextView bannerTextView;
     private int currentBannerIndex = 0;
-    public SearchFragment() {
+public EventJoinedFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        rootView = inflater.inflate(R.layout.fragment_joined, container, false);
 
         database = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -191,106 +194,107 @@ public class SearchFragment extends Fragment {
 
     private void filterEvents(String string_filter) {
         container.removeAllViews();
+
+
+
         for (int i = 0; i < eventList.size(); i++) {
             Event event = eventList.get(i);
-            if (string_filter ==  null || string_filter.equals("aucun") || event.getTags().contains(string_filter)) { //TODO y'a une NullPointerException à des moments ça crash je crois c'est fix mais pas sur
-                View eventView = LayoutInflater.from(rootView.getContext()).inflate(R.layout.event_item, container, false);
-
-                // Récupération des vues
-                ImageView imageView = eventView.findViewById(R.id.image_view);
-                TextView eventNameTextView = eventView.findViewById(R.id.text_event_name);
-                TextView participantsCountTextView = eventView.findViewById(R.id.text_participants_count);
-                ImageView tagsImageView = eventView.findViewById(R.id.layout_tags);
-                TextView startDateTextView = eventView.findViewById(R.id.start_date);
-
-                Button detailsButton = eventView.findViewById(R.id.button_details);
-                Button favButton = eventView.findViewById(R.id.button2); //TODO : rename en fonction de ce qu'on fait
-
-                // Remplissage des vues avec les données de l'événement
-                eventNameTextView.setText(event.getName());
-                participantsCountTextView.setText("Participant : "+String.valueOf(event.getParticipantsCount()));
-
-                // Conversion du timestamp en format de date lisible
-                String startDate = DateFormat.format("dd/MM/yyyy", event.getStartDate().toDate()).toString();
-                startDateTextView.setText("Début de l'évènement : "+startDate);
 
 
-                // Chargement du fond en fonction du tag de l'événement
-                if (tagBackgrounds.containsKey(event.getTags().toLowerCase())) {
-                    eventView.setBackgroundResource(tagBackgrounds.get(event.getTags().toLowerCase()));
-                } else {
-                    // Si le tag n'est pas trouvé, utilise le fond par défaut
-                    eventView.setBackgroundResource(R.drawable.card_background);
+            boolean In = false;
+            String userstring = "users/" + user.getUid();
+            for (DocumentReference useref : event.getParticipants()) {
+                if (userstring.equals(useref.getPath())) {
+                    In = true;
                 }
+            }
+            if (In) {
 
-                // Chargement de l'image de l'événement
-                event.load_image(imageView, storage);
+                if ((string_filter ==  null || string_filter.equals("aucun") || event.getTags().contains(string_filter))&&(1==1)) {
+                    View eventView = LayoutInflater.from(rootView.getContext()).inflate(R.layout.event_item, container, false);
 
-                // Chargement de l'image associée au tag
-                if (tagDrawables.containsKey(event.getTags().toLowerCase())) {
-                    tagsImageView.setImageResource(tagDrawables.get(event.getTags().toLowerCase()));
-                } else {
-                    // Si le tag n'est pas trouvé, utilise l'image par défaut
-                    tagsImageView.setImageResource(R.drawable.default_image);
-                }
+                    // Récupération des vues
+                    ImageView imageView = eventView.findViewById(R.id.image_view);
+                    TextView eventNameTextView = eventView.findViewById(R.id.text_event_name);
+                    TextView participantsCountTextView = eventView.findViewById(R.id.text_participants_count);
+                    ImageView tagsImageView = eventView.findViewById(R.id.layout_tags);
+                    TextView startDateTextView = eventView.findViewById(R.id.start_date);
 
-                //Listener des boutons
-                detailsButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d("DIM", "Selected event: " + event.getName());
-                        Fragment fragment = new EventDetailsFragment(event);
-                        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_layout, fragment).commit();
+                    Button detailsButton = eventView.findViewById(R.id.button_details);
+                    Button favButton = eventView.findViewById(R.id.button2); //TODO : rename en fonction de ce qu'on fait
+
+                    // Remplissage des vues avec les données de l'événement
+                    eventNameTextView.setText(event.getName());
+                    participantsCountTextView.setText("Participant : "+String.valueOf(event.getParticipantsCount()));
+
+                    // Conversion du timestamp en format de date lisible
+                    String startDate = DateFormat.format("dd/MM/yyyy", event.getStartDate().toDate()).toString();
+                    startDateTextView.setText("Début de l'évènement : "+startDate);
+
+
+                    // Chargement du fond en fonction du tag de l'événement
+                    if (tagBackgrounds.containsKey(event.getTags().toLowerCase())) {
+                        eventView.setBackgroundResource(tagBackgrounds.get(event.getTags().toLowerCase()));
+                    } else {
+                        // Si le tag n'est pas trouvé, utilise le fond par défaut
+                        eventView.setBackgroundResource(R.drawable.card_background);
                     }
-                });
 
-                int finalI = i;
-                favButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d("DIM", "Selected event: " + event.getName());
-                        //add to firestore
-                        Toast.makeText(getContext(), "Event added to favorites", Toast.LENGTH_SHORT).show();
+                    // Chargement de l'image de l'événement
+                    event.load_image(imageView, storage);
 
-                        DocumentReference doc = eventListRef.get(finalI);
-                        final ArrayList<DocumentReference> userFav = new ArrayList();
+                    // Chargement de l'image associée au tag
+                    if (tagDrawables.containsKey(event.getTags().toLowerCase())) {
+                        tagsImageView.setImageResource(tagDrawables.get(event.getTags().toLowerCase()));
+                    } else {
+                        // Si le tag n'est pas trouvé, utilise l'image par défaut
+                        tagsImageView.setImageResource(R.drawable.default_image);
+                    }
 
-                        database.collection("users").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    for (DocumentReference ref : (List<DocumentReference>) document.get("favorites")) {
-                                        userFav.add(ref);
+                    //Listener des boutons
+                    detailsButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("DIM", "Selected event: " + event.getName());
+                            Fragment fragment = new EventDetailsFragment(event);
+                            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.frame_layout, fragment).commit();
+                        }
+                    });
+
+                    int finalI = i;
+                    favButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("DIM", "Selected event: " + event.getName());
+                            //add to firestore
+                            Toast.makeText(getContext(), "Event added to favorites", Toast.LENGTH_SHORT).show();
+
+                            DocumentReference doc = eventListRef.get(finalI);
+                            final ArrayList<DocumentReference> userFav = new ArrayList();
+
+                            database.collection("users").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        for (DocumentReference ref : (List<DocumentReference>) document.get("favorites")) {
+                                            userFav.add(ref);
+                                        }
+                                        if(!userFav.contains(doc)){
+                                            userFav.add(doc);
+                                        }
+                                        database.collection("users").document(user.getUid()).update("favorites", userFav);
                                     }
-                                    if(!userFav.contains(doc)){
-                                        userFav.add(doc);
-                                    }
-                                    database.collection("users").document(user.getUid()).update("favorites", userFav);
                                 }
-                            }
-                        });
+                            });
 
+                        }
+                    });
 
+                    container.addView(eventView);
 
-
-                    }
-                });
-
-                container.addView(eventView);
-
-                /*
-                eventView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d("DIM", "Selected event: " + event.getName());
-
-                        Fragment fragment = new EventDetailsFragment(event);
-                        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_layout, fragment).commit();
-                    }
-                });*/
+                }
             }
         }
     }

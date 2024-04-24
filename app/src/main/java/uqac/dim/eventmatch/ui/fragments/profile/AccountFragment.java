@@ -92,7 +92,7 @@ public class AccountFragment extends Fragment {
                 String city = documentSnapshot.getString("city");
                 String email = documentSnapshot.getString("email");
                 String password = documentSnapshot.getString("password");
-                password.replaceAll(".", "*");
+                password = password.replaceAll(".", "*");
 
                 usernameTextView.setText(username);
                 lastnameTextView.setText(lastname);

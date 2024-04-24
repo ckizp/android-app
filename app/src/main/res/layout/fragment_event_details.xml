@@ -12,80 +12,132 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/details_background"
+            android:padding="10dp">
+
             <ImageView
                 android:id="@+id/eventdetails_image"
-                android:layout_width="match_parent"
-                android:layout_height="200sp"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:maxWidth="320dp"
+                android:layout_margin="10dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
                     android:id="@+id/eventdetails_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="NOMEVENT"
-                    android:textSize="30sp"/>
-                <TextView
-                    android:id="@+id/eventdetails_nbparticipants"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="N participants"
-                    android:textAlignment="viewEnd"
-                    android:textSize="15sp" />
-            </LinearLayout>
+                    android:textSize="25sp"
+                    android:layout_marginBottom="15dp"/>
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/event_start"
-                android:textSize="25sp"/>
-            <TextView
-                android:id="@+id/eventdetails_date_debut"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="----"
-                android:textSize="20sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/event_end"
-                android:textSize="25sp"/>
-            <TextView
-                android:id="@+id/eventdetails_date_fin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="----"
-                android:textSize="20sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/event_type"
-                android:textSize="25sp"/>
-            <TextView
-                android:id="@+id/eventdetails_tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TAG"
-                android:textSize="20sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/list_participants"
-                android:textSize="25sp"/>
-            <ListView
-                android:id="@+id/eventdetails_participantslist"
+                android:id="@+id/eventdetails_description"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:text="DESC"
+                android:textSize="15sp"
+                android:layout_margin="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_start"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/eventdetails_date_debut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="----"
+                    android:textSize="20sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_end"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/eventdetails_date_fin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="----"
+                    android:textSize="20sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_type"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/eventdetails_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TAG"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/eventdetails_participants"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="N participants"
+                        android:textAlignment="viewEnd"/>
+
+                    <LinearLayout
+                        android:id="@+id/participants_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
             <Button
                 android:id="@+id/eventdetails_button_participate"
                 android:text="@string/eventdetails_button_join"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"/>
             <TextView
                 android:id="@+id/eventdetails_alreadyin"
                 android:text="@string/eventdetails_alreadyin"

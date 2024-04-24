@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.ui.fragments.main.CreateFragment;
+import uqac.dim.eventmatch.ui.fragments.main.EventJoinedFragment;
 import uqac.dim.eventmatch.ui.fragments.main.FavoritesFragment;
 import uqac.dim.eventmatch.ui.fragments.main.ProfileFragment;
 import uqac.dim.eventmatch.ui.fragments.main.SearchFragment;
@@ -68,9 +69,12 @@ public class MainActivity extends AppCompatActivity
         } else if (itemId == R.id.menu_create) {
             fragment = new CreateFragment();
             newPosition = 2;
-        } else if (itemId == R.id.menu_profile) {
-            fragment = new ProfileFragment();
+        } else if (itemId == R.id.event_joined) {
+            fragment = new EventJoinedFragment();
             newPosition = 3;
+        }else if (itemId == R.id.menu_profile) {
+            fragment = new ProfileFragment();
+            newPosition = 4;
         } else {
             return false;
         }

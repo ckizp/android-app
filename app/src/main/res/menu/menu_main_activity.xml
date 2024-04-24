@@ -13,6 +13,10 @@
         android:title="@string/title_create"
         android:icon="@drawable/ic_menu_create_foreground"/>
     <item
+        android:id="@+id/event_joined"
+        android:title="@string/title_joined"
+        android:icon="@drawable/ic_menu_eventjoined_forground"/>
+    <item
         android:id="@+id/menu_profile"
         android:title="@string/title_profile"
         android:icon="@drawable/ic_menu_profile_foreground"/>

@@ -110,7 +110,6 @@ public class EditEventFragment extends Fragment {
 
         participantLstView = rootView.findViewById(R.id.editevent_userlist);
 
-        update_all_editview(event_db);
 
         saveButton = rootView.findViewById(R.id.editevent_button_save);
         reinitButton = rootView.findViewById(R.id.editevent_button_reinit);
@@ -218,6 +217,8 @@ public class EditEventFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         */
 
+        update_all_editview(event_db);
+
         return rootView;
     }
 
@@ -285,7 +286,9 @@ public class EditEventFragment extends Fragment {
         } else {
             event_modif.setName(eventName.getText().toString());
             event_modif.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
-            event_modif.setTags(eventType.getSelectedItem().toString());
+
+            SpinnerItem item = (SpinnerItem) eventType.getSelectedItem();
+            event_modif.setTags(item.getText());
 
             DocumentReference eventRef = database.document(event_modif.referenceOfthisEvent().getPath());
 
@@ -320,10 +323,25 @@ public class EditEventFragment extends Fragment {
 
     private void update_all_editview(Event event)
     {
+
+        // je veux que le spinner eventType soir sur la bonne entrée
+        int eventTypeIndex = getEventTypeIndex(event.getTags());
+        eventType.setSelection(eventTypeIndex);
         eventName.setText(event.getName());
         participantsCount.setText(String.valueOf(event.getParticipantsCount()));
         startTextView.setText(event.startDateToString());
         endTextView.setText(event.endDateToString());
+    }
+
+    private int getEventTypeIndex(String eventTypestr) {
+        SpinnerAdapter adapter = (SpinnerAdapter) eventType.getAdapter();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            SpinnerItem item = adapter.getItem(i);
+            if (item.getText().equals(eventTypestr)) {
+                return i;
+            }
+        }
+        return 0; // Par défaut, revenir au premier élément si non trouvé
     }
 
     private void reinitEvent()
