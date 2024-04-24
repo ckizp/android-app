@@ -76,6 +76,7 @@ public class ProfileFragment extends Fragment
                 .beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
                 .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
                 .commit();
         return true;
     }

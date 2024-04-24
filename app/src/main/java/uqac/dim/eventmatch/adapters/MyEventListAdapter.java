@@ -75,7 +75,9 @@ public class MyEventListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Fragment fragment = new EventDetailsFragment(event);
                 FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, fragment).commit();
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
@@ -84,7 +86,9 @@ public class MyEventListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Fragment fragment = new EditEventFragment(event);
                 FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, fragment).commit();
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 

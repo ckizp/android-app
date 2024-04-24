@@ -1,8 +1,10 @@
 package uqac.dim.eventmatch.ui.fragments.profile;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -69,6 +70,8 @@ public class EditEventFragment extends Fragment {
     private ListView participantLstView;
     private Button deleteeventButton;
     private Button debugbutton;
+    private boolean confirmationDialogShown = false;
+
 
     public EditEventFragment() {
         // Required empty public constructor
@@ -171,9 +174,27 @@ public class EditEventFragment extends Fragment {
         debugbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                debug();
+                showExitConfirmationDialog();
             }
         });
+
+        /* TODO : Trouver une solution pour que cela marche
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (confirmationDialogShown)
+                {
+                    confirmationDialogShown = false;
+                }
+
+                else
+                    showExitConfirmationDialog();
+            }
+        };
+
+        // Ajoutez le rappel à l'activité
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+        */
 
         return rootView;
     }
@@ -227,7 +248,7 @@ public class EditEventFragment extends Fragment {
 
         if (eventName.getText().toString().equals("") || participantsCount.getText().toString().equals("") || eventType.getText().toString().equals("")) {
             Log.w("DIM", "tous les champs ne sont pas remplis");
-            Toast.makeText(view.getContext(), "Erreur, merci de remplir tous les champs", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), getString(R.string.toast_remplir_champs), Toast.LENGTH_SHORT).show();
         } else {
             event_modif.setName(eventName.getText().toString());
             event_modif.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
@@ -242,14 +263,14 @@ public class EditEventFragment extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             // La mise à jour a réussi
-                            Toast.makeText(view.getContext(), "Événement mis à jour avec succès", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), getString(R.string.toast_modif_success_event), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             // La mise à jour a échoué
-                            Toast.makeText(view.getContext(), "Erreur lors de la mise à jour de l'événement", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), getString(R.string.toast_modif_failure_event), Toast.LENGTH_SHORT).show();
                             Log.e("DIM", "Erreur lors de la mise à jour de l'événement", e);
                         }
                     });
@@ -261,7 +282,7 @@ public class EditEventFragment extends Fragment {
         event_modif.StartDateTabSet(debut);
         event_modif.EndDateTabSet(fin);
 
-        startTextView.setText("Début " + event_modif.startDateToString());
+        startTextView.setText("Début " + event_modif.startDateToString()); //TODO : mettre dans string.xml
         endTextView.setText("Fin " + event_modif.endDateToString());
     }
 
@@ -338,7 +359,7 @@ public class EditEventFragment extends Fragment {
         }
         participantslist.remove(pos);
         event_modif.setParticipants(participantslist);
-        Toast.makeText(context, "User deleted " + username, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, getString(R.string.toast_delete_user)+" " + username, Toast.LENGTH_SHORT).show();
         affiche_listuser(event_modif);
     }
 
@@ -346,25 +367,7 @@ public class EditEventFragment extends Fragment {
     private void delete_event() {
         // Obtenir la référence du document de l'événement à supprimer
         DocumentReference eventRef = database.document(event_db.referenceOfthisEvent().getPath());
-
-        // Supprimer le document de la base de données Firestore
-        eventRef.delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Document supprimé avec succès
-                        Toast.makeText(context, "Événement supprimé avec succès", Toast.LENGTH_SHORT).show();
-                        //TODO : Optionnellement, vous pouvez rediriger l'utilisateur vers un autre écran ou effectuer toute autre action après la suppression.
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Une erreur s'est produite lors de la suppression du document
-                        Toast.makeText(context, "Erreur lors de la suppression de l'événement", Toast.LENGTH_SHORT).show();
-                        Log.e("DIM", "Erreur lors de la suppression de l'événement", e);
-                    }
-                });
+        showDeleteConfirmationDialog(eventRef);
     }
 
     private void debug()
@@ -378,4 +381,53 @@ public class EditEventFragment extends Fragment {
             Log.d("DIM", docref.getPath());
         }
     }
+
+    private void showExitConfirmationDialog() {
+        confirmationDialogShown = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(getString(R.string.dialog_title));
+        builder.setMessage(getString(R.string.dialog_text_quit));
+        builder.setPositiveButton(getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                requireActivity().onBackPressed();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.dialog_no), null); // L'utilisateur ne veut pas quitter l'écran
+        builder.show(); // Afficher la boîte de dialogue
+    }
+
+    private void showDeleteConfirmationDialog(DocumentReference eventRef) {
+        confirmationDialogShown = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(getString(R.string.dialog_title));
+        builder.setMessage(getString(R.string.dialog_text_delete));
+        builder.setPositiveButton(getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Supprimer le document de la base de données Firestore
+                eventRef.delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // Document supprimé avec succès
+                                Toast.makeText(context, getString(R.string.toast_supp_success_event), Toast.LENGTH_SHORT).show();
+                                requireActivity().onBackPressed(); // Quitter
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Une erreur s'est produite lors de la suppression du document
+                                Toast.makeText(context, getString(R.string.toast_supp_failure_event), Toast.LENGTH_SHORT).show();
+                                Log.e("DIM", "Erreur lors de la suppression de l'événement", e);
+                            }
+                        });
+            }
+        });
+        builder.setNegativeButton(getString(R.string.dialog_no), null); // L'utilisateur ne veut pas quitter l'écran
+        builder.show(); // Afficher la boîte de dialogue
+    }
+
 }
