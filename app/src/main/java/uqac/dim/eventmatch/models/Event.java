@@ -49,7 +49,7 @@ public class Event {
     private List<DocumentReference> participants;
     private String imageDataUrl;
     private DocumentReference owner;
-    public DocumentReference reference;
+    private DocumentReference reference;
     private GeoPoint location;
     private String description;
 
