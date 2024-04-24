@@ -1,18 +1,26 @@
 package uqac.dim.eventmatch.ui.fragments.main;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.ui.fragments.profile.AccountFragment;
@@ -43,10 +51,23 @@ public class ProfileFragment extends Fragment
 
 
         TextView TxtProfileName = view.findViewById(R.id.nom_profile);
-        TxtProfileName.setText (FirebaseAuth.getInstance().getCurrentUser().getDisplayName()); //TODO : à fix pour avoir vrmt l'user
+        //Display du nom de l'utilisateur
+        TxtProfileName.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+
+        ToggleButton themeToggle = view.findViewById(R.id.theme_toggle);
+
+        themeToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        });
 
         return view;
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -66,7 +87,7 @@ public class ProfileFragment extends Fragment
         } else if (itemId == R.id.menu_feedback) {
             fragment = new FeedbackFragment();
         } else if (itemId == R.id.menu_disconnect) {
-            // à faire
+            FirebaseAuth.getInstance().signOut();
             return true;
         } else {
             return false;

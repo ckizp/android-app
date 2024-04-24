@@ -97,4 +97,6 @@
     <string name="text_edit_feedback">Envoyez-nous vos retours !</string>
     <string name="description_hint">Description</string>
     <string name="greeting_text">Bonjour !</string>
+    <string name="theme_light">Jour</string>
+    <string name="theme_dark">Nuit</string>
 </resources>

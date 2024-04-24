@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#FFFFFF</color> <!-- Blanc -->
-    <color name="textColor">#000000</color> <!-- Noir -->
+    <color name="background">#000000</color> <!-- Noir -->
+    <color name="textColor">#FFFFFF</color> <!-- Blanc -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lavande">#8692f7</color>
     <color name="lavande_light">#b0b9ff</color>
     <color name="lavande_dark">#6978F4</color>
-    <color name="lavande_background">#F0F1FA</color>
+    <color name="lavande_background">#5968DD</color>
     <color name="beige">#F8E5D6</color>
     <color name="ocre">#E6FFDFDF</color>
     <color name="gray">#8C8A8A</color>
