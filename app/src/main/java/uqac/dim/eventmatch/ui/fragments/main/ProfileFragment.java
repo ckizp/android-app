@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment
         } else if (itemId == R.id.menu_account) {
             fragment[0] = new AccountFragment();
         } else if (itemId == R.id.menu_notifications) {
-            fragment = new NotificationsFragment();
+            fragment[0] = new NotificationsFragment();
         } else if (itemId == R.id.menu_rate) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=eventmatch.name"));
 
