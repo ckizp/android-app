@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,7 +36,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -47,7 +45,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import uqac.dim.eventmatch.R;
@@ -218,15 +215,15 @@ public class CreateFragment extends Fragment {
         //Choix du type d'événement
         List<SpinnerItem> spinnerItems = new ArrayList<>();
         // Ajoutez les autres éléments ici
-        spinnerItems.add(new SpinnerItem(R.drawable.other, "autre"));
+        spinnerItems.add(new SpinnerItem(R.drawable.autre, "autre"));
         spinnerItems.add(new SpinnerItem(R.drawable.sport, "sport"));
-        spinnerItems.add(new SpinnerItem(R.drawable.music, "musique"));
-        spinnerItems.add(new SpinnerItem(R.drawable.movie, "cinéma"));
-        spinnerItems.add(new SpinnerItem(R.drawable.game, "jeux vidéo"));
+        spinnerItems.add(new SpinnerItem(R.drawable.musique, "musique"));
+        spinnerItems.add(new SpinnerItem(R.drawable.cinema, "cinéma"));
+        spinnerItems.add(new SpinnerItem(R.drawable.jeux, "jeux"));
         spinnerItems.add(new SpinnerItem(R.drawable.culture, "culture"));
         spinnerItems.add(new SpinnerItem(R.drawable.art, "art"));
-        spinnerItems.add(new SpinnerItem(R.drawable.cooking, "cuisine"));
-        spinnerItems.add(new SpinnerItem(R.drawable.meetup, "réunion et rencontre"));
+        spinnerItems.add(new SpinnerItem(R.drawable.cuisine, "cuisine"));
+        spinnerItems.add(new SpinnerItem(R.drawable.rencontre, "réunion"));
 
         SpinnerAdapter adapter = new SpinnerAdapter(getContext(), spinnerItems);
         eventType.setAdapter(adapter);

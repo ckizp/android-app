@@ -47,19 +47,15 @@ public class EventListAdapter extends BaseAdapter {
         // Récupération de l'événement à cette position
         Event event = eventList.get(position);
 
-        // Récupération des vues
-        ImageView imageView = convertView.findViewById(R.id.image_view);
+
         TextView eventNameTextView = convertView.findViewById(R.id.text_event_name);
         TextView participantsCountTextView = convertView.findViewById(R.id.text_participants_count);
-        TextView tagsTextView = convertView.findViewById(R.id.layout_tags);
 
         // Remplissage des vues avec les données de l'événement
         // Ici, tu devras remplacer les textes par les données de l'événement
         eventNameTextView.setText(event.getName());
         participantsCountTextView.setText(String.valueOf(event.getParticipantsCount()));
-        tagsTextView.setText(event.getTags());
 
-        // Tu devras également charger l'image ici, en utilisant la méthode load_image de la classe Event
 
         return convertView;
     }
