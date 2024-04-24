@@ -158,7 +158,7 @@ public class SearchFragment extends Fragment {
             }
         });
         // Récupération des textes de la bannière depuis Firestore
-        database.collection("messages").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        database.collection("feedbacks").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -166,7 +166,7 @@ public class SearchFragment extends Fragment {
                         Log.d("DIM", document.getId() + " => " + document.getData());
 
                         // Récupérer le texte de la bannière
-                        String text = document.getString("text");
+                        String text = document.getString("feedback");
                         bannerTexts.add(text);
                     }
 
