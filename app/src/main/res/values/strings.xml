@@ -99,4 +99,20 @@
     <string name="greeting_text">Bonjour !</string>
     <string name="theme_light">Jour</string>
     <string name="theme_dark">Nuit</string>
+
+    <!-- OnBackPressedDialog strings -->
+    <string name="dialog_title">Confirmation</string>
+    <string name="dialog_text_quit">Êtes-vous sûr de vouloir quitter sans enregistrer les modifications ?</string>
+    <string name="dialog_text_delete">Êtes-vous sûr de vouloir supprimer cette événement de la base de donnée ?</string>
+    <string name="dialog_yes">Oui</string>
+    <string name="dialog_no">Non</string>
+
+    <!-- Toasts strings --> <!-- TODO : A completer avec les autres dans les différents fichiers -->
+    <string name="toast_remplir_champs">Erreur, merci de remplir tous les champs</string>
+    <string name="toast_modif_success_event">Événement mis à jour avec succès</string>
+    <string name="toast_modif_failure_event">Erreur lors de la mise à jour de l\'événement</string>
+    <string name="toast_supp_success_event">Événement supprimé avec succès</string>
+    <string name="toast_supp_failure_event">Erreur lors de la suppression de l\'événement</string>
+
+    <string name="toast_delete_user">User deleted</string>
 </resources>

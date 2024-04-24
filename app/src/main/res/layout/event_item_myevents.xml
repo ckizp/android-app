@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background"
+    android:elevation="4dp"
+    android:padding="16dp"
+    android:layout_marginEnd="8dp">
+
+    <ImageView
+        android:id="@+id/myeventimage_view"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/default_image" />
+
+    <TextView
+        android:id="@+id/myevent_event_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text_event_name"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/myevent_button_details"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/semigray"
+            android:text="details event"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+        <View
+            android:layout_width="20dp"
+            android:layout_height="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/myevent_button_edit"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Modifier Event"
+            android:backgroundTint="@color/semigray"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+    </LinearLayout>
+</LinearLayout>
