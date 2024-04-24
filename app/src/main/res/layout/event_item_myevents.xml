@@ -44,7 +44,7 @@
             android:backgroundTint="@color/semigray"
             android:text="details event"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="12sp"/>
         <View
             android:layout_width="20dp"
             android:layout_height="0dp" />
@@ -58,7 +58,7 @@
             android:text="Modifier Event"
             android:backgroundTint="@color/semigray"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="12sp"/>
 
     </LinearLayout>
 </LinearLayout>

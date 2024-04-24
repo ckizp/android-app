@@ -81,7 +81,7 @@
             android:backgroundTint="@color/semigray"
             android:text="details event"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="12sp"/>
         <View
             android:layout_width="20dp"
             android:layout_height="0dp" />
@@ -92,10 +92,10 @@
             android:layout_width="130dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="ajout_fav"
+            android:text="ajout favoris"
             android:backgroundTint="@color/semigray"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="12sp"/>
 
     </LinearLayout>
 </LinearLayout>
