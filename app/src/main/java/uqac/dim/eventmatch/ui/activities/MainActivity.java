@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         } else if (itemId == R.id.menu_create) {
             fragment = new CreateFragment();
             newPosition = 2;
-        } else if (itemId == R.id.eventrejoins) {
+        } else if (itemId == R.id.event_joined) {
             fragment = new EventJoinedFragment();
             newPosition = 3;
         }else if (itemId == R.id.menu_profile) {
