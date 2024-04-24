@@ -29,6 +29,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -36,6 +42,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -44,7 +51,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import uqac.dim.eventmatch.R;
+import uqac.dim.eventmatch.adapters.SpinnerAdapter;
 import uqac.dim.eventmatch.models.Event;
+import uqac.dim.eventmatch.models.SpinnerItem;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
@@ -79,6 +89,9 @@ public class CreateFragment extends Fragment {
     private Button imageButton;
     private int[] debut;
     private int[] fin;
+    private SupportMapFragment mapFragment;
+    private GeoPoint lastClickedLocation;
+    private TextView description;
     private TextView startTextView;
     private TextView endTextView;
     private View view;
@@ -126,6 +139,8 @@ public class CreateFragment extends Fragment {
         endTextView = view.findViewById(R.id.affichage_fin);
         imageButton = view.findViewById(R.id.btn_import_image);
         eventImageView = view.findViewById(R.id.image_view);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        description = view.findViewById(R.id.event_description);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,13 +216,44 @@ public class CreateFragment extends Fragment {
         });
 
         //Choix du type d'événement
-        eventType = view.findViewById(R.id.event_type);
-        String[] items = new String[]{"autre", "sport", "musique", "cinéma", "jeux vidéo", "culture", "art", "cuisine", "réunion et rencontre"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
-        //événement par défaut
-        eventType.setSelection(0);
+        List<SpinnerItem> spinnerItems = new ArrayList<>();
+        // Ajoutez les autres éléments ici
+        spinnerItems.add(new SpinnerItem(R.drawable.other, "autre"));
+        spinnerItems.add(new SpinnerItem(R.drawable.sport, "sport"));
+        spinnerItems.add(new SpinnerItem(R.drawable.music, "musique"));
+        spinnerItems.add(new SpinnerItem(R.drawable.movie, "cinéma"));
+        spinnerItems.add(new SpinnerItem(R.drawable.game, "jeux vidéo"));
+        spinnerItems.add(new SpinnerItem(R.drawable.culture, "culture"));
+        spinnerItems.add(new SpinnerItem(R.drawable.art, "art"));
+        spinnerItems.add(new SpinnerItem(R.drawable.cooking, "cuisine"));
+        spinnerItems.add(new SpinnerItem(R.drawable.meetup, "réunion et rencontre"));
+
+        SpinnerAdapter adapter = new SpinnerAdapter(getContext(), spinnerItems);
         eventType.setAdapter(adapter);
 
+        // Initialisation de la carte
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                            // Suppression de l'ancien marqueur
+                            googleMap.clear();
+                            // Ajout d'un marqueur à la position cliquée
+                            googleMap.addMarker(new MarkerOptions().position(latLng));
+                            // Caméra sur la position cliquée
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                            // Enregistrement de la position cliquée
+                            lastClickedLocation = new GeoPoint(latLng.latitude, latLng.longitude);
+                        }
+                    });
+                }
+            });
+        } else {
+            Log.e(TAG, "Error: Map Fragment is null");
+        }
 
         return view;
     }
@@ -281,15 +327,18 @@ public class CreateFragment extends Fragment {
         Log.w("DIM", "nb : " + participantsCount.getText().toString());
         Log.w("DIM", "type : " + eventType.getSelectedItem().toString());
 
-        if (eventName.getText().toString().equals("") || participantsCount.getText().toString().equals("") || eventType.getSelectedItem().toString().equals("")) {
+        if (eventName.getText().toString().equals("") || participantsCount.getText().toString().equals("") || eventType.getSelectedItem().toString().equals("") || eventImageView.getDrawable() == null) {
             Log.w("DIM", "tous les champs ne sont pas remplis");
             Toast.makeText(view.getContext(), "Erreur, merci de remplir tous les champs", Toast.LENGTH_SHORT).show();
+        }
+        // vérification que l'heure de fin est bien après l'heure de début
+        else if (new GregorianCalendar(fin[0], fin[1] - 1, fin[2], fin[3], fin[4]).before(new GregorianCalendar(debut[0], debut[1] - 1, debut[2], debut[3], debut[4]))){
+            Log.w("DIM", "L'heure de fin ne peut pas être antérieure à l'heure de début");
+            Toast.makeText(view.getContext(), "La date de fin ne peut pas être antérieure à la date de début", Toast.LENGTH_SHORT).show();
         } else {
             event.setName(eventName.getText().toString());
             event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
             event.setTags(eventType.getSelectedItem().toString());
-
-
 
             BitmapDrawable drawable = (BitmapDrawable) eventImageView.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
@@ -308,11 +357,8 @@ public class CreateFragment extends Fragment {
                 // Erreur lors du téléversement du fichier
                 Log.d("DIM","envois de l'image raté");
             });
-            //TODO : Gérer les cas où il n'y a pas d'image ou bien si ell ne s'envois pas.
-
 
             event.setImageDataUrl(path);
-
 
             event.setName(eventName.getText().toString());
             event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
@@ -325,6 +371,15 @@ public class CreateFragment extends Fragment {
             partipantsliste.add(userRef);
             event.setParticipants(partipantsliste);
             event.setOwner(userRef);
+
+            event.setDescription(description.getText().toString());
+
+            if (lastClickedLocation != null) {
+                event.setLocation(new GeoPoint(lastClickedLocation.getLatitude(), lastClickedLocation.getLongitude()));
+            } else {
+                event.setLocation(new GeoPoint(0, 0));
+            }
+
 
             database.collection("events").add(event)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -341,12 +396,19 @@ public class CreateFragment extends Fragment {
                             Toast.makeText(view.getContext(), "Erreur lors de l'envoi des données à Firestore", Toast.LENGTH_SHORT).show();
                         }
                     });
+            clearAllFields();
         }
     }
 
     public void onClearButtonClick(View view) {
         Log.i("DIM", "Clear des entrées utilisateurs");
+        clearAllFields();
+        Log.w("DIM", "Champs vidés");
+        Toast.makeText(view.getContext(), "Champs vidés", Toast.LENGTH_SHORT).show();
+    }
 
+    // Méthode pour vider les champs
+    public void clearAllFields() {
         eventName.setText("");
         participantsCount.setText("");
         eventImageView.setImageResource(0);
@@ -354,9 +416,8 @@ public class CreateFragment extends Fragment {
         debut = dateTransform(new Date());
         fin = dateTransform(new Date());
         updateDate();
-
-        Log.w("DIM", "Champs vidés");
-        Toast.makeText(view.getContext(), "Champs vidés", Toast.LENGTH_SHORT).show();
+        lastClickedLocation = null;
+        description.setText("");
     }
 
     public void updateDate() {
@@ -390,3 +451,4 @@ public class CreateFragment extends Fragment {
         }
     }
 }
+

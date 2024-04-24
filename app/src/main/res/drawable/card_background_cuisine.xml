@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <stroke
+        android:width="8dp"
+        android:color="#3EB10C" /> <!-- Couleur de la bordure pour le tag "cuisine" -->
+
+    <solid android:color="#BBF66A" /> <!-- Couleur de fond pour le tag "cuisine" -->
+
+    <corners android:radius="16dp" /> <!-- Optionnel : arrondir les coins de la card -->
+
+</shape>
