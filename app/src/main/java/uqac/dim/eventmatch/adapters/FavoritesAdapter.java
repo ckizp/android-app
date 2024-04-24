@@ -2,6 +2,7 @@
 package uqac.dim.eventmatch.adapters;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,8 +84,10 @@ public class FavoritesAdapter extends BaseAdapter {
 
         event.load_image(imageView,storage);
         eventNameTextView.setText(event.getName());
-        eventDateTextView.setText(event.getStartDate().toDate().toString());
-        participantsTextView.setText(String.valueOf(event.getParticipants().size()));
+        String startDate = DateFormat.format("dd/MM/yyyy", event.getStartDate().toDate()).toString();
+        eventDateTextView.setText("Début de l'évènement : "+startDate);
+
+        participantsTextView.setText("Participant : "+ String.valueOf(event.getParticipantsCount()));
         //TODO : Changer le fond du truc
 
         DetailsButton.setOnClickListener(new View.OnClickListener() {
