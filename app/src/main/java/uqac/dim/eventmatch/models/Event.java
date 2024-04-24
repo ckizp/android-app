@@ -52,9 +52,7 @@ public class Event {
     private DocumentReference owner;
     public DocumentReference reference;
     private GeoPoint location;
-
     private String description;
-
 
     /* *************************************************************************
      *                                                                         *
@@ -248,8 +246,6 @@ public class Event {
     }
 
     // gestion de la map
-
-
 
     /* *************************************************************************
      *                                                                         *

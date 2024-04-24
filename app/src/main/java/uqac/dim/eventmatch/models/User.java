@@ -22,7 +22,6 @@ public class User {
     private String adress;
     private String city;
 
-
     /* *************************************************************************
      *                                                                         *
      * Constructors                                                            *
