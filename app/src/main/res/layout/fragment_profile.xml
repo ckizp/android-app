@@ -54,16 +54,6 @@
                 app:menu="@menu/menu_profile"
                 android:layout_marginTop="16dp"/>
 
-            <ToggleButton
-                android:id="@+id/theme_toggle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOff="@string/theme_light"
-                android:textOn="@string/theme_dark"
-                android:checked="false"
-                android:layout_gravity="center"
-                android:layout_marginBottom="24dp"/>
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
