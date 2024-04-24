@@ -2,10 +2,7 @@ package uqac.dim.eventmatch.ui.fragments.main;
 
 import android.content.Intent;
 import android.net.Uri;
-import static android.content.Context.MODE_PRIVATE;
 
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,15 +23,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Objects;
-
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.ui.activities.LoginActivity;
 import uqac.dim.eventmatch.ui.fragments.profile.AccountFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.FeedbackFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.MyEventsFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.NotificationsFragment;
-import uqac.dim.eventmatch.ui.fragments.profile.SecurityFragment;
 
 /**
  *
@@ -90,8 +84,6 @@ public class ProfileFragment extends Fragment
             fragment = new AccountFragment();
         } else if (itemId == R.id.menu_notifications) {
             fragment = new NotificationsFragment();
-        } else if (itemId == R.id.menu_security) {
-            fragment = new SecurityFragment();
         } else if (itemId == R.id.menu_rate) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=eventmatch.name"));
 
