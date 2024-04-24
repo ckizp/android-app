@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,6 +31,7 @@ import java.util.List;
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
 import uqac.dim.eventmatch.ui.fragments.main.EventDetailsFragment;
+import uqac.dim.eventmatch.ui.fragments.main.FavoritesFragment;
 
 
 public class FavoritesAdapter extends BaseAdapter {
@@ -107,13 +109,24 @@ public class FavoritesAdapter extends BaseAdapter {
                 DocumentReference userReference = database.collection("users").document(user.getUid());
                 userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<DocumentSnapshot> task) {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             List<DocumentReference> favorites = (List<DocumentReference>) document.get("favorites");
                             favorites.remove(position);
-                            eventList.remove(position);
-                            userReference.update("favorites", favorites);
+                            userReference.update("favorites", favorites).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        // Recharger le fragment
+                                        Fragment fragment = new FavoritesFragment();
+                                        FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+                                        transaction.replace(R.id.frame_layout, fragment);
+                                        transaction.addToBackStack(null);
+                                        transaction.commit();
+                                    }
+                                }
+                            });
                         }
                     }
                 });
