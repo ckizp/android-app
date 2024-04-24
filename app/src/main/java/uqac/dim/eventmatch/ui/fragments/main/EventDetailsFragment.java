@@ -21,9 +21,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.SupportErrorDialogFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -77,9 +79,11 @@ public class EventDetailsFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_event_details, container, false);
 
         context = rootView.getContext();
+
         database = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-        /*user = FirebaseAuth.getInstance().getCurrentUser();*/
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         TxtViewName = rootView.findViewById(R.id.eventdetails_name);
         TxtViewStratDate = rootView.findViewById(R.id.eventdetails_date_debut);
         TxtViewEndDate = rootView.findViewById(R.id.eventdetails_date_fin);
@@ -90,14 +94,49 @@ public class EventDetailsFragment extends Fragment {
         ImgView = rootView.findViewById(R.id.eventdetails_image);
         ButtonJoin = rootView.findViewById(R.id.eventdetails_button_participate);
 
-
-
+        update_participation();
         update_all();
 
 
         return rootView;
     }
 
+    private void update_participation()
+    {
+        boolean In = false;
+        String userstring = "users/" + user.getUid();
+        for (DocumentReference useref : event.getParticipants()) {
+            if (userstring.equals(useref.getPath()))
+            {
+                In = true;
+            }
+        }
+        if (In)
+        {
+
+            TxtViewAlreadyInEvent.setVisibility(View.VISIBLE);
+            ButtonJoin.setVisibility(View.GONE);
+            ButtonJoin.setOnClickListener(null);
+        }
+        else
+        {
+            TxtViewAlreadyInEvent.setVisibility(View.GONE);
+            ButtonJoin.setVisibility(View.VISIBLE);
+            ButtonJoin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RejoindreEvent();
+                }
+            });
+        }
+
+    }
+
+    private void RejoindreEvent() {
+
+        Toast.makeText(getContext(),"Pas encore implémenté, ça arrive fort les gars",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(),"Evénement rejoins avec succès",Toast.LENGTH_SHORT).show();
+    }
 
     private void update_list_view(Event event)
     {

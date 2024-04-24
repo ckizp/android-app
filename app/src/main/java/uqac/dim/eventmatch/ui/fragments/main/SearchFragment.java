@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -177,10 +179,10 @@ public class SearchFragment extends Fragment {
         return rootView;
     }
 
-    private void filterEvents(String filter) {
+    private void filterEvents(String string_filter) {
         container.removeAllViews();
         for (Event event : eventList) {
-            if (filter.equals("aucun") || event.getTags().contains(filter)) {
+            if (string_filter ==  null || string_filter.equals("aucun") || event.getTags().contains(string_filter)) { //TODO y'a une NullPointerException à des moments ça crash je crois c'est fix mais pas sur
                 View eventView = LayoutInflater.from(rootView.getContext()).inflate(R.layout.event_item, container, false);
 
                 // Récupération des vues
@@ -189,6 +191,9 @@ public class SearchFragment extends Fragment {
                 TextView participantsCountTextView = eventView.findViewById(R.id.text_participants_count);
                 ImageView tagsImageView = eventView.findViewById(R.id.layout_tags);
                 TextView startDateTextView = eventView.findViewById(R.id.start_date);
+
+                Button detailsButton = eventView.findViewById(R.id.button_details);
+                Button favButton = eventView.findViewById(R.id.button2); //TODO : rename en fonction de ce qu'on fait
 
                 // Remplissage des vues avec les données de l'événement
                 eventNameTextView.setText(event.getName());
@@ -218,8 +223,28 @@ public class SearchFragment extends Fragment {
                     tagsImageView.setImageResource(R.drawable.default_image);
                 }
 
+                //Listener des boutons
+                detailsButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("DIM", "Selected event: " + event.getName());
+                        Fragment fragment = new EventDetailsFragment(event);
+                        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_layout, fragment).commit();
+                    }
+                });
+
+                favButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getContext(),"faut impleter ça on fait quoi ?",Toast.LENGTH_SHORT).show();
+                        //TODO : faire ce qu'on doit faire
+                    }
+                });
+
                 container.addView(eventView);
 
+                /*
                 eventView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -229,7 +254,7 @@ public class SearchFragment extends Fragment {
                         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.frame_layout, fragment).commit();
                     }
-                });
+                });*/
             }
         }
     }

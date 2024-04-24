@@ -73,8 +73,8 @@
         android:layout_gravity="center">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button1"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:id="@+id/button_details"
             android:layout_width="130dp"
             android:layout_height="50dp"
             android:layout_weight="1"
