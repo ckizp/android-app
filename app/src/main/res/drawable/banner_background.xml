@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <stroke
+        android:width="2dp"
+        android:color="#000000" /> <!-- Couleur de la bordure pour le tag "art" -->
+
+    <solid android:color="#7EFFFFFF" /> <!-- Couleur de fond pour le tag "art" -->
+
+    <corners android:radius="400dp" /> <!-- Optionnel : arrondir les coins de la card -->
+
+</shape>

@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -56,12 +57,13 @@ public class EventDetailsFragment extends Fragment {
     private FirebaseStorage storage;
     private FirebaseUser user;
     private TextView TxtViewName;
+    private TextView TxtViewDescription;
     private TextView TxtViewStratDate;
     private TextView TxtViewEndDate;
     private TextView TxtViewParticipantcount;
     private TextView TxtViewTags;
     private TextView TxtViewAlreadyInEvent;
-    private ListView LstViewParticipants;
+    private LinearLayout LstViewParticipants;
     private ImageView ImgView;
     private Button ButtonJoin;
 
@@ -85,12 +87,13 @@ public class EventDetailsFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         TxtViewName = rootView.findViewById(R.id.eventdetails_name);
+        TxtViewDescription = rootView.findViewById(R.id.eventdetails_description);
         TxtViewStratDate = rootView.findViewById(R.id.eventdetails_date_debut);
         TxtViewEndDate = rootView.findViewById(R.id.eventdetails_date_fin);
-        TxtViewParticipantcount = rootView.findViewById(R.id.eventdetails_nbparticipants);
+        TxtViewParticipantcount = rootView.findViewById(R.id.eventdetails_participants);
         TxtViewTags = rootView.findViewById(R.id.eventdetails_tag);
         TxtViewAlreadyInEvent = rootView.findViewById(R.id.eventdetails_alreadyin);
-        LstViewParticipants = rootView.findViewById(R.id.eventdetails_participantslist);
+        LstViewParticipants = rootView.findViewById(R.id.participants_list);
         ImgView = rootView.findViewById(R.id.eventdetails_image);
         ButtonJoin = rootView.findViewById(R.id.eventdetails_button_participate);
 
@@ -163,33 +166,23 @@ public class EventDetailsFragment extends Fragment {
 
     }
 
-    private void update_list_view(Event event)
-    {
+    private void update_list_view(Event event) {
         Fragment frag = this;
         event.generateUserList(new Event.UserListCallback() {
             @Override
             public void onUserListReady(ArrayList<User> userList) {
+                LstViewParticipants.removeAllViews(); // Supprimer les vues précédentes
 
                 for (User user : userList) {
-                    Log.d("DIM", "dans l'adapter, User: " + user.getEmail());
+                    TextView textView = new TextView(context);
+                    textView.setText(user.getUsername()+" ");
+                    LstViewParticipants.addView(textView); // Ajouter le TextView à la LinearLayout
                 }
-                UserListAdapter customBaseAdapter = new UserListAdapter(context, userList, frag,"EventDetailsFragment");
-                LstViewParticipants.setAdapter(customBaseAdapter);
-
-                int itemHeightInSp = 50; // Taille d'un élément en SP
-                int itemCount = customBaseAdapter.getCount(); // Nombre d'éléments dans la liste
-                float density = context.getResources().getDisplayMetrics().density; // Obtenez la densité de l'écran en DPI
-                int itemHeightInPx = (int) (itemHeightInSp * density); // Convertissez la taille de l'élément en SP en pixels
-                int totalHeightInPx = itemCount * itemHeightInPx; // Calculez la hauteur totale en pixels
-
-                ViewGroup.LayoutParams params = LstViewParticipants.getLayoutParams();
-                params.height = totalHeightInPx;
-                LstViewParticipants.setLayoutParams(params);
-
-
+                TxtViewParticipantcount.setText("Participants ("+String.valueOf(userList.size())+"/"+String.valueOf(event.getParticipantsCount()) + ") :  ");
             }
         });
     }
+
     void update_image_view()
     {
         event.load_image(ImgView,storage);
@@ -197,7 +190,7 @@ public class EventDetailsFragment extends Fragment {
     void update_txt_view()
     {
         TxtViewName.setText(event.getName());
-        TxtViewParticipantcount.setText(String.valueOf(event.getParticipantsCount()) + " participants");
+        TxtViewDescription.setText(event.getDescription());
         TxtViewTags.setText(event.getTags());
         TxtViewStratDate.setText(event.startDateToString());
         TxtViewEndDate.setText(event.endDateToString());

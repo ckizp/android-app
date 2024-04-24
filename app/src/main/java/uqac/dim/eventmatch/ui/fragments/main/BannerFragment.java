@@ -57,7 +57,7 @@ public class BannerFragment extends Fragment {
 
 
                     // Mesurer la largeur du texte de la bannière
-                    int textWidth = (int) bannerTextView.getPaint().measureText(bannerTexts.get(currentBannerIndex)) + 50;
+                    int textWidth = (int) bannerTextView.getPaint().measureText(bannerTexts.get(currentBannerIndex)) + 100;
 
                     // Réinitialisez la position de la bannière
                     DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
