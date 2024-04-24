@@ -109,7 +109,6 @@
     <string name="text_event_starts">Début d\'un événement</string>
     <string name="text_event_starts_desc">Activez cette notification pour être notifié(e) du début des événements auxquels vous participez.</string>
     <string name="text_my_events_desc">Activez cette notification pour être notifié(e) des événements que vous gérez.</string>
-    <string name="description_hint">Description</string>
     <string name="greeting_text">Bonjour !</string>
     <string name="theme_light">Jour</string>
     <string name="theme_dark">Nuit</string>

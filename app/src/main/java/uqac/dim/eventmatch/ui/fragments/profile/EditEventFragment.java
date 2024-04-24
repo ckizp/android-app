@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -33,11 +34,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import uqac.dim.eventmatch.R;
+import uqac.dim.eventmatch.adapters.SpinnerAdapter;
 import uqac.dim.eventmatch.adapters.UserListAdapter;
 import uqac.dim.eventmatch.models.Event;
+import uqac.dim.eventmatch.models.SpinnerItem;
 import uqac.dim.eventmatch.models.User;
 
 /*/**
@@ -54,9 +58,9 @@ public class EditEventFragment extends Fragment {
     private FirebaseFirestore database;
     private FirebaseStorage storage;
     private FirebaseUser user;
-    private EditText eventName;
+    private TextView eventName;
     private EditText participantsCount;
-    private EditText eventType;
+    private Spinner eventType;
     private Button startDateButton;
     private Button endDateButton;
     private Button startTimeButton;
@@ -117,7 +121,25 @@ public class EditEventFragment extends Fragment {
 
         affiche_listuser(event_db);
 
+        //Choix du type d'événement
+        List<SpinnerItem> spinnerItems = new ArrayList<>();
+        // Ajoutez les autres éléments ici
+        spinnerItems.add(new SpinnerItem(R.drawable.autre, "autre"));
+        spinnerItems.add(new SpinnerItem(R.drawable.sport, "sport"));
+        spinnerItems.add(new SpinnerItem(R.drawable.musique, "musique"));
+        spinnerItems.add(new SpinnerItem(R.drawable.cinema, "cinéma"));
+        spinnerItems.add(new SpinnerItem(R.drawable.jeux, "jeux"));
+        spinnerItems.add(new SpinnerItem(R.drawable.culture, "culture"));
+        spinnerItems.add(new SpinnerItem(R.drawable.art, "art"));
+        spinnerItems.add(new SpinnerItem(R.drawable.cuisine, "cuisine"));
+        spinnerItems.add(new SpinnerItem(R.drawable.rencontre, "réunion"));
 
+        SpinnerAdapter adapter = new SpinnerAdapter(getContext(), spinnerItems);
+        eventType.setAdapter(adapter);
+
+        // récupération des dates de début et de fin de l'événement
+        debut = timestamp_to_tab(event_db.getStartDate());
+        fin = timestamp_to_tab(event_db.getEndDate());
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,39 +224,50 @@ public class EditEventFragment extends Fragment {
 
 
     private void openDialog(String type, String quand){
-        if (type == "date"){
+        Calendar cal = Calendar.getInstance();
+        if (type.equals("date")){
             DatePickerDialog dialog = new DatePickerDialog(rootView.getContext(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    if (quand == "debut"){
+                    if (quand.equals("debut")){
                         debut[0] = year;
-                        debut[1] = month+1;
+                        debut[1] = month + 1;
                         debut[2] = dayOfMonth;
-                    } else if (quand == "fin") {
+                    } else if (quand.equals("fin")) {
+                        if (new GregorianCalendar(year, month, dayOfMonth).before(new GregorianCalendar(debut[0], debut[1] - 1, debut[2]))) {
+                            Toast.makeText(view.getContext(), "La date de fin ne peut pas être antérieure à la date de début.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         fin[0] = year;
-                        fin[1] = month+1;
+                        fin[1] = month + 1;
                         fin[2] = dayOfMonth;
                     }
                     updateDate();
-                    Timestamp test;
                 }
-            }, 2024, 3, 1);
+            }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+
+            // Set minimum date to current date
+            dialog.getDatePicker().setMinDate(cal.getTimeInMillis());
+
             dialog.show();
-        } else if (type == "heure") {
+        } else if (type.equals("heure")) {
             TimePickerDialog dialog = new TimePickerDialog(rootView.getContext(), new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    if (quand == "debut"){
+                    if (quand.equals("debut")){
                         debut[3] = hourOfDay;
                         debut[4] = minute;
-                    }
-                    else if (quand == "fin") {
+                    } else if (quand.equals("fin")) {
+                        if (new GregorianCalendar(fin[0], fin[1] - 1, fin[2], hourOfDay, minute).before(new GregorianCalendar(debut[0], debut[1] - 1, debut[2], debut[3], debut[4]))) {
+                            Toast.makeText(view.getContext(), "L'heure de fin ne peut pas être antérieure à l'heure de début.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         fin[3] = hourOfDay;
                         fin[4] = minute;
                     }
                     updateDate();
                 }
-            }, 0,0,true);
+            }, 0, 0, true);
             dialog.show();
         }
     }
@@ -244,16 +277,15 @@ public class EditEventFragment extends Fragment {
 
         Log.w("DIM", "nom : " + eventName.getText().toString());
         Log.w("DIM", "nb : " + participantsCount.getText().toString());
-        Log.w("DIM", "type : " + eventType.getText().toString());
+        Log.w("DIM", "type : " + eventType.getSelectedItem().toString());
 
-        if (eventName.getText().toString().equals("") || participantsCount.getText().toString().equals("") || eventType.getText().toString().equals("")) {
+        if (eventName.getText().toString().isEmpty() || participantsCount.getText().toString().isEmpty() || eventType.getSelectedItem().toString().isEmpty()) {
             Log.w("DIM", "tous les champs ne sont pas remplis");
             Toast.makeText(view.getContext(), getString(R.string.toast_remplir_champs), Toast.LENGTH_SHORT).show();
         } else {
             event_modif.setName(eventName.getText().toString());
             event_modif.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
-            event_modif.setTags(eventType.getText().toString());
-
+            event_modif.setTags(eventType.getSelectedItem().toString());
 
             DocumentReference eventRef = database.document(event_modif.referenceOfthisEvent().getPath());
 
@@ -290,7 +322,6 @@ public class EditEventFragment extends Fragment {
     {
         eventName.setText(event.getName());
         participantsCount.setText(String.valueOf(event.getParticipantsCount()));
-        eventType.setText(event.getTags());
         startTextView.setText(event.startDateToString());
         endTextView.setText(event.endDateToString());
     }
@@ -321,6 +352,18 @@ public class EditEventFragment extends Fragment {
 
         return res;
 
+    }
+
+    // Méthode pour transformer la date en liste d'entiers
+    public int[] dateTransform(Date date){
+        int[] dateTab = new int[6];
+        dateTab[0] = date.getYear() + 1900;
+        dateTab[1] = date.getMonth() + 1;
+        dateTab[2] = date.getDate();
+        dateTab[3] = date.getHours();
+        dateTab[4] = date.getMinutes();
+        dateTab[5] = date.getSeconds();
+        return dateTab;
     }
 
     private void affiche_listuser(Event event)
