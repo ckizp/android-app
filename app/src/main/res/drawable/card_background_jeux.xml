@@ -4,9 +4,9 @@
 
     <stroke
         android:width="8dp"
-        android:color="#673AB7" /> <!-- Couleur de la bordure pour le tag "réunion et rencontre" -->
+        android:color="#02185A" /> <!-- Couleur de la bordure pour le tag "jeux" -->
 
-    <solid android:color="#B692F6" /> <!-- Couleur de fond pour le tag "réunion et rencontre" -->
+    <solid android:color="#8681FB" /> <!-- Couleur de fond pour le tag "jeux" -->
 
     <corners android:radius="16dp" /> <!-- Optionnel : arrondir les coins de la card -->
 

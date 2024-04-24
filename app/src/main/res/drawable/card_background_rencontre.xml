@@ -4,9 +4,9 @@
 
     <stroke
         android:width="8dp"
-        android:color="#02185A" /> <!-- Couleur de la bordure pour le tag "jeux vidéo" -->
+        android:color="#673AB7" /> <!-- Couleur de la bordure pour le tag "réunion" -->
 
-    <solid android:color="#8681FB" /> <!-- Couleur de fond pour le tag "jeux vidéo" -->
+    <solid android:color="#B692F6" /> <!-- Couleur de fond pour le tag "réunion" -->
 
     <corners android:radius="16dp" /> <!-- Optionnel : arrondir les coins de la card -->
 

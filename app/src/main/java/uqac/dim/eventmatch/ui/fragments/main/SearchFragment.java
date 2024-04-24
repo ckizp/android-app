@@ -1,9 +1,9 @@
-// SearchFragment.java
 package uqac.dim.eventmatch.ui.fragments.main;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +29,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,17 +36,21 @@ import java.util.List;
 
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
-import uqac.dim.eventmatch.ui.fragments.profile.EditEventFragment;
 
 public class SearchFragment extends Fragment {
     private LinearLayout container;
     private FirebaseFirestore database;
     private FirebaseStorage storage;
     private ArrayList<Event> eventList;
+
+    private ArrayList<String> bannerTexts;
     private View rootView;
     private String selected;
     private HashMap<String, Integer> tagBackgrounds;
+    private HashMap<String, Integer> tagDrawables;
 
+    private TextView bannerTextView;
+    private int currentBannerIndex = 0;
     public SearchFragment() {
     }
 
@@ -60,23 +62,40 @@ public class SearchFragment extends Fragment {
 
         database = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+
         this.container = rootView.findViewById(R.id.container);
         eventList = new ArrayList<>();
+
+        bannerTextView = rootView.findViewById(R.id.banner_text_view);
+        bannerTexts = new ArrayList<>();
 
         // Initialise la HashMap pour associer chaque tag à son drawable de fond
         tagBackgrounds = new HashMap<>();
         tagBackgrounds.put("sport", R.drawable.card_background_sport);
         tagBackgrounds.put("musique", R.drawable.card_background_musique);
         tagBackgrounds.put("cinéma", R.drawable.card_background_cinema);
-        tagBackgrounds.put("jeux vidéo", R.drawable.card_background_jeux_video);
+        tagBackgrounds.put("jeux", R.drawable.card_background_jeux);
         tagBackgrounds.put("culture", R.drawable.card_background_culture);
         tagBackgrounds.put("art", R.drawable.card_background_art);
         tagBackgrounds.put("cuisine", R.drawable.card_background_cuisine);
-        tagBackgrounds.put("réunion et rencontre", R.drawable.card_background_reunion_et_rencontre);
+        tagBackgrounds.put("réunion", R.drawable.card_background_rencontre);
         tagBackgrounds.put("autre", R.drawable.card_background_autre);
 
+        // Initialise la HashMap pour associer chaque tag à son drawable
+        tagDrawables = new HashMap<>();
+        tagDrawables.put("sport", R.drawable.sport);
+        tagDrawables.put("musique", R.drawable.musique);
+        tagDrawables.put("cinéma", R.drawable.cinema);
+        tagDrawables.put("jeux", R.drawable.jeux);
+        tagDrawables.put("culture", R.drawable.culture);
+        tagDrawables.put("art", R.drawable.art);
+        tagDrawables.put("cuisine", R.drawable.cuisine);
+        tagDrawables.put("réunion", R.drawable.rencontre);
+        tagDrawables.put("autre", R.drawable.autre);
+
+
         Spinner filter = rootView.findViewById(R.id.spinner1);
-        String[] items = new String[]{"aucun", "sport", "musique", "cinéma", "jeux vidéo", "culture", "art", "cuisine", "réunion et rencontre", "autre"};
+        String[] items = new String[]{"aucun", "sport", "musique", "cinéma", "jeux", "culture", "art", "cuisine", "réunion", "autre"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(rootView.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
 
         filter.setAdapter(adapter);
@@ -126,7 +145,35 @@ public class SearchFragment extends Fragment {
                 }
             }
         });
+        // Récupération des textes de la bannière depuis Firestore
+        database.collection("messages").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("DIM", document.getId() + " => " + document.getData());
 
+                        // Récupérer le texte de la bannière
+                        String text = document.getString("text");
+                        bannerTexts.add(text);
+                    }
+
+                    // Passer les textes de la bannière au fragment de la bannière
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("bannerTexts", bannerTexts);
+                    BannerFragment bannerFragment = new BannerFragment();
+                    bannerFragment.setArguments(bundle);
+
+                    // Remplacer le fragment de la bannière dans le layout
+                    FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                    transaction.replace(R.id.banner_container, bannerFragment);
+                    transaction.commit();
+
+                } else {
+                    Log.d("DIM", "Error getting documents: ", task.getException());
+                }
+            }
+        });
         return rootView;
     }
 
@@ -140,12 +187,17 @@ public class SearchFragment extends Fragment {
                 ImageView imageView = eventView.findViewById(R.id.image_view);
                 TextView eventNameTextView = eventView.findViewById(R.id.text_event_name);
                 TextView participantsCountTextView = eventView.findViewById(R.id.text_participants_count);
-                TextView tagsTextView = eventView.findViewById(R.id.layout_tags);
+                ImageView tagsImageView = eventView.findViewById(R.id.layout_tags);
+                TextView startDateTextView = eventView.findViewById(R.id.start_date);
 
                 // Remplissage des vues avec les données de l'événement
                 eventNameTextView.setText(event.getName());
                 participantsCountTextView.setText("Participant : "+String.valueOf(event.getParticipantsCount()));
-                tagsTextView.setText("Type d'évènement : "+event.getTags());
+
+                // Conversion du timestamp en format de date lisible
+                String startDate = DateFormat.format("dd/MM/yyyy", event.getStartDate().toDate()).toString();
+                startDateTextView.setText(startDate);
+
 
                 // Chargement du fond en fonction du tag de l'événement
                 if (tagBackgrounds.containsKey(event.getTags().toLowerCase())) {
@@ -157,6 +209,14 @@ public class SearchFragment extends Fragment {
 
                 // Chargement de l'image de l'événement
                 event.load_image(imageView, storage);
+
+                // Chargement de l'image associée au tag
+                if (tagDrawables.containsKey(event.getTags().toLowerCase())) {
+                    tagsImageView.setImageResource(tagDrawables.get(event.getTags().toLowerCase()));
+                } else {
+                    // Si le tag n'est pas trouvé, utilise l'image par défaut
+                    tagsImageView.setImageResource(R.drawable.default_image);
+                }
 
                 container.addView(eventView);
 
