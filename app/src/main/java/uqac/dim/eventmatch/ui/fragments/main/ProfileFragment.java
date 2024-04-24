@@ -2,6 +2,7 @@ package uqac.dim.eventmatch.ui.fragments.main;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 import uqac.dim.eventmatch.R;
+import uqac.dim.eventmatch.ui.activities.LoginActivity;
+import uqac.dim.eventmatch.ui.activities.SignUpActivity;
 import uqac.dim.eventmatch.ui.fragments.profile.AccountFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.FeedbackFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.MyEventsFragment;
@@ -88,6 +91,10 @@ public class ProfileFragment extends Fragment
             fragment = new FeedbackFragment();
         } else if (itemId == R.id.menu_disconnect) {
             FirebaseAuth.getInstance().signOut();
+            //retour a la page de connexion LoginActivity
+            Intent signup = new Intent(requireActivity(), LoginActivity.class);
+            signup.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(signup);
             return true;
         } else {
             return false;
