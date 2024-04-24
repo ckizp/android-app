@@ -94,7 +94,6 @@
     <string name="text_delete_account">Supprimer mon compte</string>
 
     <!-- -->
-    <string name="description_hint">Description</string>
     <string name="description_back">Back</string>
 
     <!-- Feedback -->
@@ -126,5 +125,6 @@
     <string name="toast_modif_failure_event">Erreur lors de la mise à jour de l\'événement</string>
     <string name="toast_supp_success_event">Événement supprimé avec succès</string>
     <string name="toast_supp_failure_event">Erreur lors de la suppression de l\'événement</string>
+    <string name="toast_join_success_event">Evénement rejoins avec succès</string>
     <string name="toast_delete_user">User deleted</string>
 </resources>

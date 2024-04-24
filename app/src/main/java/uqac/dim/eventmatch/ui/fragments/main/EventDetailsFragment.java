@@ -120,22 +120,47 @@ public class EventDetailsFragment extends Fragment {
         }
         else
         {
+            DocumentReference userRef = database.document(userstring);
+
             TxtViewAlreadyInEvent.setVisibility(View.GONE);
             ButtonJoin.setVisibility(View.VISIBLE);
             ButtonJoin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RejoindreEvent();
+                    RejoindreEvent(userRef);
                 }
             });
         }
 
     }
 
-    private void RejoindreEvent() {
+    private void RejoindreEvent(DocumentReference userRef) {
+        List<DocumentReference> participantslist = new ArrayList<DocumentReference>() {};
+        for (DocumentReference docref: (event.getParticipants())) {
+            participantslist.add(docref);
+        }
+        participantslist.add(userRef);
+        event.setParticipants(participantslist);
+        // Mettez à jour le document avec les nouvelles données
+        event.referenceOfthisEvent().set(event)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // La mise à jour a réussi
+                        Toast.makeText(getContext(),getString(R.string.toast_join_success_event),Toast.LENGTH_SHORT).show();
+                        update_participation();
+                        update_list_view(event);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // La mise à jour a échoué
+                        Toast.makeText(getContext(), getString(R.string.toast_modif_failure_event), Toast.LENGTH_SHORT).show();
+                        Log.e("DIM", "Erreur lors de la mise à jour de l'événement", e);
+                    }
+                });
 
-        Toast.makeText(getContext(),"Pas encore implémenté, ça arrive fort les gars",Toast.LENGTH_SHORT).show();
-        //Toast.makeText(getContext(),"Evénement rejoins avec succès",Toast.LENGTH_SHORT).show();
     }
 
     private void update_list_view(Event event)
