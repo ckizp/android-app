@@ -128,4 +128,5 @@
     <string name="toast_supp_failure_event">Erreur lors de la suppression de l\'événement</string>
     <string name="toast_join_success_event">Evénement rejoins avec succès</string>
     <string name="toast_delete_user">User deleted</string>
+    <string name="admin_panel">Panel Admin</string>
 </resources>

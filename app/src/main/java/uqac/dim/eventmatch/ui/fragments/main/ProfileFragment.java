@@ -7,6 +7,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import java.util.Objects;
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.ui.activities.LoginActivity;
 import uqac.dim.eventmatch.ui.fragments.profile.AccountFragment;
+import uqac.dim.eventmatch.ui.fragments.profile.AdminFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.FeedbackFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.MyEventsFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.NotificationsFragment;
@@ -45,6 +47,7 @@ public class ProfileFragment extends Fragment
         implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseFirestore database;
     private TextView greetingTextView;
+    boolean adminPermission;
 
     public ProfileFragment() {
 
@@ -71,9 +74,17 @@ public class ProfileFragment extends Fragment
                         String greeting = "Bonjour " + documentSnapshot.getString("username") + " !";
                         greetingTextView.setText(greeting);
 
+                        // Récupération des permissions admin
+                        adminPermission = Boolean.TRUE.equals(documentSnapshot.getBoolean("isAdmin"));
                     }
                 });
 
+        //Ne pas afficher le menu admin si l'utilisateur n'est pas admin
+        if(!adminPermission) {
+            navigationView.getMenu().findItem(R.id.menu_admin).setVisible(false);
+        }
+
+        Log.d("isAdmin", String.valueOf(adminPermission));
         return view;
     }
 
@@ -82,16 +93,18 @@ public class ProfileFragment extends Fragment
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        Fragment fragment;
-
-        if (itemId == R.id.menu_events) {
-            fragment = new MyEventsFragment();
+        final Fragment[] fragment = new Fragment[1];
+        //Affichage du fragment admin seulement si l'utilisateur est admin
+        if(itemId == R.id.menu_admin && adminPermission) {
+            fragment[0] = new AdminFragment();
+        } else if (itemId == R.id.menu_events) {
+            fragment[0] = new MyEventsFragment();
         } else if (itemId == R.id.menu_account) {
-            fragment = new AccountFragment();
+            fragment[0] = new AccountFragment();
         } else if (itemId == R.id.menu_notifications) {
-            fragment = new NotificationsFragment();
+            fragment[0] = new NotificationsFragment();
         } else if (itemId == R.id.menu_security) {
-            fragment = new SecurityFragment();
+            fragment[0] = new SecurityFragment();
         } else if (itemId == R.id.menu_rate) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=eventmatch.name"));
 
@@ -107,7 +120,7 @@ public class ProfileFragment extends Fragment
 
             return true;
         } else if (itemId == R.id.menu_feedback) {
-            fragment = new FeedbackFragment();
+            fragment[0] = new FeedbackFragment();
         } else if (itemId == R.id.menu_disconnect) {
             FirebaseAuth.getInstance().signOut();
             // Retour a la page de connexion LoginActivity
@@ -122,7 +135,7 @@ public class ProfileFragment extends Fragment
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
-                .replace(R.id.frame_layout, fragment)
+                .replace(R.id.frame_layout, fragment[0])
                 .addToBackStack(null)
                 .commit();
         return true;
@@ -135,4 +148,5 @@ public class ProfileFragment extends Fragment
                 .replace(R.id.frame_layout, new ProfileFragment())
                 .commit();
     }
+
 }

@@ -25,6 +25,7 @@ public class User {
     private String address;
     private String city;
     private ArrayList<DocumentReference> favorites;
+    private boolean isAdmin;
 
     /* *************************************************************************
      *                                                                         *
@@ -42,6 +43,7 @@ public class User {
         this.address = adress;
         this.city = city;
         this.favorites = new ArrayList<>();
+        setIsAdmin(false);
     }
 
     /* *************************************************************************
@@ -116,6 +118,12 @@ public class User {
 
     public ArrayList<DocumentReference> getFavorites() {
         return favorites;
+    }
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     /* *************************************************************************
