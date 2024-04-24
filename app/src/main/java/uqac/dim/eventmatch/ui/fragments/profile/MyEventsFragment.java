@@ -34,6 +34,7 @@ import java.util.List;
 
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.adapters.EventListAdapter;
+import uqac.dim.eventmatch.adapters.MyEventListAdapter;
 import uqac.dim.eventmatch.models.Event;
 import uqac.dim.eventmatch.ui.fragments.main.ProfileFragment;
 
@@ -98,7 +99,7 @@ public class MyEventsFragment extends Fragment {
                                     eventList.add(event);
                                 }
                             }
-                            EventListAdapter customBaseAdapter = new EventListAdapter(rootView.getContext(), eventList);
+                            MyEventListAdapter customBaseAdapter = new MyEventListAdapter(rootView.getContext(), eventList);
                             eventListView.setAdapter(customBaseAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
