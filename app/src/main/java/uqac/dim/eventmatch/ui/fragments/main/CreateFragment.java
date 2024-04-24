@@ -358,10 +358,6 @@ public class CreateFragment extends Fragment {
 
             event.setImageDataUrl(path);
 
-            event.setName(eventName.getText().toString());
-            event.setParticipantsCount(Integer.parseInt(participantsCount.getText().toString()));
-            event.setTags(eventType.getSelectedItem().toString());
-
             List<DocumentReference> partipantsliste = new ArrayList<DocumentReference>();
 
             String userID = user.getUid();
