@@ -258,7 +258,9 @@ public EventJoinedFragment() {
                             Log.d("DIM", "Selected event: " + event.getName());
                             Fragment fragment = new EventDetailsFragment(event);
                             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.frame_layout, fragment).commit();
+                            transaction.replace(R.id.frame_layout, fragment);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
                         }
                     });
 
