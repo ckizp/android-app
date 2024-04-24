@@ -114,19 +114,25 @@ public class EventDetailsFragment extends Fragment {
                 In = true;
             }
         }
+        DocumentReference userRef = database.document(userstring);
         if (In)
         {
 
             TxtViewAlreadyInEvent.setVisibility(View.VISIBLE);
-            ButtonJoin.setVisibility(View.GONE);
-            ButtonJoin.setOnClickListener(null);
+            ButtonJoin.setVisibility(View.VISIBLE);
+            ButtonJoin.setText(R.string.eventdetails_button_leave);
+            ButtonJoin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    QuitterEvent(userRef);
+                }
+            });
         }
         else
         {
-            DocumentReference userRef = database.document(userstring);
-
-            TxtViewAlreadyInEvent.setVisibility(View.GONE);
+           TxtViewAlreadyInEvent.setVisibility(View.GONE);
             ButtonJoin.setVisibility(View.VISIBLE);
+            ButtonJoin.setText(R.string.eventdetails_button_join);
             ButtonJoin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -135,6 +141,42 @@ public class EventDetailsFragment extends Fragment {
             });
         }
 
+    }
+
+    private void QuitterEvent(DocumentReference userRef) {
+        if (userRef.getPath().equals(event.getOwner().getPath())) {
+            Toast.makeText(getContext(),getString(R.string.toast_left_failure_owner),Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            List<DocumentReference> participantslist = new ArrayList<DocumentReference>() {};
+            for (DocumentReference docref: (event.getParticipants())) {
+                if (!userRef.getPath().equals(docref.getPath())) {
+
+                    participantslist.add(docref);
+                }
+            }
+            event.setParticipants(participantslist);
+            // Mettez à jour le document avec les nouvelles données
+            event.referenceOfthisEvent().set(event)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // La mise à jour a réussi
+                            Toast.makeText(getContext(),getString(R.string.toast_left_success),Toast.LENGTH_SHORT).show();
+                            update_participation();
+                            update_list_view(event);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // La mise à jour a échoué
+                            Toast.makeText(getContext(), getString(R.string.toast_modif_failure_event), Toast.LENGTH_SHORT).show();
+                            Log.e("DIM", "Erreur lors de la mise à jour de l'événement", e);
+                        }
+                    });
+        }
     }
 
     private void RejoindreEvent(DocumentReference userRef) {

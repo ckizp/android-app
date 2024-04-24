@@ -69,6 +69,7 @@
 
     <!-- Event Details strings -->
     <string name="eventdetails_button_join">Rejoindre l\'évenement</string>
+    <string name="eventdetails_button_leave">Quitter l\'évenement</string>
     <string name="eventdetails_alreadyin">Vous êtes déjà dans l\'événement</string>
 
     <!-- Edit Event strings -->
@@ -128,6 +129,9 @@
     <string name="toast_supp_failure_event">Erreur lors de la suppression de l\'événement</string>
     <string name="toast_join_success_event">Evénement rejoins avec succès</string>
     <string name="toast_delete_user">User deleted</string>
+    <string name="toast_left_failure_owner">Impossible vous êtes le owner</string>
+    <string name="toast_left_success">Vous avez quitté l\'événement</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_joined">Mes Events</string>
