@@ -92,10 +92,23 @@
     <string name="text_firstname">Prénom</string>
     <string name="text_birthdate">Date de naissance</string>
     <string name="text_delete_account">Supprimer mon compte</string>
-    <string name="text_feedback">Donnez-vous votre feedback !</string>
+
+    <!-- -->
+    <string name="description_hint">Description</string>
+    <string name="description_back">Back</string>
+
+    <!-- Feedback -->
+    <string name="text_feedback">Donnez-nous votre feedback !</string>
     <string name="title_send_feedback">Envoyer mon feedback</string>
     <string name="text_feedback_use">Vous avez des idées pour nous aider à améliorer EventMatch ? Faites un retour et nous prendrons en compte votre avis !</string>
     <string name="text_edit_feedback">Envoyez-nous vos retours !</string>
+
+    <!-- Notifications -->
+    <string name="text_new_event">Nouveaux événements</string>
+    <string name="text_new_events">Activez cette notification pour être notifié(e) des nouveaux événements.</string>
+    <string name="text_event_starts">Début d\'un événement</string>
+    <string name="text_event_starts_desc">Activez cette notification pour être notifié(e) du début des événements auxquels vous participez.</string>
+    <string name="text_my_events_desc">Activez cette notification pour être notifié(e) des événements que vous gérez.</string>
     <string name="description_hint">Description</string>
     <string name="greeting_text">Bonjour !</string>
     <string name="theme_light">Jour</string>

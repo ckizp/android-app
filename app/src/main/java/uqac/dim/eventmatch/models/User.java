@@ -26,7 +26,6 @@ public class User {
     private String city;
     private ArrayList<DocumentReference> favorites;
 
-
     /* *************************************************************************
      *                                                                         *
      * Constructors                                                            *
