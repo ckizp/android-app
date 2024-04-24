@@ -19,17 +19,21 @@
 
         <activity
             android:name=".adapters.MyEventListAdapter"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.activities.UserCustomListView"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:label="@string/title_activity_custom_list_view"
             android:theme="@style/Theme.Eventmatch" />
         <activity
             android:name=".ui.activities.LoginActivity"
+            android:screenOrientation="portrait"
             android:exported="false"></activity>
         <activity
             android:name=".ui.activities.SignUpActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,15 +43,19 @@
         </activity>
         <activity
             android:name=".ui.activities.MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false"></activity>
         <activity
             android:name=".CreateFragment"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".CreateEventActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ListEventtestActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
     </application>
 
