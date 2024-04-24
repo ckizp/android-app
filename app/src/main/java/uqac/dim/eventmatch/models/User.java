@@ -1,5 +1,8 @@
 package uqac.dim.eventmatch.models;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+
+import java.util.ArrayList;
 
 /**
  * La classe {@link User} représente un utilisateur de l'application.
@@ -21,6 +24,7 @@ public class User {
     private Timestamp birthdate;
     private String adress;
     private String city;
+    private ArrayList<DocumentReference> favorites;
 
 
     /* *************************************************************************
@@ -38,6 +42,7 @@ public class User {
         this.birthdate = birthdate;
         this.adress = adress;
         this.city = city;
+        this.favorites = new ArrayList<>();
     }
 
     /* *************************************************************************
@@ -108,6 +113,10 @@ public class User {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public ArrayList<DocumentReference> getFavorites() {
+        return favorites;
     }
 
     /* *************************************************************************

@@ -25,7 +25,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,18 +41,21 @@ import java.util.List;
 
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
+import uqac.dim.eventmatch.models.User;
 
 public class SearchFragment extends Fragment {
     private LinearLayout container;
     private FirebaseFirestore database;
     private FirebaseStorage storage;
     private ArrayList<Event> eventList;
+    private ArrayList<DocumentReference> eventListRef;
 
     private ArrayList<String> bannerTexts;
     private View rootView;
     private String selected;
     private HashMap<String, Integer> tagBackgrounds;
     private HashMap<String, Integer> tagDrawables;
+    private FirebaseUser user;
 
     private TextView bannerTextView;
     private int currentBannerIndex = 0;
@@ -64,9 +70,11 @@ public class SearchFragment extends Fragment {
 
         database = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         this.container = rootView.findViewById(R.id.container);
         eventList = new ArrayList<>();
+        eventListRef = new ArrayList<>();
 
         bannerTextView = rootView.findViewById(R.id.banner_text_view);
         bannerTexts = new ArrayList<>();
@@ -138,6 +146,7 @@ public class SearchFragment extends Fragment {
 
                         Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl, owner, location, description);
                         eventList.add(event);
+                        eventListRef.add(document.getReference());
                     }
 
                     filterEvents(selected);
@@ -181,7 +190,8 @@ public class SearchFragment extends Fragment {
 
     private void filterEvents(String string_filter) {
         container.removeAllViews();
-        for (Event event : eventList) {
+        for (int i = 0; i < eventList.size(); i++) {
+            Event event = eventList.get(i);
             if (string_filter ==  null || string_filter.equals("aucun") || event.getTags().contains(string_filter)) { //TODO y'a une NullPointerException à des moments ça crash je crois c'est fix mais pas sur
                 View eventView = LayoutInflater.from(rootView.getContext()).inflate(R.layout.event_item, container, false);
 
@@ -234,11 +244,36 @@ public class SearchFragment extends Fragment {
                     }
                 });
 
+                int finalI = i;
                 favButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(),"faut impleter ça on fait quoi ?",Toast.LENGTH_SHORT).show();
-                        //TODO : faire ce qu'on doit faire
+                        Log.d("DIM", "Selected event: " + event.getName());
+                        //add to firestore
+                        Toast.makeText(getContext(), "Event added to favorites", Toast.LENGTH_SHORT).show();
+
+                        DocumentReference doc = eventListRef.get(finalI);
+                        final ArrayList<DocumentReference> userFav = new ArrayList();
+
+                        database.collection("users").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    for (DocumentReference ref : (List<DocumentReference>) document.get("favorites")) {
+                                        userFav.add(ref);
+                                    }
+                                    if(!userFav.contains(doc)){
+                                        userFav.add(doc);
+                                    }
+                                    database.collection("users").document(user.getUid()).update("favorites", userFav);
+                                }
+                            }
+                        });
+
+
+
+
                     }
                 });
 
