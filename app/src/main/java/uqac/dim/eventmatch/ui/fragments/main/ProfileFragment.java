@@ -18,8 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -38,6 +43,8 @@ import uqac.dim.eventmatch.ui.fragments.profile.SecurityFragment;
  */
 public class ProfileFragment extends Fragment
         implements NavigationView.OnNavigationItemSelectedListener {
+    private FirebaseFirestore database;
+    private TextView greetingTextView;
 
     public ProfileFragment() {
 
@@ -50,10 +57,22 @@ public class ProfileFragment extends Fragment
         NavigationView navigationView = view.findViewById(R.id.profile_navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        database = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = user.getUid();
+        DocumentReference userReference = database.collection("users").document(userId);
 
-        TextView TxtProfileName = view.findViewById(R.id.nom_profile);
-        //Display du nom de l'utilisateur
-        TxtProfileName.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
+        greetingTextView = view.findViewById(R.id.text_greeting);
+
+        userReference.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String greeting = "Bonjour " + documentSnapshot.getString("username") + " !";
+                        greetingTextView.setText(greeting);
+
+                    }
+                });
 
         return view;
     }
@@ -78,7 +97,7 @@ public class ProfileFragment extends Fragment
 
             // On vérifie si l'application Google Play Store est installée
             if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
-                // Ouvrir la page de notation sur le Google Play Store
+                // On ouvre la page de notation sur le Google Play Store
                 startActivity(intent);
             } else {
                 // Si l'application Google Play Store n'est pas installée, ouvrir la page dans le navigateur
@@ -91,7 +110,7 @@ public class ProfileFragment extends Fragment
             fragment = new FeedbackFragment();
         } else if (itemId == R.id.menu_disconnect) {
             FirebaseAuth.getInstance().signOut();
-            //retour a la page de connexion LoginActivity
+            // Retour a la page de connexion LoginActivity
             Intent signup = new Intent(requireActivity(), LoginActivity.class);
             signup.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(signup);

@@ -22,7 +22,7 @@ public class User {
     private String firstname;
     private String lastname;
     private Timestamp birthdate;
-    private String adress;
+    private String address;
     private String city;
     private ArrayList<DocumentReference> favorites;
 
@@ -39,7 +39,7 @@ public class User {
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
-        this.adress = adress;
+        this.address = adress;
         this.city = city;
         this.favorites = new ArrayList<>();
     }
@@ -98,12 +98,12 @@ public class User {
         this.birthdate = birthdate;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getCity() {

@@ -1,49 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        android:gravity="center_vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:id="@+id/image_view_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/ic_return"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/description_back"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_my_account"/>
+            android:text="@string/title_my_account"
+            android:paddingStart="40dp"
+            android:textSize="25sp"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        tools:layout_editor_absoluteX="67dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/image_view_back">
 
         <!-- Personnal information -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_personnal_information"/>
+            android:text="@string/text_personnal_information"
+            android:paddingStart="20dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp"
+            android:textSize="14sp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/background_box">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_username"/>
+                android:text="@string/text_username"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/text_username"
                 android:layout_width="match_parent"
@@ -52,12 +65,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/background_box">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_lastname"/>
+                android:text="@string/text_lastname"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/text_lastname"
                 android:layout_width="match_parent"
@@ -66,12 +81,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/background_box">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_firstname"/>
+                android:text="@string/text_firstname"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/text_firstname"
                 android:layout_width="match_parent"
@@ -80,12 +97,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/background_box">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_birthdate"/>
+                android:text="@string/text_birthdate"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/text_birthdate"
                 android:layout_width="match_parent"
@@ -96,16 +115,22 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_location"/>
+            android:text="@string/text_location"
+            android:paddingStart="20dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp"
+            android:textSize="14sp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/background_box">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_address"/>
+                android:text="@string/text_address"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/text_address"
                 android:layout_width="match_parent"
@@ -116,16 +141,22 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_connection_information"/>
+            android:text="@string/text_connection_information"
+            android:paddingStart="20dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="20dp"
+            android:textSize="14sp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/background_box">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_email"/>
+                android:text="@string/text_email"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/text_email"
                 android:layout_width="match_parent"
@@ -134,12 +165,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/background_box">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_password"/>
+                android:text="@string/text_password"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/text_password"
                 android:layout_width="match_parent"
@@ -148,8 +181,10 @@
 
         <!-- ... -->
         <Button
+            android:id="@+id/button_delete_account"
             android:text="@string/text_delete_account"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"/>
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

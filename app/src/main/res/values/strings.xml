@@ -95,6 +95,7 @@
 
     <!-- -->
     <string name="description_back">Back</string>
+    <string name="description_hint">Description</string>
 
     <!-- Feedback -->
     <string name="text_feedback">Donnez-nous votre feedback !</string>
