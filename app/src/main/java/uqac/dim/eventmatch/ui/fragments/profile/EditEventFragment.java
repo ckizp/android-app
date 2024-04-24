@@ -276,7 +276,7 @@ public class EditEventFragment extends Fragment {
 
     private void reinitEvent()
     {
-        //TODO : Probleme dans l'ordre qui bouge à check
+        //TODO : Probleme dans l'ordre qui bouge à check (Surement Fix, pas sûr)
         event_modif = event_db.Copy();
         update_all_editview(event_modif);
         updateDate();

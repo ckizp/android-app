@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import uqac.dim.eventmatch.R;
 import uqac.dim.eventmatch.models.Event;
+import uqac.dim.eventmatch.ui.fragments.main.EventDetailsFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.EditEventFragment;
 
 public class MyEventListAdapter extends BaseAdapter {
@@ -72,7 +73,9 @@ public class MyEventListAdapter extends BaseAdapter {
         DetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO : Lancer le fragment des détails
+                Fragment fragment = new EventDetailsFragment(event);
+                FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment).commit();
             }
         });
 

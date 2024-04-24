@@ -101,7 +101,7 @@ public class MyEventsFragment extends Fragment {
 
                     }
                 });
-        
+
         return rootView;
     }
 }
