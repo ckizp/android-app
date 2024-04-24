@@ -14,8 +14,8 @@
         android:icon="@drawable/ic_menu_create_foreground"/>
     <item
         android:id="@+id/eventrejoins"
-        android:title="@string/title_messages"
-        android:icon="@drawable/ic_menu_messages_foreground"/>
+        android:title="@string/title_eventrejoin"
+        android:icon="@drawable/ic_menu_eventjoined_forground"/>
     <item
         android:id="@+id/menu_profile"
         android:title="@string/title_profile"
