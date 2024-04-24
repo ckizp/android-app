@@ -145,6 +145,7 @@ public class SearchFragment extends Fragment {
                         String description = document.getString("description");
 
                         Event event = new Event(name, endDate, startDate, participantsCount, tags, partlist, imageUrl, owner, location, description);
+                        event.referenceset(document.getReference());
                         eventList.add(event);
                         eventListRef.add(document.getReference());
                     }
