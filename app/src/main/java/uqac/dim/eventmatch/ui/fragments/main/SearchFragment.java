@@ -212,7 +212,7 @@ public class SearchFragment extends Fragment {
 
                 // Conversion du timestamp en format de date lisible
                 String startDate = DateFormat.format("dd/MM/yyyy", event.getStartDate().toDate()).toString();
-                startDateTextView.setText(startDate);
+                startDateTextView.setText("Début de l'évènement : "+startDate);
 
 
                 // Chargement du fond en fonction du tag de l'événement
