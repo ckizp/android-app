@@ -1,8 +1,11 @@
 package uqac.dim.eventmatch.ui.fragments.main;
 
+import android.content.Intent;
+import android.net.Uri;
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +29,6 @@ import uqac.dim.eventmatch.ui.fragments.profile.AccountFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.FeedbackFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.MyEventsFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.NotificationsFragment;
-import uqac.dim.eventmatch.ui.fragments.profile.RateFragment;
 import uqac.dim.eventmatch.ui.fragments.profile.SecurityFragment;
 
 /**
@@ -71,7 +74,19 @@ public class ProfileFragment extends Fragment
         } else if (itemId == R.id.menu_security) {
             fragment = new SecurityFragment();
         } else if (itemId == R.id.menu_rate) {
-            fragment = new RateFragment();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=eventmatch.name"));
+
+            // On vérifie si l'application Google Play Store est installée
+            if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+                // Ouvrir la page de notation sur le Google Play Store
+                startActivity(intent);
+            } else {
+                // Si l'application Google Play Store n'est pas installée, ouvrir la page dans le navigateur
+                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=eventmatch.name"));
+                startActivity(intent);
+            }
+
+            return true;
         } else if (itemId == R.id.menu_feedback) {
             fragment = new FeedbackFragment();
         } else if (itemId == R.id.menu_disconnect) {
@@ -92,5 +107,13 @@ public class ProfileFragment extends Fragment
                 .addToBackStack(null)
                 .commit();
         return true;
+    }
+
+    public static void backToProfileFragment(FragmentActivity activity) {
+        activity.getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
+                .replace(R.id.frame_layout, new ProfileFragment())
+                .commit();
     }
 }
