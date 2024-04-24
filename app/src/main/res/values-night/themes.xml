@@ -2,7 +2,7 @@
 <!-- Base application theme. -->
     <style name="Base.Theme.Eventmatch" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Utilisez ici les couleurs définies pour le fond et le texte -->
-        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowBackground">@color/semigray</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="colorPrimary">@color/lavande</item>
         <item name="android:textColorHint">@color/textColor</item>
